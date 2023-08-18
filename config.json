@@ -1,0 +1,41 @@
+{
+    "parameters": {
+        "Measurement_ID": "test1",
+        "DUT_Serial_Number": "123456",
+        "DUT_temperature": 25.0
+    },
+    "sequence": [
+        {
+            "cli_cmd": "getvolt -c 1",
+            "time_type": "abs",
+            "time": 10,
+            "repeat": 0,
+            "interval": 0
+        },
+
+        {
+            "cli_cmd": "getiv_point -c 1 -v 0.1",
+            "time_type": "rel",
+            "time": 5,
+            "repeat": 0,
+            "interval": 0
+        },
+
+        {
+            "cli_cmd": "getvolt -c 2",
+            "time_type": "rel",
+            "time": 5,
+            "repeat": 10,
+            "interval": 1
+        },
+
+        {
+            "cli_cmd": "setledillum -i 1.1",
+            "time_type": "rel",
+            "time": 3,
+            "repeat": 0,
+            "interval": 0
+        }
+       
+    ]
+}
