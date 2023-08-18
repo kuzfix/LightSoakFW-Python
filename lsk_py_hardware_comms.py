@@ -2,7 +2,7 @@ import serial
 import datetime
 import time
 
-class LightSoakControl:
+class LightSoakHWComms:
     def __init__(self):
         self.__SERIAL_PORT = '/dev/cu.usbserial-02B11B94'
         self.__DEFAULT_BAUD = 230400
@@ -33,6 +33,25 @@ class LightSoakControl:
         print("LightSoak HW: Configured and ready")
 
     # INIT END ----------------------------------------------------------
+
+    # CONTROL FUNCTIONS FUNCTIONS ----------------------------------------------------------
+
+    def get_timestamp(self):
+        self.ser.write("gettimestamp\n".encode())
+        while True:
+            if self.ser.in_waiting > 0:
+                message = self.ser.readline().decode().strip()
+                if message.startswith('TIMESTAMP'):
+                    return int(message.split(":")[1])
+            time.sleep(0.01)
+
+    def reboot(self):
+        self.ser.write("reboot\n".encode())
+
+
+    # CONTROL FUNCTIONS FUNCTIONS END ----------------------------------------------------------
+
+
 
 
 
@@ -80,7 +99,25 @@ class LightSoakControl:
     # PRIVATE FUNCTIONS END ----------------------------------------------------------
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     # SEND COMMAND FUNCTIONS ----------------------------------------------------------
+    # these are obsolete but still usable
     def sendcmd_getvolt(self, channel, sched=False):
         if(channel == "all"):
             cmd = "getvolt\n"
@@ -288,28 +325,16 @@ class LightSoakControl:
 
 
 
-    # CONTROL FUNCTIONS FUNCTIONS ----------------------------------------------------------
-
-    def get_timestamp(self):
-        self.ser.write("gettimestamp\n".encode())
-        while True:
-            if self.ser.in_waiting > 0:
-                message = self.ser.readline().decode().strip()
-                if message.startswith('TIMESTAMP'):
-                    return int(message.split(":")[1])
-            time.sleep(0.01)
-
-    def reboot(self):
-        self.ser.write("reboot\n".encode())
+    
 
 
-    # CONTROL FUNCTIONS FUNCTIONS END ----------------------------------------------------------
+
 
 
 
 
 if __name__ == '__main__':
-    lsk = LightSoakControl()
+    lsk = LightSoakHWComms()
     time.sleep(1)
     # lsk.sendcmd_getvolt(1, sched=10000000)
     # lsk.sendcmd_getcurr(1)
@@ -323,10 +348,6 @@ if __name__ == '__main__':
     lsk.sendcmd_reset_timestamp()
     time.sleep(1)
     print(lsk.get_timestamp())
-
-
-
-
 
 
     # print incoming lines
