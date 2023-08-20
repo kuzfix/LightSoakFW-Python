@@ -324,6 +324,15 @@ class LightSoakHWComms:
     def sendcmd_reset_timestamp(self):
         self.ser.write("resettimestamp\n".encode())
 
+    def get_led_temp(self):
+        self.ser.write("getledtemp\n".encode())
+        while True:
+            if self.ser.in_waiting > 0:
+                message = self.ser.readline().decode().strip()
+                if message.startswith('LEDTEMP'):
+                    return float(message.split(":")[1])
+            time.sleep(0.01)
+
     # SEND COMMAND FUNCTIONS END ----------------------------------------------------------
 
 
@@ -338,6 +347,7 @@ class LightSoakHWComms:
 
 if __name__ == '__main__':
     lsk = LightSoakHWComms("/dev/cu.usbserial-02B11B94")
+    lsk.connect()
     time.sleep(1)
     # lsk.sendcmd_getvolt(1, sched=10000000)
     # lsk.sendcmd_getcurr(1)

@@ -10,6 +10,7 @@ class LightSoakerSequenceParser:
     def __init__(self, config_file):
         self.config_file = config_file
         self.cmdlist = []
+        self.test_duration = 0
 
 
     def parse(self):
@@ -17,7 +18,7 @@ class LightSoakerSequenceParser:
         with open(self.config_file) as f:
             config = json.load(f)
 
-        self.measurement_id = config['parameters']['Measurement_ID']
+        self.test_id = config['parameters']['Test_ID']
         self.dut_serial = config['parameters']['DUT_Serial_Number']
         self.target_dut_temp = config['parameters']['DUT_target_temperature']
 
@@ -46,6 +47,7 @@ class LightSoakerSequenceParser:
                 cmd = f"{elem['cli_cmd']} -sched {sched_time}"
                 cmd += "\n"
                 self.cmdlist.append(cmd)
+        self.test_duration = sched_time / 1000000
         print("JSON config loaded successfully!")
     # print command list to console (for debugging)
     def print_cmdlist(self):

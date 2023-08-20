@@ -1,0 +1,30 @@
+ ### General Test Info ### 
+Time: 20-08-2023 19:23:15
+Test ID: test1
+DUT Serial: 123456
+DUT Target Temp: 25.0
+
+
+ ### Command List ### 
+Number of cmds:13
+########################
+getvolt -c 1 -sched 10000000
+getiv_point -c 1 -v 0.1 -sched 15000000
+getvolt -c 2 -sched 20000000
+getvolt -c 2 -sched 21000000
+getvolt -c 2 -sched 22000000
+getvolt -c 2 -sched 23000000
+getvolt -c 2 -sched 24000000
+getvolt -c 2 -sched 25000000
+getvolt -c 2 -sched 26000000
+getvolt -c 2 -sched 27000000
+getvolt -c 2 -sched 28000000
+getvolt -c 2 -sched 29000000
+setledillum -i 1.1 -sched 32000000
+########################
+
+Total test Duration: 32.0s
+
+LED Temperature at start of test: 25.625C
+
+ ### End of Test ### 
