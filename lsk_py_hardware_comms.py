@@ -3,8 +3,8 @@ import datetime
 import time
 
 class LightSoakHWComms:
-    def __init__(self):
-        self.__SERIAL_PORT = '/dev/cu.usbserial-02B11B94'
+    def __init__(self, ser_port):
+        self.__SERIAL_PORT = ser_port
         self.__DEFAULT_BAUD = 230400
         self.__FASTAFBOI_BAUD = 2000000
         self.__CONNECT_TIMEOUT = 2
@@ -334,7 +334,7 @@ class LightSoakHWComms:
 
 
 if __name__ == '__main__':
-    lsk = LightSoakHWComms()
+    lsk = LightSoakHWComms("/dev/cu.usbserial-02B11B94")
     time.sleep(1)
     # lsk.sendcmd_getvolt(1, sched=10000000)
     # lsk.sendcmd_getcurr(1)

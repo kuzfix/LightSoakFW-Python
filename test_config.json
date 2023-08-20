@@ -2,7 +2,7 @@
     "parameters": {
         "Measurement_ID": "test1",
         "DUT_Serial_Number": "123456",
-        "DUT_temperature": 25.0
+        "DUT_target_temperature": 25.0
     },
     "sequence": [
         {
