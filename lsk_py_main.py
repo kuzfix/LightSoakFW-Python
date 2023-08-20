@@ -55,6 +55,16 @@ infotxt.write("LED Temperature at start of test: " + str(led_temp) + "C\n\n")
 
 # todo: set DUT temperature and wait for it to stabilize
 
+#begin sequence
+
+
+
+
+
+
+
+
+
 #close txt file
 infotxt.write(" ### End of Test ### \n")
 infotxt.close()

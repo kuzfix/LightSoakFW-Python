@@ -11,6 +11,7 @@ class LightSoakerSequenceParser:
         self.config_file = config_file
         self.cmdlist = []
         self.test_duration = 0
+        self.__seq_begin_deadtime_us = 1000000
 
 
     def parse(self):
@@ -35,6 +36,8 @@ class LightSoakerSequenceParser:
                     sched_time += i * elem['interval'] * 1000000
                     cmd = f"{elem['cli_cmd']} -sched {sched_time}"
                     cmd += "\n"
+                    if(sched_time < self.__seq_begin_deadtime_us):
+                        raise Exception('Commands scheduled earlier than 1s after sequence begin are not allowed!')
                     self.cmdlist.append(cmd)
                 self.__last_sched_time = sched_time
             else:
@@ -47,6 +50,8 @@ class LightSoakerSequenceParser:
                 self.__last_sched_time = sched_time
                 cmd = f"{elem['cli_cmd']} -sched {sched_time}"
                 cmd += "\n"
+                if(sched_time < self.__seq_begin_deadtime_us):
+                        raise Exception('Commands scheduled earlier than 1s after sequence begin are not allowed!')
                 self.cmdlist.append(cmd)
         self.test_duration = sched_time / 1000000
         print("JSON config loaded successfully!")

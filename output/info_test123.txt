@@ -1,5 +1,5 @@
  ### General Test Info ### 
-Time: 20-08-2023 19:28:42
+Time: 20-08-2023 19:33:58
 Test ID: test123
 Test Notes: This is a test
 DUT Serial: 123we4sdfgqw56
@@ -26,6 +26,6 @@ setledillum -i 1.1 -sched 32000000
 
 Total test Duration: 32.0s
 
-LED Temperature at start of test: 25.6875C
+LED Temperature at start of test: 25.75C
 
  ### End of Test ### 
