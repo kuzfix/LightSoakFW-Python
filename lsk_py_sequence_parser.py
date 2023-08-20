@@ -10,11 +10,10 @@ class LightSoakerSequenceParser:
     def __init__(self, config_file):
         self.config_file = config_file
         self.cmdlist = []
-        self.__last_sched_time = 0
-        self.parse()
 
 
     def parse(self):
+        self.__last_sched_time = 0
         with open(self.config_file) as f:
             config = json.load(f)
 

@@ -9,7 +9,10 @@ class LightSoakHWComms:
         self.__FASTAFBOI_BAUD = 2000000
         self.__CONNECT_TIMEOUT = 2
 
+    # INIT END ----------------------------------------------------------
 
+    # MAIN CONNECT FUNCTION ----------------------------------------------------------
+    def connect(self):
         print("LightSoak HW: Initializing...")
         print("Trying default baud...")
         self.ser = serial.Serial(self.__SERIAL_PORT, self.__DEFAULT_BAUD, timeout=1)
@@ -31,8 +34,8 @@ class LightSoakHWComms:
         print("Changing baud to 2M...")
         self.__set_fastaf_baud()
         print("LightSoak HW: Configured and ready")
+    # MAIN CONNECT FUNCTION END ----------------------------------------------------------
 
-    # INIT END ----------------------------------------------------------
 
     # CONTROL FUNCTIONS FUNCTIONS ----------------------------------------------------------
 

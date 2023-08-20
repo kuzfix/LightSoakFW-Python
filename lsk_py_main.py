@@ -7,8 +7,15 @@ config_file = "test_config.json"
 
 # todo: port as command line argument
 
-#init hardware
 hw = lsk_py_hardware_comms.LightSoakHWComms(port)
 
-# load config and test sequence
 cnfg = lsk_py_sequence_parser.LightSoakerSequenceParser(config_file)
+
+# parse config
+cnfg.parse()
+
+#connect to hardware
+hw.connect()
+
+print("end")
+raise SystemExit
