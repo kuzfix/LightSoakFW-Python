@@ -1,12 +1,13 @@
  ### General Test Info ### 
-Time: 20-08-2023 19:23:15
-Test ID: test1
-DUT Serial: 123456
+Time: 20-08-2023 19:28:42
+Test ID: test123
+Test Notes: This is a test
+DUT Serial: 123we4sdfgqw56
 DUT Target Temp: 25.0
 
 
  ### Command List ### 
-Number of cmds:13
+Number of sequence commands: 13
 ########################
 getvolt -c 1 -sched 10000000
 getiv_point -c 1 -v 0.1 -sched 15000000
@@ -25,6 +26,6 @@ setledillum -i 1.1 -sched 32000000
 
 Total test Duration: 32.0s
 
-LED Temperature at start of test: 25.625C
+LED Temperature at start of test: 25.6875C
 
  ### End of Test ### 

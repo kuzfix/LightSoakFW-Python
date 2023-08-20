@@ -1,7 +1,8 @@
 {
     "parameters": {
-        "Test_ID": "test1",
-        "DUT_Serial_Number": "123456",
+        "Test_ID": "test123",
+        "Test_notes": "This is a test",
+        "DUT_Serial_Number": "123we4sdfgqw56",
         "DUT_target_temperature": 25.0
     },
     "sequence": [
