@@ -62,6 +62,7 @@ infotxt.write("LED Temperature at start of test: " + str(led_temp) + "C\n\n")
 
 #begin sequence
 hw.sendcmd_reset_timestamp()
+print("!!! Loading & starting sequence !!!")
 
 # send cmds to buffer
 while(True):

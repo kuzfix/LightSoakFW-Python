@@ -1,5 +1,5 @@
  ### General Test Info ### 
-Time: 21-08-2023 18:24:30
+Time: 21-08-2023 21:53:11
 Test ID: test123
 Test Notes: This is a test
 DUT Serial: 123we4sdfgqw56
@@ -7,26 +7,16 @@ DUT Target Temp: 25.0
 
 
  ### Command List ### 
-Number of sequence commands: 14
+Number of sequence commands: 4
 ########################
-getvolt -sched 10000000
-getvolt -sched 10040000
-getvolt -sched 10080000
-getvolt -sched 10120000
-getvolt -sched 10160000
-getvolt -sched 10660000
-getvolt -sched 10700000
-getvolt -sched 10740000
-getvolt -sched 10780000
-getvolt -sched 10820000
-getvolt -sched 10860000
-getvolt -sched 10900000
-getvolt -sched 10940000
-ENDSEQUENCE -sched 20940000
+getvolt -c 2 -sched 10000000
+getvolt -sched 10500000
+getvolt -sched 10540000
+ENDSEQUENCE -sched 20540000
 ########################
 
-Estimated total test Duration: 20.94s
+Estimated total test Duration: 20.54s
 
-LED Temperature at start of test: 26.625C
+LED Temperature at start of test: 25.9375C
 
  ### End of Test ### 
