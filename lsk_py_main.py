@@ -12,7 +12,7 @@ output_dir = "output/"
 # open txt file for general test info
 
 
-hw = lsk_py_hardware_comms.LightSoakHWComms(port)
+hw = lsk_py_hardware_comms.LightSoakHWComms(port, output_dir, log_all_serial=True)
 
 cnfg = lsk_py_sequence_parser.LightSoakerSequenceParser(config_file)
 

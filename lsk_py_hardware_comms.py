@@ -3,11 +3,18 @@ import datetime
 import time
 
 class LightSoakHWComms:
-    def __init__(self, ser_port):
+    def __init__(self, ser_port, out_dir, log_all_serial=False):
         self.__SERIAL_PORT = ser_port
+        self.__out_dir = out_dir
+        self.__log_all_serial = log_all_serial
         self.__DEFAULT_BAUD = 230400
         self.__FASTAFBOI_BAUD = 2000000
         self.__CONNECT_TIMEOUT = 2
+
+        if(log_all_serial):
+            #open file in out_dir names serial_log_<timestamp>.txt
+            self.__serial_log = open(out_dir + "serial_log.txt", "w")
+            self.__serial_log.write(" ### Serial Log ### \n")
 
     # INIT END ----------------------------------------------------------
 
@@ -43,11 +50,16 @@ class LightSoakHWComms:
         except UnicodeDecodeError:
             # ignore invalid bytes
             return None
+        if(message != ""):
+            if(self.__log_all_serial):
+                self.__serial_log.write("[" + str(datetime.datetime.now()) + "] " + "IN: " + message + "\n")
         return message
 
         
     def print_hw(self, message):
         self.ser.write(message.encode())
+        if(self.__log_all_serial):
+            self.__serial_log.write("[" + str(datetime.datetime.now()) + "] " + "OUT: " + message)
     # READ LINE FUNCTION END ----------------------------------------------------------
 
 
