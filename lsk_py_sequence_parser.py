@@ -3,8 +3,9 @@ import json
 
 # How to use:
 # pass the config file path to the constructor
-# parsing will be done automatically at constructor call
+# call parse() to parse the config file
 # the parsed command list can be accessed by cmdlist member variable
+# general test parameters can be accessed by member variables
 class LightSoakerSequenceParser:
 
     def __init__(self, config_file):
@@ -29,11 +30,14 @@ class LightSoakerSequenceParser:
                 for i in range(elem['repeat']):
                     if elem['time_type'] == 'abs':
                         sched_time = elem['time'] * 1000000
+                        sched_time = int(sched_time) # convert to integer
                     elif elem['time_type'] == 'rel':
                         sched_time = self.__last_sched_time + elem['time'] * 1000000
+                        sched_time = int(sched_time) # convert to integer
                     else:
                         raise Exception('time_type Error')
                     sched_time += i * elem['interval'] * 1000000
+                    sched_time = int(sched_time) # convert to integer
                     cmd = f"{elem['cli_cmd']} -sched {sched_time}"
                     cmd += "\n"
                     if(sched_time < self.__seq_begin_deadtime_us):
@@ -43,8 +47,10 @@ class LightSoakerSequenceParser:
             else:
                 if elem['time_type'] == 'abs':
                     sched_time = elem['time'] * 1000000
+                    sched_time = int(sched_time) # convert to integer
                 elif elem['time_type'] == 'rel':
                     sched_time = self.__last_sched_time + elem['time'] * 1000000
+                    sched_time = int(sched_time) # convert to integer
                 else:
                     raise Exception('time_type Error')
                 self.__last_sched_time = sched_time
