@@ -1,10 +1,12 @@
 import datetime
+import time
 import lsk_py_hardware_comms
 import lsk_py_sequence_parser
 import lsk_py_data_in_parser
 
 port = "/dev/cu.usbserial-02B11B94"
-config_file = "test_config.json"
+# config_file = "test_config.json"
+config_file = "config2.json"
 output_dir = "output/"
 
 
@@ -43,7 +45,7 @@ for cmd in cnfg.cmdlist:
 infotxt.write("########################\n\n")
 
 # print test duration to file and console
-infotxt.write("Total test Duration: " + str(cnfg.test_duration) + "s\n\n")
+infotxt.write("Estimated total test Duration: " + str(cnfg.test_duration) + "s\n\n")
 print("Total test Duration: " + str(cnfg.test_duration) + "s")
 
 
@@ -59,15 +61,43 @@ infotxt.write("LED Temperature at start of test: " + str(led_temp) + "C\n\n")
 # todo: set DUT temperature and wait for it to stabilize
 
 #begin sequence
+hw.sendcmd_reset_timestamp()
 
+# send cmds to buffer
+while(True):
+    # pop first cmd from list (works like fifo) and try to schedule it
+    if(len(cnfg.cmdlist) == 0):
+            break
+    cmd = cnfg.cmdlist.pop(0)
+    schedok = hw.send_sched_cmd(cmd)
+    # if sched fails, we have run out of cmd buffer on HW
+    if(schedok == False):
+        # if scheduling fails, put cmd back into list and try again later
+        cnfg.cmdlist.insert(0, cmd)
+        break
 
-# data.test()
-data.parse_single_volt(23)
-data.test()
+# run incoming data parser
 
+while(True):
+    end = data.parser()
+    if(end == True):
+        #end of sequence
+        break
 
-
-
+    #  try to load some cmds into buffer
+    while(True):
+        # pop first cmd from list (works like fifo) and try to schedule it
+        if(len(cnfg.cmdlist) == 0):
+            break
+        cmd = cnfg.cmdlist.pop(0)
+        schedok = hw.send_sched_cmd(cmd)
+        # if sched fails, we have run out of cmd buffer on HW
+        if(schedok == False):
+            # if scheduling fails, put cmd back into list and try again later
+            cnfg.cmdlist.insert(0, cmd)
+            break
+    
+    # print("yeet")
 
 #close txt file
 infotxt.write(" ### End of Test ### \n")

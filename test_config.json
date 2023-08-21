@@ -52,6 +52,14 @@
             "time": 1,
             "repeat": 10,
             "interval": 100
+        },
+
+        {
+            "cli_cmd": "ENDSEQUENCE",
+            "time_type": "rel",
+            "time": 10,
+            "repeat": 0,
+            "interval": 0
         }
        
     ]

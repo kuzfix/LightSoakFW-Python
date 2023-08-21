@@ -14,6 +14,7 @@ class LightSoakHWComms:
         if(log_all_serial):
             #open file in out_dir names serial_log_<timestamp>.txt
             self.__serial_log = open(out_dir + "serial_log.txt", "w")
+            self.__serial_log.write("Warning: log contains only data that is read by python using read_line. If read_line is not called, data will not be logged! \n")
             self.__serial_log.write(" ### Serial Log ### \n")
 
     # INIT END ----------------------------------------------------------
@@ -76,6 +77,11 @@ class LightSoakHWComms:
 
     def reboot(self):
         self.print_hw("reboot\n")
+
+    # sends scheduled CMD and waits for SCHED_OK. returns true if scheduling ok, false if not
+    def send_sched_cmd(self, cmd):
+        self.print_hw(cmd)
+        return self.__wait_for_sched_ok()
 
 
     # CONTROL FUNCTIONS FUNCTIONS END ----------------------------------------------------------
