@@ -12,7 +12,7 @@ class LightSoakDataInParser:
         self.__print_hw("getvolt -c 1\n")
         while(1):
             line = self.__read_line()
-            if(line != None):
+            if(line != None and line != ""):
                 print(line)
 
     def parse_single_volt(self, data):

@@ -16,7 +16,7 @@ hw = lsk_py_hardware_comms.LightSoakHWComms(port)
 
 cnfg = lsk_py_sequence_parser.LightSoakerSequenceParser(config_file)
 
-data = lsk_py_data_in_parser.LightSoakDataInParser(lambda: hw.read_line(), lambda msg: hw.print(msg), output_dir)
+data = lsk_py_data_in_parser.LightSoakDataInParser(lambda: hw.read_line(), lambda msg: hw.print_hw(msg), output_dir)
 
 # parse config
 cnfg.parse()

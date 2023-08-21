@@ -38,17 +38,15 @@ class LightSoakHWComms:
 
     # READ LINE and PRINT FUNCTION ----------------------------------------------------------
     def read_line(self):
-        if self.ser.in_waiting > 0:
-            try:
-                message = self.ser.readline().decode().strip()
-            except UnicodeDecodeError:
-                # ignore invalid bytes
-                return None
-            return message
-        else:
+        try:
+            message = self.ser.readline().decode().strip()
+        except UnicodeDecodeError:
+            # ignore invalid bytes
             return None
+        return message
+
         
-    def print(self, message):
+    def print_hw(self, message):
         self.ser.write(message.encode())
     # READ LINE FUNCTION END ----------------------------------------------------------
 
@@ -56,16 +54,16 @@ class LightSoakHWComms:
     # CONTROL FUNCTIONS FUNCTIONS ----------------------------------------------------------
 
     def get_timestamp(self):
-        self.ser.write("gettimestamp\n".encode())
+        self.print_hw("gettimestamp\n")
         while True:
             if self.ser.in_waiting > 0:
-                message = self.ser.readline().decode().strip()
+                message = self.read_line()
                 if message.startswith('TIMESTAMP'):
                     return int(message.split(":")[1])
             time.sleep(0.01)
 
     def reboot(self):
-        self.ser.write("reboot\n".encode())
+        self.print_hw("reboot\n")
 
 
     # CONTROL FUNCTIONS FUNCTIONS END ----------------------------------------------------------
@@ -81,7 +79,7 @@ class LightSoakHWComms:
         while True:
             if self.ser.in_waiting > 0:
                 try:
-                    message = self.ser.readline().decode().strip()
+                    message = self.read_line()
                 except UnicodeDecodeError:
                     # ignore invalid bytes
                     continue
@@ -92,13 +90,13 @@ class LightSoakHWComms:
                 return False
 
     def __set_fastaf_baud(self):
-        self.ser.write("setbaud -b 2000000\n".encode())
+        self.print_hw("setbaud -b 2000000\n")
         time.sleep(0.1)
         #disconnect and reconnect serial
         self.ser.close()
         self.ser = serial.Serial(self.__SERIAL_PORT, self.__FASTAFBOI_BAUD, timeout=1)
         #send ready?
-        self.ser.write("ready?\n".encode())
+        self.print_hw("ready?\n")
         self.__wait_for_ready()
         print("Baud changed, ready OK")
 
@@ -106,7 +104,7 @@ class LightSoakHWComms:
         start_time = time.time()
         while True:
             if self.ser.in_waiting > 0:
-                message = self.ser.readline().decode().strip()
+                message = self.read_line()
                 if message == 'SCHED_OK':
                     return True
                 elif message == 'SCHED_FAIL':
@@ -148,7 +146,7 @@ class LightSoakHWComms:
         #appen newline
         cmd += " \n"
         # send cmd
-        self.ser.write(cmd.encode())
+        self.print_hw(cmd)
 
         if(sched!=False):
             #return true if scheduling ok, false if not
@@ -169,7 +167,7 @@ class LightSoakHWComms:
         #appen newline
         cmd += " \n"
         # send cmd
-        self.ser.write(cmd.encode())
+        self.print_hw(cmd)
 
         if(sched!=False):
             #return true if scheduling ok, false if not
@@ -190,7 +188,7 @@ class LightSoakHWComms:
         #appen newline
         cmd += " \n"
         # send cmd
-        self.ser.write(cmd.encode())
+        self.print_hw(cmd)
 
         if(sched!=False):
             #return true if scheduling ok, false if not
@@ -211,7 +209,7 @@ class LightSoakHWComms:
         #appen newline
         cmd += " \n"
         # send cmd
-        self.ser.write(cmd.encode())
+        self.print_hw(cmd)
 
         if(sched!=False):
             #return true if scheduling ok, false if not
@@ -233,7 +231,7 @@ class LightSoakHWComms:
         #appen newline
         cmd += " \n"
         # send cmd
-        self.ser.write(cmd.encode())
+        self.print_hw(cmd)
 
         if(sched!=False):
             #return true if scheduling ok, false if not
@@ -255,7 +253,7 @@ class LightSoakHWComms:
         #appen newline
         cmd += " \n"
         # send cmd
-        self.ser.write(cmd.encode())
+        self.print_hw(cmd)
 
         if(sched!=False):
             #return true if scheduling ok, false if not
@@ -277,7 +275,7 @@ class LightSoakHWComms:
         #appen newline
         cmd += " \n"
         # send cmd
-        self.ser.write(cmd.encode())
+        self.print_hw(cmd)
 
         if(sched!=False):
             #return true if scheduling ok, false if not
@@ -299,7 +297,7 @@ class LightSoakHWComms:
         #appen newline
         cmd += " \n"
         # send cmd
-        self.ser.write(cmd.encode())
+        self.print_hw(cmd)
 
         if(sched!=False):
             #return true if scheduling ok, false if not
@@ -321,7 +319,7 @@ class LightSoakHWComms:
         #appen newline
         cmd += " \n"
         # send cmd
-        self.ser.write(cmd.encode())
+        self.print_hw(cmd)
 
         if(sched!=False):
             #return true if scheduling ok, false if not
@@ -333,18 +331,18 @@ class LightSoakHWComms:
 
     def sendcmd_set_led(self, illum_sun):
         cmd = "setledcurr -i " + str(illum_sun) + " \n"
-        self.ser.write(cmd.encode())
+        self.print_hw(cmd)
         #scheduling not supported
 
 
     def sendcmd_reset_timestamp(self):
-        self.ser.write("resettimestamp\n".encode())
+        self.print_hw("resettimestamp\n")
 
     def get_led_temp(self):
-        self.ser.write("getledtemp\n".encode())
+        self.print_hw("getledtemp\n")
         while True:
             if self.ser.in_waiting > 0:
-                message = self.ser.readline().decode().strip()
+                message = self.read_line()
                 if message.startswith('LEDTEMP'):
                     return float(message.split(":")[1])
             time.sleep(0.01)
