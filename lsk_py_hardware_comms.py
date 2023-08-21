@@ -36,6 +36,22 @@ class LightSoakHWComms:
         print("LightSoak HW: Configured and ready")
     # MAIN CONNECT FUNCTION END ----------------------------------------------------------
 
+    # READ LINE and PRINT FUNCTION ----------------------------------------------------------
+    def read_line(self):
+        if self.ser.in_waiting > 0:
+            try:
+                message = self.ser.readline().decode().strip()
+            except UnicodeDecodeError:
+                # ignore invalid bytes
+                return None
+            return message
+        else:
+            return None
+        
+    def print(self, message):
+        self.ser.write(message.encode())
+    # READ LINE FUNCTION END ----------------------------------------------------------
+
 
     # CONTROL FUNCTIONS FUNCTIONS ----------------------------------------------------------
 

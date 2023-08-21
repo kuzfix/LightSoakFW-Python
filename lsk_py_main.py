@@ -1,6 +1,7 @@
 import datetime
 import lsk_py_hardware_comms
 import lsk_py_sequence_parser
+import lsk_py_data_in_parser
 
 port = "/dev/cu.usbserial-02B11B94"
 config_file = "test_config.json"
@@ -14,6 +15,8 @@ output_dir = "output/"
 hw = lsk_py_hardware_comms.LightSoakHWComms(port)
 
 cnfg = lsk_py_sequence_parser.LightSoakerSequenceParser(config_file)
+
+data = lsk_py_data_in_parser.LightSoakDataInParser(lambda: hw.read_line(), lambda msg: hw.print(msg), output_dir)
 
 # parse config
 cnfg.parse()
@@ -58,8 +61,9 @@ infotxt.write("LED Temperature at start of test: " + str(led_temp) + "C\n\n")
 #begin sequence
 
 
-
-
+# data.test()
+data.parse_single_volt(23)
+data.test()
 
 
 
