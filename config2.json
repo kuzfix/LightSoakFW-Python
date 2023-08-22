@@ -10,7 +10,7 @@
             "cli_cmd": "getvolt -c 2",
             "time_type": "abs",
             "time": 10,
-            "repeat": 1,
+            "repeat": 10,
             "interval": 0.04
         },
 
@@ -18,14 +18,14 @@
             "cli_cmd": "getvolt",
             "time_type": "rel",
             "time": 0.5,
-            "repeat": 2,
+            "repeat": 40,
             "interval": 0.04
         },
 
         {
             "cli_cmd": "ENDSEQUENCE",
             "time_type": "rel",
-            "time": 10,
+            "time": 5,
             "repeat": 0,
             "interval": 0
         }

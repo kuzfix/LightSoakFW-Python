@@ -11,31 +11,42 @@ class LightSoakDataInParser:
     # returns True if end of sequence is reached - END_OF_SEQUENCE received from hw
     def parser(self):
         self.__last_not_empty_time = time.time()
+        is_end_sequence = False
+        is_req_new_cmd = False
+        data_dict = {}
+
         while(True):
             line = self.__read_line()
-            if(line == "" or line == None):
-                if(time.time() - self.__last_not_empty_time > self.__return_if_no_data_for_s):
-                    # print("no cmd for 3s")
-                    # return False
-                    pass
+            if(line == ""):
+                # no data received, return
+                is_end_sequence = False
+                is_req_new_cmd = False
+                return (None, is_end_sequence, is_req_new_cmd)
+            
+            # we got data bois
+            self.__last_not_empty_time = time.time()
+            if(line == "END_OF_SEQUENCE"):
+                is_end_sequence = True
+                is_req_new_cmd = False
+                return (None, is_end_sequence, is_req_new_cmd)
+            elif(line == "VOLT[V]:"):
+                data = []
+                for i in range(0, 3):
+                    data.append(self.__read_line())
+                # parse
+                data_dict = self.parse_getvolt(data)
+                is_end_sequence = False
+                is_req_new_cmd = False
+                return (data_dict, is_end_sequence, is_req_new_cmd)
+
+            elif(line == "REQ_SCHED_CMD"):
+                # HW requested new cmds. return to run loop
+                is_end_sequence = False
+                is_req_new_cmd = True
+                return (None, is_end_sequence, is_req_new_cmd)
             else:
-                # we got data bois
-                self.__last_not_empty_time = time.time()
-                if(line == "END_OF_SEQUENCE"):
-                    return True
-                elif(line == "VOLT[V]:"):
-                    data = []
-                    for i in range(0, 3):
-                        data.append(self.__read_line())
-                    self.parse_single_volt(data)
-
-
-                elif(line == "REQ_SCHED_CMD"):
-                    # HW requested new cmds. return to run loop
-                    return False
-
-
-
+                # got some data, but nothing we want to parse. run parser loop again
+                pass
 
 
     
@@ -46,7 +57,9 @@ class LightSoakDataInParser:
             if(line != None and line != ""):
                 print(line)
 
-    def parse_single_volt(self, data_list):
+
+
+    def parse_getvolt(self, data_list):
         # Ensure there are three elements in the data list
         if len(data_list) != 3:
             raise ValueError("Expected data list to have three elements.")
@@ -78,9 +91,19 @@ class LightSoakDataInParser:
         # Convert the voltage data strings to floats
         voltages = [float(v) for v in voltage_data]
 
-        # Output based on the number of channels
+        # Create dictionary to return
+        result_dict = {}
+
         if num_channels == 1:
-            print(f"Channel: {channel_num}\nTimestamp: {timestamp}\nVoltage: {voltages[0]}")
+            result_dict["type"] = "getvolt"
+            result_dict["timestamp"] = timestamp
+            result_dict["ch1"] = voltages[0]
         else:
-            print(f"Channels: {list(range(1, 7))}\nTimestamp: {timestamp}\nVoltages: {voltages}")
+            result_dict["type"] = "getvolt"
+            result_dict["timestamp"] = timestamp
+            for i, voltage in enumerate(voltages, 1):
+                result_dict[f"ch{i}"] = voltage
+
+        return result_dict
+
     

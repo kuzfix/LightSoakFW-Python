@@ -4,6 +4,7 @@ import lsk_py_hardware_comms
 import lsk_py_sequence_parser
 import lsk_py_data_in_parser
 import lsk_py_temp_control
+import lsk_py_database
 
 port = "/dev/cu.usbserial-02B11B94"
 # config_file = "test_config.json"
@@ -22,7 +23,11 @@ cnfg = lsk_py_sequence_parser.LightSoakerSequenceParser(config_file)
 
 data = lsk_py_data_in_parser.LightSoakDataInParser(lambda: hw.read_line(), lambda msg: hw.print_hw(msg), output_dir)
 
+db = lsk_py_database.LightSoakDatabase(output_dir)
+
 tempctrl = lsk_py_temp_control.LightSoakTempControl()
+
+db.open_db()
 
 # parse config
 cnfg.parse()
@@ -84,25 +89,38 @@ while(True):
 # run incoming data parser
 
 while(True):
-    end = data.parser()
-    if(end == True):
-        #end of sequence
-        break
 
-    #  try to load some cmds into buffer
-    while(True):
-        # pop first cmd from list (works like fifo) and try to schedule it
-        if(len(cnfg.cmdlist) == 0):
-            break
-        cmd = cnfg.cmdlist.pop(0)
-        schedok = hw.send_sched_cmd(cmd)
-        # if sched fails, we have run out of cmd buffer on HW
-        if(schedok == False):
-            # if scheduling fails, put cmd back into list and try again later
-            cnfg.cmdlist.insert(0, cmd)
-            break
+    # run parser
+    (data_dict, is_end_sequence, is_new_cmd_requested) = data.parser()
+
+    if(is_end_sequence == True):
+        #end of sequence, end loop
+        break
+    if(is_new_cmd_requested == True):
+        # cmd loading has priority over saving data, because is time critical
+        #  try to load some cmds into buffer
+        while(True):
+            # pop first cmd from list (works like fifo) and try to schedule it
+            if(len(cnfg.cmdlist) == 0):
+                break
+            cmd = cnfg.cmdlist.pop(0)
+            schedok = hw.send_sched_cmd(cmd)
+            # if sched fails, we have run out of cmd buffer on HW
+            if(schedok == False):
+                # if scheduling fails, put cmd back into list and try again later
+                cnfg.cmdlist.insert(0, cmd)
+                break
     
-    # print("yeet")
+    if(data_dict != None):
+        # we got some data bois
+        # get dut temperature and save to database
+
+        # add temperature to data dict
+        data_dict["DUT_temp"] = tempctrl.get_dut_temp()
+        db.save_to_db(data_dict)
+        pass
+    
+
 
 #close txt file
 infotxt.write(" ### End of Test ### \n")
