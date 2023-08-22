@@ -7,6 +7,13 @@
     },
     "sequence": [
         {
+            "cli_cmd": "flashmeasure -illum 0.5 -t 500 -DUMP",
+            "time_type": "abs",
+            "time": 5,
+            "repeat": 0,
+            "interval": 0
+        },
+        {
             "cli_cmd": "getvolt -c 2",
             "time_type": "abs",
             "time": 10,
