@@ -3,11 +3,13 @@ import time
 import lsk_py_hardware_comms
 import lsk_py_sequence_parser
 import lsk_py_data_in_parser
+import lsk_py_temp_control
 
 port = "/dev/cu.usbserial-02B11B94"
 # config_file = "test_config.json"
 config_file = "config2.json"
 output_dir = "output/"
+
 
 
 # todo: port as command line argument (also output dir)
@@ -19,6 +21,8 @@ hw = lsk_py_hardware_comms.LightSoakHWComms(port, output_dir, log_all_serial=Tru
 cnfg = lsk_py_sequence_parser.LightSoakerSequenceParser(config_file)
 
 data = lsk_py_data_in_parser.LightSoakDataInParser(lambda: hw.read_line(), lambda msg: hw.print_hw(msg), output_dir)
+
+tempctrl = lsk_py_temp_control.LightSoakTempControl()
 
 # parse config
 cnfg.parse()

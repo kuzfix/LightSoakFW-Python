@@ -7,6 +7,7 @@ class LightSoakDataInParser:
         self.__print_hw = print_funct
         self.__return_if_no_data_for_s = 3
         
+    #todo: rewrite so it parses one set of data and return a touple: (data_dict, is_end_of_sequence, is_new_cmd_requested)
     # returns True if end of sequence is reached - END_OF_SEQUENCE received from hw
     def parser(self):
         self.__last_not_empty_time = time.time()
@@ -32,6 +33,7 @@ class LightSoakDataInParser:
                 elif(line == "REQ_SCHED_CMD"):
                     # HW requested new cmds. return to run loop
                     return False
+
 
 
 
