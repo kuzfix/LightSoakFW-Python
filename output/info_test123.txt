@@ -1,0 +1,33 @@
+ ### General Test Info ### 
+Time: 23-08-2023 12:42:12
+Test ID: test123
+Test Notes: This is a test
+DUT Serial: 123we4sdfgqw56
+DUT Target Temp: 25.0
+
+
+ ### Command List ### 
+Number of sequence commands: 15
+########################
+setledillum -illum 0.3 -sched 2000000
+setledillum -illum 0.0 -sched 3000000
+measuredump -n 100 -VOLT -sched 5000000
+flashmeasure -illum 0.5 -t 500 -DUMP -sched 7000000
+getvolt -c 2 -sched 9000000
+getvolt -c 2 -sched 9050000
+getvolt -c 2 -sched 9100000
+getvolt -c 2 -sched 9150000
+getvolt -c 2 -sched 9200000
+getvolt -sched 10200000
+getvolt -sched 10250000
+getvolt -sched 10300000
+getvolt -sched 10350000
+getvolt -sched 10400000
+ENDSEQUENCE -sched 12400000
+########################
+
+Estimated total test Duration: 12.4s
+
+LED Temperature at start of test: 27.4375C
+
+ ### End of Test ### 

@@ -72,6 +72,9 @@ infotxt.write("LED Temperature at start of test: " + str(led_temp) + "C\n\n")
 #begin sequence
 hw.sendcmd_reset_timestamp()
 print("!!! Loading & starting sequence !!!")
+eta = datetime.datetime.now() + datetime.timedelta(seconds=cnfg.test_duration)
+print("ETA: ", eta.strftime('%d-%m-%Y %H:%M:%S'))
+print("Sequence in progress...")
 
 # send cmds to buffer
 while(True):

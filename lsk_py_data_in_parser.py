@@ -50,6 +50,18 @@ class LightSoakDataInParser:
                 is_end_sequence = False
                 is_req_new_cmd = False
                 return (data_dict, is_end_sequence, is_req_new_cmd)
+            
+            elif(line == "DUMPVOLT[V]:"):
+                data = []
+                while(True):
+                    data.append(self.__read_line())
+                    if(data[-1] == "END_DUMP"):
+                        break
+                # parse
+                data_dict = self.parse_dumpvolt(data)
+                is_end_sequence = False
+                is_req_new_cmd = False
+                return (data_dict, is_end_sequence, is_req_new_cmd)
 
             elif(line == "REQ_SCHED_CMD"):
                 # HW requested new cmds. return to run loop
@@ -121,22 +133,34 @@ class LightSoakDataInParser:
 
     def parse_flashmeasure_dump(self, data_list):
         # Check for the type of data
-        if data_list[0] != "DUMPVOLT[V]:":
+        if (data_list[0] == "DUMPVOLT[V]:"):
+            data_list.pop(0) #remove DUMPVOLT[V]: line so data is consistent for parse_dumpvolt
+            ret = {}
+            ret = self.parse_dumpvolt(data_list)
+            ret["type"] = "flashmeasure_dumpvolt"
+            return ret
+        else:
             raise NotImplementedError("This type of data is not implemented yet.")
+            # could be flashmeasure_dumpcurrent or flashmeasure_dumpiv for example
 
+        
+
+
+    
+    def parse_dumpvolt(self, data_list):
         # Create dictionary to return
         result_dict = {}
-        result_dict["type"] = "DUMPVOLT"
+        result_dict["type"] = "dumpvolt"
 
         # Parse the timestamp
-        base_timestamp = int(data_list[1].split(':')[1])
+        base_timestamp = int(data_list[0].split(':')[1])
         result_dict["timestamp"] = base_timestamp
 
         # Parse the sample time
-        sampletime = float(data_list[2].split(':')[1])  # Convert to microseconds for integer arithmetic
+        sampletime = float(data_list[1].split(':')[1])  # Convert to microseconds for integer arithmetic
         sampletime = int(sampletime)
         # Get channels from the 4th line
-        channels = data_list[3].split(':')
+        channels = data_list[2].split(':')
         num_channels = len(channels)
 
         # Initialize sample lists for channels
@@ -144,7 +168,8 @@ class LightSoakDataInParser:
             result_dict[f"{ch}_samples"] = []
 
         # Iterate over the sample data lines
-        for line_num, line in enumerate(data_list[4:], start=0):
+        samplecnt = 0
+        for line_num, line in enumerate(data_list[3:], start=0):
             if line == "END_DUMP":
                 break
 
@@ -161,8 +186,7 @@ class LightSoakDataInParser:
             # Append samples to respective channel sample lists
             for ch, sample in zip(channels, sample_data):
                 result_dict[f"{ch}_samples"].append((sample_timestamp, float(sample)))
+            samplecnt += 1
+        result_dict["sample_count"] = samplecnt
 
-        return result_dict
-
-
-    
+        return result_dict 

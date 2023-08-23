@@ -18,26 +18,117 @@ class LightSoakDatabase:
 
     def save_to_db(self, data_dict):
         if(data_dict["type"] == "getvolt"):
-            meas = Measurement(
-                timestamp = data_dict.get("timestamp", None),
-                ch1 = data_dict.get("ch1", None),
-                ch2 = data_dict.get("ch2", None),
-                ch3 = data_dict.get("ch3", None),
-                ch4 = data_dict.get("ch4", None),
-                ch5 = data_dict.get("ch5", None),
-                ch6 = data_dict.get("ch6", None),
-                DUT_temp = data_dict.get("DUT_temp", None),
-                meas_type = "getvolt"
-            )
-            meas.save()
+            self.__save_getvolt(data_dict)
             
 
-        elif(data_dict["type"] == "bufferdumpvolt"):
-            print("saving dump")
+        elif(data_dict["type"] == "flashmeasure_dumpvolt"):
+            self.__save_flashmeasure_dumpvolt(data_dict)
+
+        elif(data_dict["type"] == "dumpvolt"):
+            self.__save_dumpvolt(data_dict)
 
     def close_db(self):
         self.db.close()
 
+    def __save_getvolt(self, data_dict):
+        meas = Measurement(
+            timestamp = data_dict.get("timestamp", None),
+            ch1 = data_dict.get("ch1", None),
+            ch2 = data_dict.get("ch2", None),
+            ch3 = data_dict.get("ch3", None),
+            ch4 = data_dict.get("ch4", None),
+            ch5 = data_dict.get("ch5", None),
+            ch6 = data_dict.get("ch6", None),
+            DUT_temp = data_dict.get("DUT_temp", None),
+            meas_type = "getvolt"
+        )
+        meas.save()
+
+
+    def __save_dumpvolt(self, data_dict):
+        meas = Measurement(
+            timestamp = data_dict.get("timestamp", None),
+            # todo: implement getting voltage from bufferfump if needed
+            ch1 = None,
+            ch2 = None,
+            ch3 = None,
+            ch4 = None,
+            ch5 = None,
+            ch6 = None,
+            DUT_temp = data_dict.get("DUT_temp", None),
+            meas_type = data_dict.get("type"),
+            sample_count = data_dict.get("sample_count")
+        )
+        meas.save()
+        #no save bufferdump for this measurement
+        self.__save_dumpvolt_to_bufferdump(data_dict, meas)
+
+
+    def __save_flashmeasure_dumpvolt(self, data_dict):
+        meas = Measurement(
+            timestamp = data_dict.get("timestamp", None),
+            # todo: implement getting voltage from bufferfump if needed
+            ch1 = None,
+            ch2 = None,
+            ch3 = None,
+            ch4 = None,
+            ch5 = None,
+            ch6 = None,
+            DUT_temp = data_dict.get("DUT_temp", None),
+            meas_type = data_dict.get("type"),
+            sample_count = data_dict.get("sample_count")
+        )
+        meas.save()
+        #no save bufferdump for this measurement
+        self.__save_dumpvolt_to_bufferdump(data_dict, meas)
+
+
+    def __save_dumpvolt_to_bufferdump(self, data_dict, measurement_id):
+        for _ in range(data_dict.get("sample_count")):
+            if "CH1_samples" in data_dict:
+                (t1, s1) = data_dict["CH1_samples"].pop(0)
+            else:
+                (t1, s1) = (None, None)
+            if "CH2_samples" in data_dict:
+                (t2, s2) = data_dict["CH2_samples"].pop(0)
+            else:
+                (t2, s2) = (None, None)
+            if "CH3_samples" in data_dict:
+                (t3, s3) = data_dict["CH3_samples"].pop(0)
+            else:
+                (t3, s3) = (None, None)
+            if "CH4_samples" in data_dict:
+                (t4, s4) = data_dict["CH4_samples"].pop(0)
+            else:
+                (t4, s4) = (None, None)
+            if "CH5_samples" in data_dict:
+                (t5, s5) = data_dict["CH5_samples"].pop(0)
+            else:
+                (t5, s5) = (None, None)
+            if "CH6_samples" in data_dict:
+                (t6, s6) = data_dict["CH6_samples"].pop(0)
+            else:
+                (t6, s6) = (None, None)
+
+            # gets timestamp of sample from first present channel
+            ts = [t1, t2, t3, t4, t5, t6]
+            for a in ts:
+                if a is not None:
+                    t = a
+
+        
+            bufdump = BufferDump(
+                timestamp = t,
+                ch1 = s1,
+                ch2 = s2,
+                ch3 = s3,
+                ch4 = s4,
+                ch5 = s5,
+                ch6 = s6,
+                measurement = measurement_id
+            )
+            bufdump.save()
+        pass
 
 
 
@@ -62,6 +153,7 @@ class Measurement(BaseModel):
     ch6 = FloatField(null=True)
     DUT_temp = FloatField()
     meas_type = TextField()
+    sample_count = IntegerField(null=True)
 
 class BufferDump(BaseModel):
     timestamp = IntegerField()

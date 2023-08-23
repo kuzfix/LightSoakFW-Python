@@ -7,32 +7,53 @@
     },
     "sequence": [
         {
-            "cli_cmd": "flashmeasure -illum 0.5 -t 500 -DUMP",
+            "cli_cmd": "setledillum -illum 0.3",
             "time_type": "abs",
-            "time": 5,
+            "time": 2,
+            "repeat": 0,
+            "interval": 0
+        },
+        {
+            "cli_cmd": "setledillum -illum 0.0",
+            "time_type": "rel",
+            "time": 1,
+            "repeat": 0,
+            "interval": 0
+        },
+        {
+            "cli_cmd": "measuredump -n 100 -VOLT",
+            "time_type": "rel",
+            "time": 2,
+            "repeat": 0,
+            "interval": 0
+        },
+        {
+            "cli_cmd": "flashmeasure -illum 0.5 -t 500 -DUMP",
+            "time_type": "rel",
+            "time": 2,
             "repeat": 0,
             "interval": 0
         },
         {
             "cli_cmd": "getvolt -c 2",
-            "time_type": "abs",
-            "time": 10,
-            "repeat": 10,
-            "interval": 0.04
+            "time_type": "rel",
+            "time": 2,
+            "repeat": 5,
+            "interval": 0.05
         },
 
         {
             "cli_cmd": "getvolt",
             "time_type": "rel",
-            "time": 0.5,
-            "repeat": 40,
-            "interval": 0.04
+            "time": 1,
+            "repeat": 5,
+            "interval": 0.05
         },
 
         {
             "cli_cmd": "ENDSEQUENCE",
             "time_type": "rel",
-            "time": 5,
+            "time": 2,
             "repeat": 0,
             "interval": 0
         }
