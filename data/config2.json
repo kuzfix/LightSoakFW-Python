@@ -3,7 +3,8 @@
         "Test_ID": "test123",
         "Test_notes": "This is a test",
         "DUT_Serial_Number": "123we4sdfgqw56",
-        "DUT_target_temperature": 25.0
+        "DUT_target_temperature": 25.0,
+        "hw_port": "/dev/cu.usbserial-02B11B94"
     },
     "sequence": [
         {
@@ -21,11 +22,11 @@
             "interval": 0
         },
         {
-            "cli_cmd": "measuredump -n 100 -VOLT",
+            "cli_cmd": "measuredump -n 1000 -VOLT",
             "time_type": "rel",
             "time": 2,
-            "repeat": 0,
-            "interval": 0
+            "repeat": 10,
+            "interval": 1
         },
         {
             "cli_cmd": "flashmeasure -illum 0.5 -t 500 -DUMP",

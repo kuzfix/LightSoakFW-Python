@@ -5,11 +5,37 @@ import lsk_py_sequence_parser
 import lsk_py_data_in_parser
 import lsk_py_temp_control
 import lsk_py_database
+import os
+import shutil
 
-port = "/dev/cu.usbserial-02B11B94"
 # config_file = "test_config.json"
-config_file = "config2.json"
-output_dir = "output/"
+config_file = "data/config.json"
+output_dir = "data/output/"
+
+# Check if the directory exists
+if os.path.exists(output_dir):
+    # Ask the user for their choice
+    choice = input(f"'{output_dir}' already exists. Do you want to Continue (C) or Erase (E) the folder contents? ").upper()
+    
+    # If the user chooses 'Erase'
+    if choice == 'E':
+        # Loop through all files and subdirectories in the directory and remove them
+        for filename in os.listdir(output_dir):
+            file_path = os.path.join(output_dir, filename)
+            try:
+                if os.path.isfile(file_path) or os.path.islink(file_path):
+                    os.unlink(file_path)
+                elif os.path.isdir(file_path):
+                    shutil.rmtree(file_path)
+            except Exception as e:
+                print(f"Failed to delete {file_path}. Reason: {e}")
+    elif choice == 'C':
+        pass
+    else:
+        print("Invalid choice.")
+else:
+    # Create the directory if it doesn't exist
+    os.makedirs(output_dir)
 
 
 
@@ -17,11 +43,9 @@ output_dir = "output/"
 # open txt file for general test info
 
 
-hw = lsk_py_hardware_comms.LightSoakHWComms(port, output_dir, log_all_serial=True)
+
 
 cnfg = lsk_py_sequence_parser.LightSoakerSequenceParser(config_file)
-
-data = lsk_py_data_in_parser.LightSoakDataInParser(lambda: hw.read_line(), lambda msg: hw.print_hw(msg), output_dir)
 
 db = lsk_py_database.LightSoakDatabase(output_dir)
 
@@ -31,6 +55,16 @@ db.open_db()
 
 # parse config
 cnfg.parse()
+
+# parse port from config
+hw_port = cnfg.hw_port
+
+hw = lsk_py_hardware_comms.LightSoakHWComms(hw_port, output_dir, log_all_serial=True)
+
+data = lsk_py_data_in_parser.LightSoakDataInParser(lambda: hw.read_line(), lambda msg: hw.print_hw(msg), output_dir)
+
+
+
 
 # open txt file for general test info
 infotxt = open(output_dir + "info_" + cnfg.test_id + ".txt" , "w")

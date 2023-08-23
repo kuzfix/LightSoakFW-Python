@@ -24,6 +24,7 @@ class LightSoakerSequenceParser:
         self.dut_serial = config['parameters']['DUT_Serial_Number']
         self.target_dut_temp = config['parameters']['DUT_target_temperature']
         self.test_notes = config['parameters']['Test_notes']
+        self.hw_port = config['parameters']['hw_port']
 
         for elem in config['sequence']:
             if 'repeat' in elem and elem['repeat'] > 0:
