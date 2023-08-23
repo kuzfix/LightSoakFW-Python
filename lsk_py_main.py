@@ -9,7 +9,7 @@ import os
 import shutil
 
 # config_file = "test_config.json"
-config_file = "data/config.json"
+config_file = "data/config3.json"
 output_dir = "data/output/"
 
 # Check if the directory exists

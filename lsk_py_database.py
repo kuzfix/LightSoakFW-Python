@@ -20,8 +20,11 @@ class LightSoakDatabase:
         if(data_dict["type"] == "getvolt"):
             self.__save_getvolt(data_dict)
             
-        if(data_dict["type"] == "getcurr"):
+        elif(data_dict["type"] == "getcurr"):
             self.__save_getcurr(data_dict)
+
+        elif(data_dict["type"] == "getivpoint"):
+            self.__save_getivpoint(data_dict)
 
         elif(data_dict["type"] == "flashmeasure_dumpvolt"):
             self.__save_flashmeasure_dumpvolt(data_dict)
@@ -49,12 +52,32 @@ class LightSoakDatabase:
     def __save_getcurr(self, data_dict):
         meas = Measurement(
             timestamp = data_dict.get("timestamp", None),
-            ch1_curr = data_dict.get("ch1", None),
-            ch2_curr = data_dict.get("ch2", None),
-            ch3_curr = data_dict.get("ch3", None),
-            ch4_curr = data_dict.get("ch4", None),
-            ch5_curr = data_dict.get("ch5", None),
-            ch6_curr = data_dict.get("ch6", None),
+            ch1_curr = data_dict.get("ch1_curr", None),
+            ch2_curr = data_dict.get("ch2_curr", None),
+            ch3_curr = data_dict.get("ch3_curr", None),
+            ch4_curr = data_dict.get("ch4_curr", None),
+            ch5_curr = data_dict.get("ch5_curr", None),
+            ch6_curr = data_dict.get("ch6_curr", None),
+            DUT_temp = data_dict.get("DUT_temp", None),
+            meas_type = data_dict.get("type")
+        )
+        meas.save()
+
+    def __save_getivpoint(self, data_dict):
+        meas = Measurement(
+            timestamp = data_dict.get("timestamp", None),
+            ch1 = data_dict.get("ch1", None),
+            ch2 = data_dict.get("ch2", None),
+            ch3 = data_dict.get("ch3", None),
+            ch4 = data_dict.get("ch4", None),
+            ch5 = data_dict.get("ch5", None),
+            ch6 = data_dict.get("ch6", None),
+            ch1_curr = data_dict.get("ch1_curr", None),
+            ch2_curr = data_dict.get("ch2_curr", None),
+            ch3_curr = data_dict.get("ch3_curr", None),
+            ch4_curr = data_dict.get("ch4_curr", None),
+            ch5_curr = data_dict.get("ch5_curr", None),
+            ch6_curr = data_dict.get("ch6_curr", None),
             DUT_temp = data_dict.get("DUT_temp", None),
             meas_type = data_dict.get("type")
         )

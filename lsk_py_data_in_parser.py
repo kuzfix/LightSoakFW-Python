@@ -204,15 +204,38 @@ class LightSoakDataInParser:
         
         if num_channels == 1:
             
-            result_dict[f"ch{channel_num}"] = currents[0]
+            result_dict[f"ch{channel_num}_curr"] = currents[0]
         else:
             for i, voltage in enumerate(currents, 1):
-                result_dict[f"ch{i}"] = voltage
+                result_dict[f"ch{i}_curr"] = voltage
 
         return result_dict
 
     def parse_getivpoint(self, data_list):
-        pass
+        # Ensure there are three elements in the data list
+        if len(data_list) != 3:
+            raise ValueError("Expected data list to have three elements.")
+
+        # Extract the channel number from CHx format
+        channel_num = int(data_list[0][2:])
+
+        # Parse the timestamp into an integer
+        timestamp = int(data_list[1].split(':')[1])
+
+        # Split current and voltage data using the underscore separator
+        curr_data, volt_data = data_list[2].split('_')
+        current = float(curr_data)
+        voltage = float(volt_data)
+
+        # Create dictionary to return
+        result_dict = {}
+
+        result_dict["type"] = "getivpoint"
+        result_dict["timestamp"] = timestamp
+        result_dict[f"ch{channel_num}_curr"] = current
+        result_dict[f"ch{channel_num}"] = voltage
+
+        return result_dict
 
     def parse_flashmeasure_dump(self, data_list):
         # Check for the type of data
