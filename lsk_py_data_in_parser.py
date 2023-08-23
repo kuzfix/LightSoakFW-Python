@@ -1,3 +1,15 @@
+
+# How to add parsing and storing for new data type:
+# - Add elif(line == "??" in parser to call a specific parse function
+# - implement this specific parser function (return a dict with the data)
+# this function must define a new type of the measurement in the dict
+# - add elif(data_dict["type"] == "??") in save_to_db function of database class to call a specific save function
+# imlpelement this specific save function (save the data to db)
+# (if needed, modify database structure in models)
+
+
+
+
 import time
 
 class LightSoakDataInParser:
@@ -35,6 +47,26 @@ class LightSoakDataInParser:
                     data.append(self.__read_line())
                 # parse
                 data_dict = self.parse_getvolt(data)
+                is_end_sequence = False
+                is_req_new_cmd = False
+                return (data_dict, is_end_sequence, is_req_new_cmd)
+            
+            elif(line == "CURR[mA]:"):
+                data = []
+                for i in range(0, 3):
+                    data.append(self.__read_line())
+                # parse
+                data_dict = self.parse_getcurr(data)
+                is_end_sequence = False
+                is_req_new_cmd = False
+                return (data_dict, is_end_sequence, is_req_new_cmd)
+            
+            elif(line == "IV[mA__V]:"):
+                data = []
+                for i in range(0, 3):
+                    data.append(self.__read_line())
+                # parse
+                data_dict = self.parse_getivpoint(data)
                 is_end_sequence = False
                 is_req_new_cmd = False
                 return (data_dict, is_end_sequence, is_req_new_cmd)
@@ -84,6 +116,7 @@ class LightSoakDataInParser:
 
 
     def parse_getvolt(self, data_list):
+        # todo: does not handle anything else than 1 or all 6 channels
         # Ensure there are three elements in the data list
         if len(data_list) != 3:
             raise ValueError("Expected data list to have three elements.")
@@ -118,18 +151,68 @@ class LightSoakDataInParser:
         # Create dictionary to return
         result_dict = {}
 
+        result_dict["type"] = "getvolt"
+        result_dict["timestamp"] = timestamp
+        
         if num_channels == 1:
-            result_dict["type"] = "getvolt"
-            result_dict["timestamp"] = timestamp
-            result_dict["ch1"] = voltages[0]
+            
+            result_dict[f"ch{channel_num}"] = voltages[0]
         else:
-            result_dict["type"] = "getvolt"
-            result_dict["timestamp"] = timestamp
             for i, voltage in enumerate(voltages, 1):
                 result_dict[f"ch{i}"] = voltage
 
         return result_dict
     
+    def parse_getcurr(self, data_list):
+        # todo: does not handle anything else than 1 or all 6 channels
+        # Ensure there are three elements in the data list
+        if len(data_list) != 3:
+            raise ValueError("Expected data list to have three elements.")
+
+        # Split the channel data string
+        channel_data = data_list[0].split(':')
+
+        # Check the number of channels based on the channel data length
+        if len(channel_data) == 1:
+            num_channels = 1
+            channel_num = int(channel_data[0][2:])  # Extract the channel number from CHx
+        elif len(channel_data) == 6:
+            num_channels = 6
+        else:
+            raise ValueError("Unexpected number of channels.")
+
+        # Parse the timestamp into an integer
+        timestamp = int(data_list[1].split(':')[1])
+
+        # Parse the voltages based on the number of channels
+        current_data = data_list[2].split(':')
+        
+        # Validate voltage data
+        if num_channels == 1 and len(current_data) != 1:
+            raise ValueError("Expected only one voltage reading for one channel.")
+        elif num_channels == 6 and len(current_data) != 6:
+            raise ValueError("Expected six voltage readings for six channels.")
+        
+        # Convert the voltage data strings to floats
+        currents = [float(v) for v in current_data]
+
+        # Create dictionary to return
+        result_dict = {}
+
+        result_dict["type"] = "getcurr"
+        result_dict["timestamp"] = timestamp
+        
+        if num_channels == 1:
+            
+            result_dict[f"ch{channel_num}"] = currents[0]
+        else:
+            for i, voltage in enumerate(currents, 1):
+                result_dict[f"ch{i}"] = voltage
+
+        return result_dict
+
+    def parse_getivpoint(self, data_list):
+        pass
 
     def parse_flashmeasure_dump(self, data_list):
         # Check for the type of data

@@ -20,6 +20,8 @@ class LightSoakDatabase:
         if(data_dict["type"] == "getvolt"):
             self.__save_getvolt(data_dict)
             
+        if(data_dict["type"] == "getcurr"):
+            self.__save_getcurr(data_dict)
 
         elif(data_dict["type"] == "flashmeasure_dumpvolt"):
             self.__save_flashmeasure_dumpvolt(data_dict)
@@ -40,7 +42,21 @@ class LightSoakDatabase:
             ch5 = data_dict.get("ch5", None),
             ch6 = data_dict.get("ch6", None),
             DUT_temp = data_dict.get("DUT_temp", None),
-            meas_type = "getvolt"
+            meas_type = data_dict.get("type")
+        )
+        meas.save()
+
+    def __save_getcurr(self, data_dict):
+        meas = Measurement(
+            timestamp = data_dict.get("timestamp", None),
+            ch1_curr = data_dict.get("ch1", None),
+            ch2_curr = data_dict.get("ch2", None),
+            ch3_curr = data_dict.get("ch3", None),
+            ch4_curr = data_dict.get("ch4", None),
+            ch5_curr = data_dict.get("ch5", None),
+            ch6_curr = data_dict.get("ch6", None),
+            DUT_temp = data_dict.get("DUT_temp", None),
+            meas_type = data_dict.get("type")
         )
         meas.save()
 
@@ -151,6 +167,12 @@ class Measurement(BaseModel):
     ch4 = FloatField(null=True)
     ch5 = FloatField(null=True)
     ch6 = FloatField(null=True)
+    ch1_curr = FloatField(null=True)
+    ch2_curr = FloatField(null=True)
+    ch3_curr = FloatField(null=True)
+    ch4_curr = FloatField(null=True)
+    ch5_curr = FloatField(null=True)
+    ch6_curr = FloatField(null=True)
     DUT_temp = FloatField()
     meas_type = TextField()
     sample_count = IntegerField(null=True)
