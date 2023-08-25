@@ -9,7 +9,7 @@ import os
 import shutil
 
 # config_file = "test_config.json"
-config_file = "data/config3.json"
+config_file = "data/config.json"
 output_dir = "data/output/"
 
 # Check if the directory exists
@@ -77,6 +77,7 @@ infotxt.write("Test ID: " + cnfg.test_id + "\n")
 infotxt.write("Test Notes: " + cnfg.test_notes + "\n")
 infotxt.write("DUT Serial: " + cnfg.dut_serial + "\n")
 infotxt.write("DUT Target Temp: " + str(cnfg.target_dut_temp) + "\n")
+infotxt.write("HW serial port: " + hw_port + "\n")
 infotxt.write("\n\n")
 
 # write command list to file

@@ -29,8 +29,14 @@ class LightSoakDatabase:
         elif(data_dict["type"] == "flashmeasure_dumpvolt"):
             self.__save_flashmeasure_dumpvolt(data_dict)
 
+        elif(data_dict["type"] == "flashmeasure_dumpcurr"):
+            self.__save_flashmeasure_dumpcurr(data_dict)
+
         elif(data_dict["type"] == "dumpvolt"):
             self.__save_dumpvolt(data_dict)
+
+        elif(data_dict["type"] == "dumpcurr"):
+            self.__save_dumpcurr(data_dict)
 
     def close_db(self):
         self.db.close()
@@ -102,6 +108,24 @@ class LightSoakDatabase:
         #no save bufferdump for this measurement
         self.__save_dumpvolt_to_bufferdump(data_dict, meas)
 
+    def __save_dumpcurr(self, data_dict):
+        meas = Measurement(
+            timestamp = data_dict.get("timestamp", None),
+            # todo: implement getting voltage from bufferfump if needed
+            ch1_curr = None,
+            ch2_curr = None,
+            ch3_curr = None,
+            ch4_curr = None,
+            ch5_curr = None,
+            ch6_curr = None,
+            DUT_temp = data_dict.get("DUT_temp", None),
+            meas_type = data_dict.get("type"),
+            sample_count = data_dict.get("sample_count")
+        )
+        meas.save()
+        #no save bufferdump for this measurement
+        self.__save_dumpcurr_to_bufferdump(data_dict, meas)
+
 
     def __save_flashmeasure_dumpvolt(self, data_dict):
         meas = Measurement(
@@ -120,6 +144,24 @@ class LightSoakDatabase:
         meas.save()
         #no save bufferdump for this measurement
         self.__save_dumpvolt_to_bufferdump(data_dict, meas)
+
+    def __save_flashmeasure_dumpcurr(self, data_dict):
+        meas = Measurement(
+            timestamp = data_dict.get("timestamp", None),
+            # todo: implement getting voltage from bufferfump if needed
+            ch1_curr = None,
+            ch2_curr = None,
+            ch3_curr = None,
+            ch4_curr = None,
+            ch5_curr = None,
+            ch6_curr = None,
+            DUT_temp = data_dict.get("DUT_temp", None),
+            meas_type = data_dict.get("type"),
+            sample_count = data_dict.get("sample_count")
+        )
+        meas.save()
+        #no save bufferdump for this measurement
+        self.__save_dumpcurr_to_bufferdump(data_dict, meas)
 
 
     def __save_dumpvolt_to_bufferdump(self, data_dict, measurement_id):
@@ -169,7 +211,52 @@ class LightSoakDatabase:
             bufdump.save()
         pass
 
+    def __save_dumpcurr_to_bufferdump(self, data_dict, measurement_id):
+        for _ in range(data_dict.get("sample_count")):
+            if "CH1_curr_samples" in data_dict:
+                (t1, s1) = data_dict["CH1_curr_samples"].pop(0)
+            else:
+                (t1, s1) = (None, None)
+            if "CH2_curr_samples" in data_dict:
+                (t2, s2) = data_dict["CH2_curr_samples"].pop(0)
+            else:
+                (t2, s2) = (None, None)
+            if "CH3_curr_samples" in data_dict:
+                (t3, s3) = data_dict["CH3_curr_samples"].pop(0)
+            else:
+                (t3, s3) = (None, None)
+            if "CH4_curr_samples" in data_dict:
+                (t4, s4) = data_dict["CH4_curr_samples"].pop(0)
+            else:
+                (t4, s4) = (None, None)
+            if "CH5_curr_samples" in data_dict:
+                (t5, s5) = data_dict["CH5_curr_samples"].pop(0)
+            else:
+                (t5, s5) = (None, None)
+            if "CH6_curr_samples" in data_dict:
+                (t6, s6) = data_dict["CH6_curr_samples"].pop(0)
+            else:
+                (t6, s6) = (None, None)
 
+            # gets timestamp of sample from first present channel
+            ts = [t1, t2, t3, t4, t5, t6]
+            for a in ts:
+                if a is not None:
+                    t = a
+
+        
+            bufdump = BufferDump(
+                timestamp = t,
+                ch1_curr = s1,
+                ch2_curr = s2,
+                ch3_curr = s3,
+                ch4_curr = s4,
+                ch5_curr = s5,
+                ch6_curr = s6,
+                measurement = measurement_id
+            )
+            bufdump.save()
+        pass
 
 
 
@@ -208,8 +295,14 @@ class BufferDump(BaseModel):
     ch4 = FloatField(null=True)
     ch5 = FloatField(null=True)
     ch6 = FloatField(null=True)
+    ch1_curr = FloatField(null=True)
+    ch2_curr = FloatField(null=True)
+    ch3_curr = FloatField(null=True)
+    ch4_curr = FloatField(null=True)
+    ch5_curr = FloatField(null=True)
+    ch6_curr = FloatField(null=True)
     #reference to row from Measurement table
-    measurement = ForeignKeyField(Measurement, backref='buffer_dumps')
+    measurement = ForeignKeyField(Measurement, backref='buffer_dump')
 
 
 
