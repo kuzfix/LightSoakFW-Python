@@ -1,5 +1,5 @@
  ### General Test Info ### 
-Time: 25-08-2023 12:28:05
+Time: 25-08-2023 18:13:14
 Test ID: test123
 Test Notes: This is a test
 DUT Serial: 123we4sdfgqw56
@@ -8,27 +8,66 @@ HW serial port: /dev/cu.usbserial-02B11B94
 
 
  ### Command List ### 
-Number of sequence commands: 15
+Number of sequence commands: 54
 ########################
-getvolt -c 2 -sched 2000000
-getvolt -c 2 -sched 2100000
-getvolt -c 2 -sched 2200000
-getvolt -c 2 -sched 2300000
-getvolt -c 2 -sched 2400000
-getcurr -c 3 -sched 2900000
-getcurr -c 3 -sched 3000000
-getcurr -c 3 -sched 3100000
-getcurr -c 3 -sched 3200000
-getcurr -c 3 -sched 3300000
-measuredump -n 100 -IV -sched 3800000
-measuredump -n 100 -IV -sched 4300000
-getivpoint -c 3 -v 0.2 -sched 4800000
-flashmeasure -illum 0.5 -t 500 -DUMP -sched 6800000
-ENDSEQUENCE -sched 8800000
+getvolt -sched 2000000
+getvolt -sched 2100000
+getvolt -sched 2200000
+getvolt -sched 2300000
+getvolt -sched 2400000
+getvolt -sched 2500000
+getvolt -sched 2600000
+getvolt -sched 2700000
+getvolt -sched 2800000
+getvolt -sched 2900000
+setledillum -illum 0.8 -sched 3400000
+getvolt -sched 3450000
+getvolt -sched 3950000
+getvolt -sched 4450000
+getvolt -sched 4950000
+getvolt -sched 5450000
+getvolt -sched 5950000
+getvolt -sched 6450000
+getvolt -sched 6950000
+getvolt -sched 7450000
+getvolt -sched 7950000
+getvolt -sched 8450000
+getvolt -sched 8950000
+getvolt -sched 9450000
+getvolt -sched 9950000
+getvolt -sched 10450000
+getvolt -sched 10950000
+getvolt -sched 11450000
+getvolt -sched 11950000
+getvolt -sched 12450000
+getvolt -sched 12950000
+setledillum -illum 0.0 -sched 13050000
+getvolt -sched 13550000
+flashmeasure -illum 0.8 -t 1000 -DUMP -sched 14050000
+flashmeasure -illum 0.8 -t 1000 -DUMP -sched 15050000
+flashmeasure -illum 0.8 -t 1000 -DUMP -sched 16050000
+flashmeasure -illum 0.8 -t 1000 -DUMP -sched 17050000
+flashmeasure -illum 0.8 -t 1000 -DUMP -sched 18050000
+flashmeasure -illum 0.8 -t 1000 -DUMP -sched 19050000
+flashmeasure -illum 0.8 -t 1000 -DUMP -sched 20050000
+flashmeasure -illum 0.8 -t 1000 -DUMP -sched 21050000
+flashmeasure -illum 0.8 -t 1000 -DUMP -sched 22050000
+flashmeasure -illum 0.8 -t 1000 -DUMP -sched 23050000
+flashmeasure -illum 0.8 -t 1000 -DUMP -sched 24050000
+flashmeasure -illum 0.8 -t 1000 -DUMP -sched 25050000
+flashmeasure -illum 0.8 -t 1000 -DUMP -sched 26050000
+flashmeasure -illum 0.8 -t 1000 -DUMP -sched 27050000
+flashmeasure -illum 0.8 -t 1000 -DUMP -sched 28050000
+setledillum -illum 0.8 -sched 30050000
+getivchar -c 1 -vs 0.0 -ve 0.65 -s 0.01 -sched 33050000
+getivchar -c 3 -vs 0.0 -ve 0.65 -s 0.01 -sched 36050000
+getivchar -c 5 -vs 0.0 -ve 0.65 -s 0.01 -sched 39050000
+setledillum -illum 0.0 -sched 41050000
+ENDSEQUENCE -sched 43050000
 ########################
 
-Estimated total test Duration: 8.8s
+Estimated total test Duration: 43.05s
 
-LED Temperature at start of test: 26.9375C
+LED Temperature at start of test: 38.1875C
 
  ### End of Test ### 

@@ -9,7 +9,7 @@ import os
 import shutil
 
 # config_file = "test_config.json"
-config_file = "data/config.json"
+config_file = "data/config4.json"
 output_dir = "data/output/"
 
 # Check if the directory exists
@@ -29,8 +29,10 @@ if os.path.exists(output_dir):
                     shutil.rmtree(file_path)
             except Exception as e:
                 print(f"Failed to delete {file_path}. Reason: {e}")
+    # If the user chooses 'Continue' (add to database, overwrite info files)
     elif choice == 'C':
         pass
+    # If the user chooses 'New' (make a new folder with a timestamp)
     elif choice == 'N':
         # make a new output folder with a timestamp
         now = datetime.datetime.now()

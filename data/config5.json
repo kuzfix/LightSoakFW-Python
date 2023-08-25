@@ -8,39 +8,53 @@
     },
     "sequence": [
         {
-            "cli_cmd": "getvolt -c 2",
+            "cli_cmd": "getvolt",
             "time_type": "abs",
             "time": 2,
-            "repeat": 5,
-            "interval": 0.1
-        },
-
-        {
-            "cli_cmd": "getcurr -c 3",
-            "time_type": "rel",
-            "time": 0.5,
-            "repeat": 5,
+            "repeat": 10,
             "interval": 0.1
         },
         {
-            "cli_cmd": "measuredump -c 2 -n 100 -IV",
+            "cli_cmd": "flashmeasure -illum 0.5 -t 500 -DUMP",
             "time_type": "rel",
-            "time": 0.5,
-            "repeat": 2,
-            "interval": 0.5
+            "time": 2,
+            "repeat": 0,
+            "interval": 0
         },
         {
-            "cli_cmd": "getivpoint -c 3 -v 0.2",
+            "cli_cmd": "flashmeasure -illum 0.1 -t 500 -DUMP",
             "time_type": "rel",
-            "time": 0.5,
+            "time": 2,
+            "repeat": 0,
+            "interval": 0
+        },
+        {
+            "cli_cmd": "setledillum -illum 0.5",
+            "time_type": "rel",
+            "time": 0.1,
             "repeat": 0,
             "interval": 0
         },
 
         {
-            "cli_cmd": "flashmeasure -illum 0.5 -t 500 -DUMP",
+            "cli_cmd": "getivchar -c 2 -vs 0.0 -ve 0.65 -s 0.01",
             "time_type": "rel",
-            "time": 2,
+            "time": 1,
+            "repeat": 0,
+            "interval": 0
+        },
+        {
+            "cli_cmd": "getvolt",
+            "time_type": "rel",
+            "time": 1,
+            "repeat": 5,
+            "interval": 0.1
+        },
+
+        {
+            "cli_cmd": "setledillum -illum 0.0",
+            "time_type": "rel",
+            "time": 0.5,
             "repeat": 0,
             "interval": 0
         },

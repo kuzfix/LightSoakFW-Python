@@ -1,0 +1,102 @@
+{
+    "parameters": {
+        "Test_ID": "test123",
+        "Test_notes": "This is a test",
+        "DUT_Serial_Number": "123we4sdfgqw56",
+        "DUT_target_temperature": 25.0,
+        "hw_port": "/dev/cu.usbserial-02B11B94"
+    },
+    "sequence": [
+        {
+            "cli_cmd": "getvolt",
+            "time_type": "abs",
+            "time": 2,
+            "repeat": 10,
+            "interval": 0.1
+        },
+        {
+            "cli_cmd": "setledillum -illum 0.8",
+            "time_type": "rel",
+            "time": 0.5,
+            "repeat": 0,
+            "interval": 0
+        },
+        {
+            "cli_cmd": "getvolt",
+            "time_type": "rel",
+            "time": 0.05,
+            "repeat": 20,
+            "interval": 0.5
+        },
+        {
+            "cli_cmd": "setledillum -illum 0.0",
+            "time_type": "rel",
+            "time": 0.1,
+            "repeat": 0,
+            "interval": 0
+        },
+        {
+            "cli_cmd": "getvolt",
+            "time_type": "rel",
+            "time": 0.5,
+            "repeat": 0,
+            "interval": 0
+        },
+        {
+            "cli_cmd": "flashmeasure -illum 0.8 -t 1000 -DUMP",
+            "time_type": "rel",
+            "time": 0.5,
+            "repeat": 15,
+            "interval": 1
+        },
+        {
+            "cli_cmd": "setledillum -illum 0.8",
+            "time_type": "rel",
+            "time": 2,
+            "repeat": 0,
+            "interval": 0
+        },
+        {
+            "cli_cmd": "getivchar -c 1 -vs 0.0 -ve 0.65 -s 0.01",
+            "time_type": "rel",
+            "time": 3,
+            "repeat": 0,
+            "interval": 0
+        },
+        {
+            "cli_cmd": "getivchar -c 3 -vs 0.0 -ve 0.65 -s 0.01",
+            "time_type": "rel",
+            "time": 3,
+            "repeat": 0,
+            "interval": 0
+        },
+        {
+            "cli_cmd": "getivchar -c 5 -vs 0.0 -ve 0.65 -s 0.01",
+            "time_type": "rel",
+            "time": 3,
+            "repeat": 0,
+            "interval": 0
+        },
+        {
+            "cli_cmd": "setledillum -illum 0.0",
+            "time_type": "rel",
+            "time": 2,
+            "repeat": 0,
+            "interval": 0
+        },
+
+
+
+
+
+        
+        {
+            "cli_cmd": "ENDSEQUENCE",
+            "time_type": "rel",
+            "time": 2,
+            "repeat": 0,
+            "interval": 0
+        }
+       
+    ]
+}
