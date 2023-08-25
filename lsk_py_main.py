@@ -15,7 +15,7 @@ output_dir = "data/output/"
 # Check if the directory exists
 if os.path.exists(output_dir):
     # Ask the user for their choice
-    choice = input(f"'{output_dir}' already exists. Do you want to Continue (C) or Erase (E) the folder contents? ").upper()
+    choice = input(f"'{output_dir}' already exists. Do you want to Continue (C), Erase (E) the folder contents or make a new folder (N)? ").upper()
     
     # If the user chooses 'Erase'
     if choice == 'E':
@@ -31,6 +31,11 @@ if os.path.exists(output_dir):
                 print(f"Failed to delete {file_path}. Reason: {e}")
     elif choice == 'C':
         pass
+    elif choice == 'N':
+        # make a new output folder with a timestamp
+        now = datetime.datetime.now()
+        output_dir = "data/output_" + now.strftime("%Y_%m_%d_%H_%M_%S") + "/"
+        os.makedirs(output_dir)
     else:
         print("Invalid choice.")
 else:
