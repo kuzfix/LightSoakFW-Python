@@ -107,6 +107,18 @@ class LightSoakDataInParser:
                 is_req_new_cmd = False
                 return (data_dict, is_end_sequence, is_req_new_cmd)
 
+            elif(line == "DUMPIVPT[mA__V]:"):
+                data = []
+                while(True):
+                    data.append(self.__read_line())
+                    if(data[-1] == "END_DUMP"):
+                        break
+                # parse
+                data_dict = self.parse_dumpiv(data)
+                is_end_sequence = False
+                is_req_new_cmd = False
+                return (data_dict, is_end_sequence, is_req_new_cmd)
+
             elif(line == "REQ_SCHED_CMD"):
                 # HW requested new cmds. return to run loop
                 is_end_sequence = False
@@ -358,3 +370,52 @@ class LightSoakDataInParser:
         result_dict["sample_count"] = samplecnt
 
         return result_dict 
+    
+    def parse_dumpiv(self, data_list):
+        # Create dictionary to return
+        result_dict = {}
+        result_dict["type"] = "dumpiv"
+
+        # Parse the timestamp
+        base_timestamp = int(data_list[0].split(':')[1])
+        result_dict["timestamp"] = base_timestamp
+
+        # Parse the sample time
+        sampletime = float(data_list[1].split(':')[1])  # Convert to microseconds for integer arithmetic
+        sampletime = int(sampletime)
+        # Get channels from the 3rd line
+        channels = data_list[2].split(':')
+        num_channels = len(channels)
+
+        # Initialize sample lists for channels for both current and voltage
+        for ch in channels:
+            result_dict[f"{ch}_curr_samples"] = []
+            result_dict[f"{ch}_samples"] = []
+
+        # Iterate over the sample data lines
+        samplecnt = 0
+        for line_num, line in enumerate(data_list[3:], start=0):
+            if line == "END_DUMP":
+                break
+
+            # Calculate the sample timestamp
+            sample_timestamp = int(base_timestamp + line_num * sampletime)
+
+            # Split the line to get sample data
+            sample_data = line.split(']')[1][1:].split(':')
+
+            # Ensure correct number of samples for channels
+            if len(sample_data) != num_channels:
+                raise ValueError("Unexpected number of samples for channels.")
+
+            # Append samples to respective channel sample lists
+            for ch, sample in zip(channels, sample_data):
+                curr, volt = map(float, sample.split('_'))
+                result_dict[f"{ch}_curr_samples"].append((sample_timestamp, curr))
+                result_dict[f"{ch}_samples"].append((sample_timestamp, volt))
+            
+            samplecnt += 1
+
+        result_dict["sample_count"] = samplecnt
+
+        return result_dict

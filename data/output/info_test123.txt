@@ -1,5 +1,5 @@
  ### General Test Info ### 
-Time: 25-08-2023 11:28:41
+Time: 25-08-2023 12:08:18
 Test ID: test123
 Test Notes: This is a test
 DUT Serial: 123we4sdfgqw56
@@ -20,8 +20,8 @@ getcurr -c 3 -sched 3000000
 getcurr -c 3 -sched 3100000
 getcurr -c 3 -sched 3200000
 getcurr -c 3 -sched 3300000
-measuredump -n 100 -CURR -sched 3800000
-measuredump -n 100 -CURR -sched 4300000
+measuredump -n 100 -IV -sched 3800000
+measuredump -n 100 -IV -sched 4300000
 getivpoint -c 3 -v 0.2 -sched 4800000
 flashmeasure -illum 0.5 -t 500 -DUMP -sched 6800000
 ENDSEQUENCE -sched 8800000
@@ -31,3 +31,4 @@ Estimated total test Duration: 8.8s
 
 LED Temperature at start of test: 27.0C
 
+ ### End of Test ### 

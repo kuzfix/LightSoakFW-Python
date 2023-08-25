@@ -23,7 +23,7 @@
             "interval": 0.1
         },
         {
-            "cli_cmd": "measuredump -n 100 -CURR",
+            "cli_cmd": "measuredump -n 100 -IV",
             "time_type": "rel",
             "time": 0.5,
             "repeat": 2,
