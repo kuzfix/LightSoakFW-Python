@@ -15,10 +15,17 @@
             "interval": 0
         },
         {
+            "cli_cmd": "getledtemp",
+            "time_type": "rel",
+            "time": 0.1,
+            "repeat": 10,
+            "interval": 0.1
+        },
+        {
             "cli_cmd": "getivpoint -c 4 -v 0.1",
             "time_type": "rel",
             "time": 0.1,
-            "repeat": 3000,
+            "repeat": 10,
             "interval": 0.1
         },
         {

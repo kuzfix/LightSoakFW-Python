@@ -1,0 +1,1354 @@
+{
+    "parameters": {
+        "Test_ID": "ledtemp-characterization",
+        "Test_notes": "Test to measure how light output changes with LED temperature",
+        "DUT_Serial_Number": "123we4sdfgqw56",
+        "DUT_target_temperature": 25.0,
+        "hw_port": "/dev/cu.usbserial-02B11B94"
+    },
+    "sequence": [
+        {
+            "cli_cmd": "getledtemp",
+            "time_type": "abs",
+            "time": 1,
+            "repeat": 0,
+            "interval": 0
+        },
+        {
+            "cli_cmd": "setledillum -illum 1.5",
+            "time_type": "rel",
+            "time": 1,
+            "repeat": 0,
+            "interval": 0
+        },
+        {
+            "cli_cmd": "getledtemp",
+            "time_type": "rel",
+            "time": 0.1,
+            "repeat": 20,
+            "interval": 1
+        },
+        {
+            "cli_cmd": "setledillum -illum 0.0",
+            "time_type": "rel",
+            "time": 0.1,
+            "repeat": 0,
+            "interval": 0
+        },
+        {
+            "cli_cmd": "getledtemp",
+            "time_type": "rel",
+            "time": 1,
+            "repeat": 20,
+            "interval": 1
+        },
+
+
+
+        {
+            "cli_cmd": "setledillum -illum 1.0",
+            "time_type": "rel",
+            "time": 1,
+            "repeat": 0,
+            "interval": 0
+        },
+        {
+            "cli_cmd": "getivpoint -c 3 -v 0.05",
+            "time_type": "rel",
+            "time": 0.05,
+            "repeat": 0,
+            "interval": 0
+        },
+        {
+            "cli_cmd": "setledillum -illum 0.0",
+            "time_type": "rel",
+            "time": 0.2,
+            "repeat": 0,
+            "interval": 0
+        },
+
+
+
+
+
+
+
+
+        {
+            "cli_cmd": "setledillum -illum 1.0",
+            "time_type": "rel",
+            "time": 5,
+            "repeat": 0,
+            "interval": 0
+        },
+        {
+            "cli_cmd": "getivpoint -c 3 -v 0.05",
+            "time_type": "rel",
+            "time": 0.05,
+            "repeat": 0,
+            "interval": 0
+        },
+        {
+            "cli_cmd": "setledillum -illum 0.0",
+            "time_type": "rel",
+            "time": 0.2,
+            "repeat": 0,
+            "interval": 0
+        },
+        {
+            "cli_cmd": "setledillum -illum 1.0",
+            "time_type": "rel",
+            "time": 5,
+            "repeat": 0,
+            "interval": 0
+        },
+        {
+            "cli_cmd": "getivpoint -c 3 -v 0.05",
+            "time_type": "rel",
+            "time": 0.05,
+            "repeat": 0,
+            "interval": 0
+        },
+        {
+            "cli_cmd": "setledillum -illum 0.0",
+            "time_type": "rel",
+            "time": 0.2,
+            "repeat": 0,
+            "interval": 0
+        },
+        {
+            "cli_cmd": "setledillum -illum 1.0",
+            "time_type": "rel",
+            "time": 5,
+            "repeat": 0,
+            "interval": 0
+        },
+        {
+            "cli_cmd": "getivpoint -c 3 -v 0.05",
+            "time_type": "rel",
+            "time": 0.05,
+            "repeat": 0,
+            "interval": 0
+        },
+        {
+            "cli_cmd": "setledillum -illum 0.0",
+            "time_type": "rel",
+            "time": 0.2,
+            "repeat": 0,
+            "interval": 0
+        },
+        {
+            "cli_cmd": "setledillum -illum 1.0",
+            "time_type": "rel",
+            "time": 5,
+            "repeat": 0,
+            "interval": 0
+        },
+        {
+            "cli_cmd": "getivpoint -c 3 -v 0.05",
+            "time_type": "rel",
+            "time": 0.05,
+            "repeat": 0,
+            "interval": 0
+        },
+        {
+            "cli_cmd": "setledillum -illum 0.0",
+            "time_type": "rel",
+            "time": 0.2,
+            "repeat": 0,
+            "interval": 0
+        },
+        {
+            "cli_cmd": "setledillum -illum 1.0",
+            "time_type": "rel",
+            "time": 5,
+            "repeat": 0,
+            "interval": 0
+        },
+        {
+            "cli_cmd": "getivpoint -c 3 -v 0.05",
+            "time_type": "rel",
+            "time": 0.05,
+            "repeat": 0,
+            "interval": 0
+        },
+        {
+            "cli_cmd": "setledillum -illum 0.0",
+            "time_type": "rel",
+            "time": 0.2,
+            "repeat": 0,
+            "interval": 0
+        },
+        {
+            "cli_cmd": "setledillum -illum 1.0",
+            "time_type": "rel",
+            "time": 5,
+            "repeat": 0,
+            "interval": 0
+        },
+        {
+            "cli_cmd": "getivpoint -c 3 -v 0.05",
+            "time_type": "rel",
+            "time": 0.05,
+            "repeat": 0,
+            "interval": 0
+        },
+        {
+            "cli_cmd": "setledillum -illum 0.0",
+            "time_type": "rel",
+            "time": 0.2,
+            "repeat": 0,
+            "interval": 0
+        },
+        {
+            "cli_cmd": "setledillum -illum 1.0",
+            "time_type": "rel",
+            "time": 5,
+            "repeat": 0,
+            "interval": 0
+        },
+        {
+            "cli_cmd": "getivpoint -c 3 -v 0.05",
+            "time_type": "rel",
+            "time": 0.05,
+            "repeat": 0,
+            "interval": 0
+        },
+        {
+            "cli_cmd": "setledillum -illum 0.0",
+            "time_type": "rel",
+            "time": 0.2,
+            "repeat": 0,
+            "interval": 0
+        },
+        {
+            "cli_cmd": "setledillum -illum 1.0",
+            "time_type": "rel",
+            "time": 5,
+            "repeat": 0,
+            "interval": 0
+        },
+        {
+            "cli_cmd": "getivpoint -c 3 -v 0.05",
+            "time_type": "rel",
+            "time": 0.05,
+            "repeat": 0,
+            "interval": 0
+        },
+        {
+            "cli_cmd": "setledillum -illum 0.0",
+            "time_type": "rel",
+            "time": 0.2,
+            "repeat": 0,
+            "interval": 0
+        },
+        {
+            "cli_cmd": "setledillum -illum 1.0",
+            "time_type": "rel",
+            "time": 5,
+            "repeat": 0,
+            "interval": 0
+        },
+        {
+            "cli_cmd": "getivpoint -c 3 -v 0.05",
+            "time_type": "rel",
+            "time": 0.05,
+            "repeat": 0,
+            "interval": 0
+        },
+        {
+            "cli_cmd": "setledillum -illum 0.0",
+            "time_type": "rel",
+            "time": 0.2,
+            "repeat": 0,
+            "interval": 0
+        },
+        {
+            "cli_cmd": "setledillum -illum 1.0",
+            "time_type": "rel",
+            "time": 5,
+            "repeat": 0,
+            "interval": 0
+        },
+        {
+            "cli_cmd": "getivpoint -c 3 -v 0.05",
+            "time_type": "rel",
+            "time": 0.05,
+            "repeat": 0,
+            "interval": 0
+        },
+        {
+            "cli_cmd": "setledillum -illum 0.0",
+            "time_type": "rel",
+            "time": 0.2,
+            "repeat": 0,
+            "interval": 0
+        },
+        {
+            "cli_cmd": "setledillum -illum 1.0",
+            "time_type": "rel",
+            "time": 5,
+            "repeat": 0,
+            "interval": 0
+        },
+        {
+            "cli_cmd": "getivpoint -c 3 -v 0.05",
+            "time_type": "rel",
+            "time": 0.05,
+            "repeat": 0,
+            "interval": 0
+        },
+        {
+            "cli_cmd": "setledillum -illum 0.0",
+            "time_type": "rel",
+            "time": 0.2,
+            "repeat": 0,
+            "interval": 0
+        },
+        {
+            "cli_cmd": "setledillum -illum 1.0",
+            "time_type": "rel",
+            "time": 5,
+            "repeat": 0,
+            "interval": 0
+        },
+        {
+            "cli_cmd": "getivpoint -c 3 -v 0.05",
+            "time_type": "rel",
+            "time": 0.05,
+            "repeat": 0,
+            "interval": 0
+        },
+        {
+            "cli_cmd": "setledillum -illum 0.0",
+            "time_type": "rel",
+            "time": 0.2,
+            "repeat": 0,
+            "interval": 0
+        },
+        {
+            "cli_cmd": "setledillum -illum 1.0",
+            "time_type": "rel",
+            "time": 5,
+            "repeat": 0,
+            "interval": 0
+        },
+        {
+            "cli_cmd": "getivpoint -c 3 -v 0.05",
+            "time_type": "rel",
+            "time": 0.05,
+            "repeat": 0,
+            "interval": 0
+        },
+        {
+            "cli_cmd": "setledillum -illum 0.0",
+            "time_type": "rel",
+            "time": 0.2,
+            "repeat": 0,
+            "interval": 0
+        },
+        {
+            "cli_cmd": "setledillum -illum 1.0",
+            "time_type": "rel",
+            "time": 5,
+            "repeat": 0,
+            "interval": 0
+        },
+        {
+            "cli_cmd": "getivpoint -c 3 -v 0.05",
+            "time_type": "rel",
+            "time": 0.05,
+            "repeat": 0,
+            "interval": 0
+        },
+        {
+            "cli_cmd": "setledillum -illum 0.0",
+            "time_type": "rel",
+            "time": 0.2,
+            "repeat": 0,
+            "interval": 0
+        },
+        {
+            "cli_cmd": "setledillum -illum 1.0",
+            "time_type": "rel",
+            "time": 5,
+            "repeat": 0,
+            "interval": 0
+        },
+        {
+            "cli_cmd": "getivpoint -c 3 -v 0.05",
+            "time_type": "rel",
+            "time": 0.05,
+            "repeat": 0,
+            "interval": 0
+        },
+        {
+            "cli_cmd": "setledillum -illum 0.0",
+            "time_type": "rel",
+            "time": 0.2,
+            "repeat": 0,
+            "interval": 0
+        },
+        {
+            "cli_cmd": "setledillum -illum 1.0",
+            "time_type": "rel",
+            "time": 5,
+            "repeat": 0,
+            "interval": 0
+        },
+        {
+            "cli_cmd": "getivpoint -c 3 -v 0.05",
+            "time_type": "rel",
+            "time": 0.05,
+            "repeat": 0,
+            "interval": 0
+        },
+        {
+            "cli_cmd": "setledillum -illum 0.0",
+            "time_type": "rel",
+            "time": 0.2,
+            "repeat": 0,
+            "interval": 0
+        },
+        {
+            "cli_cmd": "setledillum -illum 1.0",
+            "time_type": "rel",
+            "time": 5,
+            "repeat": 0,
+            "interval": 0
+        },
+        {
+            "cli_cmd": "getivpoint -c 3 -v 0.05",
+            "time_type": "rel",
+            "time": 0.05,
+            "repeat": 0,
+            "interval": 0
+        },
+        {
+            "cli_cmd": "setledillum -illum 0.0",
+            "time_type": "rel",
+            "time": 0.2,
+            "repeat": 0,
+            "interval": 0
+        },
+        {
+            "cli_cmd": "setledillum -illum 1.0",
+            "time_type": "rel",
+            "time": 5,
+            "repeat": 0,
+            "interval": 0
+        },
+        {
+            "cli_cmd": "getivpoint -c 3 -v 0.05",
+            "time_type": "rel",
+            "time": 0.05,
+            "repeat": 0,
+            "interval": 0
+        },
+        {
+            "cli_cmd": "setledillum -illum 0.0",
+            "time_type": "rel",
+            "time": 0.2,
+            "repeat": 0,
+            "interval": 0
+        },
+        {
+            "cli_cmd": "setledillum -illum 1.0",
+            "time_type": "rel",
+            "time": 5,
+            "repeat": 0,
+            "interval": 0
+        },
+        {
+            "cli_cmd": "getivpoint -c 3 -v 0.05",
+            "time_type": "rel",
+            "time": 0.05,
+            "repeat": 0,
+            "interval": 0
+        },
+        {
+            "cli_cmd": "setledillum -illum 0.0",
+            "time_type": "rel",
+            "time": 0.2,
+            "repeat": 0,
+            "interval": 0
+        },
+        {
+            "cli_cmd": "setledillum -illum 1.0",
+            "time_type": "rel",
+            "time": 5,
+            "repeat": 0,
+            "interval": 0
+        },
+        {
+            "cli_cmd": "getivpoint -c 3 -v 0.05",
+            "time_type": "rel",
+            "time": 0.05,
+            "repeat": 0,
+            "interval": 0
+        },
+        {
+            "cli_cmd": "setledillum -illum 0.0",
+            "time_type": "rel",
+            "time": 0.2,
+            "repeat": 0,
+            "interval": 0
+        },
+        {
+            "cli_cmd": "setledillum -illum 1.0",
+            "time_type": "rel",
+            "time": 5,
+            "repeat": 0,
+            "interval": 0
+        },
+        {
+            "cli_cmd": "getivpoint -c 3 -v 0.05",
+            "time_type": "rel",
+            "time": 0.05,
+            "repeat": 0,
+            "interval": 0
+        },
+        {
+            "cli_cmd": "setledillum -illum 0.0",
+            "time_type": "rel",
+            "time": 0.2,
+            "repeat": 0,
+            "interval": 0
+        },
+        {
+            "cli_cmd": "setledillum -illum 1.0",
+            "time_type": "rel",
+            "time": 5,
+            "repeat": 0,
+            "interval": 0
+        },
+        {
+            "cli_cmd": "getivpoint -c 3 -v 0.05",
+            "time_type": "rel",
+            "time": 0.05,
+            "repeat": 0,
+            "interval": 0
+        },
+        {
+            "cli_cmd": "setledillum -illum 0.0",
+            "time_type": "rel",
+            "time": 0.2,
+            "repeat": 0,
+            "interval": 0
+        },
+        {
+            "cli_cmd": "setledillum -illum 1.0",
+            "time_type": "rel",
+            "time": 5,
+            "repeat": 0,
+            "interval": 0
+        },
+        {
+            "cli_cmd": "getivpoint -c 3 -v 0.05",
+            "time_type": "rel",
+            "time": 0.05,
+            "repeat": 0,
+            "interval": 0
+        },
+        {
+            "cli_cmd": "setledillum -illum 0.0",
+            "time_type": "rel",
+            "time": 0.2,
+            "repeat": 0,
+            "interval": 0
+        },
+        {
+            "cli_cmd": "setledillum -illum 1.0",
+            "time_type": "rel",
+            "time": 5,
+            "repeat": 0,
+            "interval": 0
+        },
+        {
+            "cli_cmd": "getivpoint -c 3 -v 0.05",
+            "time_type": "rel",
+            "time": 0.05,
+            "repeat": 0,
+            "interval": 0
+        },
+        {
+            "cli_cmd": "setledillum -illum 0.0",
+            "time_type": "rel",
+            "time": 0.2,
+            "repeat": 0,
+            "interval": 0
+        },
+        {
+            "cli_cmd": "setledillum -illum 1.0",
+            "time_type": "rel",
+            "time": 5,
+            "repeat": 0,
+            "interval": 0
+        },
+        {
+            "cli_cmd": "getivpoint -c 3 -v 0.05",
+            "time_type": "rel",
+            "time": 0.05,
+            "repeat": 0,
+            "interval": 0
+        },
+        {
+            "cli_cmd": "setledillum -illum 0.0",
+            "time_type": "rel",
+            "time": 0.2,
+            "repeat": 0,
+            "interval": 0
+        },
+        {
+            "cli_cmd": "setledillum -illum 1.0",
+            "time_type": "rel",
+            "time": 5,
+            "repeat": 0,
+            "interval": 0
+        },
+        {
+            "cli_cmd": "getivpoint -c 3 -v 0.05",
+            "time_type": "rel",
+            "time": 0.05,
+            "repeat": 0,
+            "interval": 0
+        },
+        {
+            "cli_cmd": "setledillum -illum 0.0",
+            "time_type": "rel",
+            "time": 0.2,
+            "repeat": 0,
+            "interval": 0
+        },
+        {
+            "cli_cmd": "setledillum -illum 1.0",
+            "time_type": "rel",
+            "time": 5,
+            "repeat": 0,
+            "interval": 0
+        },
+        {
+            "cli_cmd": "getivpoint -c 3 -v 0.05",
+            "time_type": "rel",
+            "time": 0.05,
+            "repeat": 0,
+            "interval": 0
+        },
+        {
+            "cli_cmd": "setledillum -illum 0.0",
+            "time_type": "rel",
+            "time": 0.2,
+            "repeat": 0,
+            "interval": 0
+        },
+        {
+            "cli_cmd": "setledillum -illum 1.0",
+            "time_type": "rel",
+            "time": 5,
+            "repeat": 0,
+            "interval": 0
+        },
+        {
+            "cli_cmd": "getivpoint -c 3 -v 0.05",
+            "time_type": "rel",
+            "time": 0.05,
+            "repeat": 0,
+            "interval": 0
+        },
+        {
+            "cli_cmd": "setledillum -illum 0.0",
+            "time_type": "rel",
+            "time": 0.2,
+            "repeat": 0,
+            "interval": 0
+        },
+        {
+            "cli_cmd": "setledillum -illum 1.0",
+            "time_type": "rel",
+            "time": 5,
+            "repeat": 0,
+            "interval": 0
+        },
+        {
+            "cli_cmd": "getivpoint -c 3 -v 0.05",
+            "time_type": "rel",
+            "time": 0.05,
+            "repeat": 0,
+            "interval": 0
+        },
+        {
+            "cli_cmd": "setledillum -illum 0.0",
+            "time_type": "rel",
+            "time": 0.2,
+            "repeat": 0,
+            "interval": 0
+        },
+        {
+            "cli_cmd": "setledillum -illum 1.0",
+            "time_type": "rel",
+            "time": 5,
+            "repeat": 0,
+            "interval": 0
+        },
+        {
+            "cli_cmd": "getivpoint -c 3 -v 0.05",
+            "time_type": "rel",
+            "time": 0.05,
+            "repeat": 0,
+            "interval": 0
+        },
+        {
+            "cli_cmd": "setledillum -illum 0.0",
+            "time_type": "rel",
+            "time": 0.2,
+            "repeat": 0,
+            "interval": 0
+        },
+        {
+            "cli_cmd": "setledillum -illum 1.0",
+            "time_type": "rel",
+            "time": 5,
+            "repeat": 0,
+            "interval": 0
+        },
+        {
+            "cli_cmd": "getivpoint -c 3 -v 0.05",
+            "time_type": "rel",
+            "time": 0.05,
+            "repeat": 0,
+            "interval": 0
+        },
+        {
+            "cli_cmd": "setledillum -illum 0.0",
+            "time_type": "rel",
+            "time": 0.2,
+            "repeat": 0,
+            "interval": 0
+        },
+        {
+            "cli_cmd": "setledillum -illum 1.0",
+            "time_type": "rel",
+            "time": 5,
+            "repeat": 0,
+            "interval": 0
+        },
+        {
+            "cli_cmd": "getivpoint -c 3 -v 0.05",
+            "time_type": "rel",
+            "time": 0.05,
+            "repeat": 0,
+            "interval": 0
+        },
+        {
+            "cli_cmd": "setledillum -illum 0.0",
+            "time_type": "rel",
+            "time": 0.2,
+            "repeat": 0,
+            "interval": 0
+        },
+        {
+            "cli_cmd": "setledillum -illum 1.0",
+            "time_type": "rel",
+            "time": 5,
+            "repeat": 0,
+            "interval": 0
+        },
+        {
+            "cli_cmd": "getivpoint -c 3 -v 0.05",
+            "time_type": "rel",
+            "time": 0.05,
+            "repeat": 0,
+            "interval": 0
+        },
+        {
+            "cli_cmd": "setledillum -illum 0.0",
+            "time_type": "rel",
+            "time": 0.2,
+            "repeat": 0,
+            "interval": 0
+        },
+        {
+            "cli_cmd": "setledillum -illum 1.0",
+            "time_type": "rel",
+            "time": 5,
+            "repeat": 0,
+            "interval": 0
+        },
+        {
+            "cli_cmd": "getivpoint -c 3 -v 0.05",
+            "time_type": "rel",
+            "time": 0.05,
+            "repeat": 0,
+            "interval": 0
+        },
+        {
+            "cli_cmd": "setledillum -illum 0.0",
+            "time_type": "rel",
+            "time": 0.2,
+            "repeat": 0,
+            "interval": 0
+        },
+        {
+            "cli_cmd": "setledillum -illum 1.0",
+            "time_type": "rel",
+            "time": 5,
+            "repeat": 0,
+            "interval": 0
+        },
+        {
+            "cli_cmd": "getivpoint -c 3 -v 0.05",
+            "time_type": "rel",
+            "time": 0.05,
+            "repeat": 0,
+            "interval": 0
+        },
+        {
+            "cli_cmd": "setledillum -illum 0.0",
+            "time_type": "rel",
+            "time": 0.2,
+            "repeat": 0,
+            "interval": 0
+        },
+        {
+            "cli_cmd": "setledillum -illum 1.0",
+            "time_type": "rel",
+            "time": 5,
+            "repeat": 0,
+            "interval": 0
+        },
+        {
+            "cli_cmd": "getivpoint -c 3 -v 0.05",
+            "time_type": "rel",
+            "time": 0.05,
+            "repeat": 0,
+            "interval": 0
+        },
+        {
+            "cli_cmd": "setledillum -illum 0.0",
+            "time_type": "rel",
+            "time": 0.2,
+            "repeat": 0,
+            "interval": 0
+        },
+        {
+            "cli_cmd": "setledillum -illum 1.0",
+            "time_type": "rel",
+            "time": 5,
+            "repeat": 0,
+            "interval": 0
+        },
+        {
+            "cli_cmd": "getivpoint -c 3 -v 0.05",
+            "time_type": "rel",
+            "time": 0.05,
+            "repeat": 0,
+            "interval": 0
+        },
+        {
+            "cli_cmd": "setledillum -illum 0.0",
+            "time_type": "rel",
+            "time": 0.2,
+            "repeat": 0,
+            "interval": 0
+        },
+        {
+            "cli_cmd": "setledillum -illum 1.0",
+            "time_type": "rel",
+            "time": 5,
+            "repeat": 0,
+            "interval": 0
+        },
+        {
+            "cli_cmd": "getivpoint -c 3 -v 0.05",
+            "time_type": "rel",
+            "time": 0.05,
+            "repeat": 0,
+            "interval": 0
+        },
+        {
+            "cli_cmd": "setledillum -illum 0.0",
+            "time_type": "rel",
+            "time": 0.2,
+            "repeat": 0,
+            "interval": 0
+        },
+        {
+            "cli_cmd": "setledillum -illum 1.0",
+            "time_type": "rel",
+            "time": 5,
+            "repeat": 0,
+            "interval": 0
+        },
+        {
+            "cli_cmd": "getivpoint -c 3 -v 0.05",
+            "time_type": "rel",
+            "time": 0.05,
+            "repeat": 0,
+            "interval": 0
+        },
+        {
+            "cli_cmd": "setledillum -illum 0.0",
+            "time_type": "rel",
+            "time": 0.2,
+            "repeat": 0,
+            "interval": 0
+        },
+        {
+            "cli_cmd": "setledillum -illum 1.0",
+            "time_type": "rel",
+            "time": 5,
+            "repeat": 0,
+            "interval": 0
+        },
+        {
+            "cli_cmd": "getivpoint -c 3 -v 0.05",
+            "time_type": "rel",
+            "time": 0.05,
+            "repeat": 0,
+            "interval": 0
+        },
+        {
+            "cli_cmd": "setledillum -illum 0.0",
+            "time_type": "rel",
+            "time": 0.2,
+            "repeat": 0,
+            "interval": 0
+        },
+        {
+            "cli_cmd": "setledillum -illum 1.0",
+            "time_type": "rel",
+            "time": 5,
+            "repeat": 0,
+            "interval": 0
+        },
+        {
+            "cli_cmd": "getivpoint -c 3 -v 0.05",
+            "time_type": "rel",
+            "time": 0.05,
+            "repeat": 0,
+            "interval": 0
+        },
+        {
+            "cli_cmd": "setledillum -illum 0.0",
+            "time_type": "rel",
+            "time": 0.2,
+            "repeat": 0,
+            "interval": 0
+        },
+        {
+            "cli_cmd": "setledillum -illum 1.0",
+            "time_type": "rel",
+            "time": 5,
+            "repeat": 0,
+            "interval": 0
+        },
+        {
+            "cli_cmd": "getivpoint -c 3 -v 0.05",
+            "time_type": "rel",
+            "time": 0.05,
+            "repeat": 0,
+            "interval": 0
+        },
+        {
+            "cli_cmd": "setledillum -illum 0.0",
+            "time_type": "rel",
+            "time": 0.2,
+            "repeat": 0,
+            "interval": 0
+        },
+        {
+            "cli_cmd": "setledillum -illum 1.0",
+            "time_type": "rel",
+            "time": 5,
+            "repeat": 0,
+            "interval": 0
+        },
+        {
+            "cli_cmd": "getivpoint -c 3 -v 0.05",
+            "time_type": "rel",
+            "time": 0.05,
+            "repeat": 0,
+            "interval": 0
+        },
+        {
+            "cli_cmd": "setledillum -illum 0.0",
+            "time_type": "rel",
+            "time": 0.2,
+            "repeat": 0,
+            "interval": 0
+        },
+        {
+            "cli_cmd": "setledillum -illum 1.0",
+            "time_type": "rel",
+            "time": 5,
+            "repeat": 0,
+            "interval": 0
+        },
+        {
+            "cli_cmd": "getivpoint -c 3 -v 0.05",
+            "time_type": "rel",
+            "time": 0.05,
+            "repeat": 0,
+            "interval": 0
+        },
+        {
+            "cli_cmd": "setledillum -illum 0.0",
+            "time_type": "rel",
+            "time": 0.2,
+            "repeat": 0,
+            "interval": 0
+        },
+        {
+            "cli_cmd": "setledillum -illum 1.0",
+            "time_type": "rel",
+            "time": 5,
+            "repeat": 0,
+            "interval": 0
+        },
+        {
+            "cli_cmd": "getivpoint -c 3 -v 0.05",
+            "time_type": "rel",
+            "time": 0.05,
+            "repeat": 0,
+            "interval": 0
+        },
+        {
+            "cli_cmd": "setledillum -illum 0.0",
+            "time_type": "rel",
+            "time": 0.2,
+            "repeat": 0,
+            "interval": 0
+        },
+        {
+            "cli_cmd": "setledillum -illum 1.0",
+            "time_type": "rel",
+            "time": 5,
+            "repeat": 0,
+            "interval": 0
+        },
+        {
+            "cli_cmd": "getivpoint -c 3 -v 0.05",
+            "time_type": "rel",
+            "time": 0.05,
+            "repeat": 0,
+            "interval": 0
+        },
+        {
+            "cli_cmd": "setledillum -illum 0.0",
+            "time_type": "rel",
+            "time": 0.2,
+            "repeat": 0,
+            "interval": 0
+        },
+        {
+            "cli_cmd": "setledillum -illum 1.0",
+            "time_type": "rel",
+            "time": 5,
+            "repeat": 0,
+            "interval": 0
+        },
+        {
+            "cli_cmd": "getivpoint -c 3 -v 0.05",
+            "time_type": "rel",
+            "time": 0.05,
+            "repeat": 0,
+            "interval": 0
+        },
+        {
+            "cli_cmd": "setledillum -illum 0.0",
+            "time_type": "rel",
+            "time": 0.2,
+            "repeat": 0,
+            "interval": 0
+        },
+        {
+            "cli_cmd": "setledillum -illum 1.0",
+            "time_type": "rel",
+            "time": 5,
+            "repeat": 0,
+            "interval": 0
+        },
+        {
+            "cli_cmd": "getivpoint -c 3 -v 0.05",
+            "time_type": "rel",
+            "time": 0.05,
+            "repeat": 0,
+            "interval": 0
+        },
+        {
+            "cli_cmd": "setledillum -illum 0.0",
+            "time_type": "rel",
+            "time": 0.2,
+            "repeat": 0,
+            "interval": 0
+        },
+        {
+            "cli_cmd": "setledillum -illum 1.0",
+            "time_type": "rel",
+            "time": 5,
+            "repeat": 0,
+            "interval": 0
+        },
+        {
+            "cli_cmd": "getivpoint -c 3 -v 0.05",
+            "time_type": "rel",
+            "time": 0.05,
+            "repeat": 0,
+            "interval": 0
+        },
+        {
+            "cli_cmd": "setledillum -illum 0.0",
+            "time_type": "rel",
+            "time": 0.2,
+            "repeat": 0,
+            "interval": 0
+        },
+        {
+            "cli_cmd": "setledillum -illum 1.0",
+            "time_type": "rel",
+            "time": 5,
+            "repeat": 0,
+            "interval": 0
+        },
+        {
+            "cli_cmd": "getivpoint -c 3 -v 0.05",
+            "time_type": "rel",
+            "time": 0.05,
+            "repeat": 0,
+            "interval": 0
+        },
+        {
+            "cli_cmd": "setledillum -illum 0.0",
+            "time_type": "rel",
+            "time": 0.2,
+            "repeat": 0,
+            "interval": 0
+        },
+        {
+            "cli_cmd": "setledillum -illum 1.0",
+            "time_type": "rel",
+            "time": 5,
+            "repeat": 0,
+            "interval": 0
+        },
+        {
+            "cli_cmd": "getivpoint -c 3 -v 0.05",
+            "time_type": "rel",
+            "time": 0.05,
+            "repeat": 0,
+            "interval": 0
+        },
+        {
+            "cli_cmd": "setledillum -illum 0.0",
+            "time_type": "rel",
+            "time": 0.2,
+            "repeat": 0,
+            "interval": 0
+        },
+        {
+            "cli_cmd": "setledillum -illum 1.0",
+            "time_type": "rel",
+            "time": 5,
+            "repeat": 0,
+            "interval": 0
+        },
+        {
+            "cli_cmd": "getivpoint -c 3 -v 0.05",
+            "time_type": "rel",
+            "time": 0.05,
+            "repeat": 0,
+            "interval": 0
+        },
+        {
+            "cli_cmd": "setledillum -illum 0.0",
+            "time_type": "rel",
+            "time": 0.2,
+            "repeat": 0,
+            "interval": 0
+        },
+        {
+            "cli_cmd": "setledillum -illum 1.0",
+            "time_type": "rel",
+            "time": 5,
+            "repeat": 0,
+            "interval": 0
+        },
+        {
+            "cli_cmd": "getivpoint -c 3 -v 0.05",
+            "time_type": "rel",
+            "time": 0.05,
+            "repeat": 0,
+            "interval": 0
+        },
+        {
+            "cli_cmd": "setledillum -illum 0.0",
+            "time_type": "rel",
+            "time": 0.2,
+            "repeat": 0,
+            "interval": 0
+        },
+        {
+            "cli_cmd": "setledillum -illum 1.0",
+            "time_type": "rel",
+            "time": 5,
+            "repeat": 0,
+            "interval": 0
+        },
+        {
+            "cli_cmd": "getivpoint -c 3 -v 0.05",
+            "time_type": "rel",
+            "time": 0.05,
+            "repeat": 0,
+            "interval": 0
+        },
+        {
+            "cli_cmd": "setledillum -illum 0.0",
+            "time_type": "rel",
+            "time": 0.2,
+            "repeat": 0,
+            "interval": 0
+        },
+        {
+            "cli_cmd": "setledillum -illum 1.0",
+            "time_type": "rel",
+            "time": 5,
+            "repeat": 0,
+            "interval": 0
+        },
+        {
+            "cli_cmd": "getivpoint -c 3 -v 0.05",
+            "time_type": "rel",
+            "time": 0.05,
+            "repeat": 0,
+            "interval": 0
+        },
+        {
+            "cli_cmd": "setledillum -illum 0.0",
+            "time_type": "rel",
+            "time": 0.2,
+            "repeat": 0,
+            "interval": 0
+        },
+        {
+            "cli_cmd": "setledillum -illum 1.0",
+            "time_type": "rel",
+            "time": 5,
+            "repeat": 0,
+            "interval": 0
+        },
+        {
+            "cli_cmd": "getivpoint -c 3 -v 0.05",
+            "time_type": "rel",
+            "time": 0.05,
+            "repeat": 0,
+            "interval": 0
+        },
+        {
+            "cli_cmd": "setledillum -illum 0.0",
+            "time_type": "rel",
+            "time": 0.2,
+            "repeat": 0,
+            "interval": 0
+        },
+        {
+            "cli_cmd": "setledillum -illum 1.0",
+            "time_type": "rel",
+            "time": 5,
+            "repeat": 0,
+            "interval": 0
+        },
+        {
+            "cli_cmd": "getivpoint -c 3 -v 0.05",
+            "time_type": "rel",
+            "time": 0.05,
+            "repeat": 0,
+            "interval": 0
+        },
+        {
+            "cli_cmd": "setledillum -illum 0.0",
+            "time_type": "rel",
+            "time": 0.2,
+            "repeat": 0,
+            "interval": 0
+        },
+        {
+            "cli_cmd": "setledillum -illum 1.0",
+            "time_type": "rel",
+            "time": 5,
+            "repeat": 0,
+            "interval": 0
+        },
+        {
+            "cli_cmd": "getivpoint -c 3 -v 0.05",
+            "time_type": "rel",
+            "time": 0.05,
+            "repeat": 0,
+            "interval": 0
+        },
+        {
+            "cli_cmd": "setledillum -illum 0.0",
+            "time_type": "rel",
+            "time": 0.2,
+            "repeat": 0,
+            "interval": 0
+        },
+        {
+            "cli_cmd": "setledillum -illum 1.0",
+            "time_type": "rel",
+            "time": 5,
+            "repeat": 0,
+            "interval": 0
+        },
+        {
+            "cli_cmd": "getivpoint -c 3 -v 0.05",
+            "time_type": "rel",
+            "time": 0.05,
+            "repeat": 0,
+            "interval": 0
+        },
+        {
+            "cli_cmd": "setledillum -illum 0.0",
+            "time_type": "rel",
+            "time": 0.2,
+            "repeat": 0,
+            "interval": 0
+        },
+        {
+            "cli_cmd": "setledillum -illum 1.0",
+            "time_type": "rel",
+            "time": 5,
+            "repeat": 0,
+            "interval": 0
+        },
+        {
+            "cli_cmd": "getivpoint -c 3 -v 0.05",
+            "time_type": "rel",
+            "time": 0.05,
+            "repeat": 0,
+            "interval": 0
+        },
+        {
+            "cli_cmd": "setledillum -illum 0.0",
+            "time_type": "rel",
+            "time": 0.2,
+            "repeat": 0,
+            "interval": 0
+        },
+
+
+        
+
+
+
+
+
+        {
+            "cli_cmd": "ENDSEQUENCE",
+            "time_type": "rel",
+            "time": 2,
+            "repeat": 0,
+            "interval": 0
+        }
+       
+    ]
+}

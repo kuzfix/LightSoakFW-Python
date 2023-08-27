@@ -361,7 +361,7 @@ class LightSoakHWComms:
         while True:
             if self.ser.in_waiting > 0:
                 message = self.read_line()
-                if message.startswith('LEDTEMP'):
+                if message.startswith('TEMP'):
                     return float(message.split(":")[1])
             time.sleep(0.01)
 

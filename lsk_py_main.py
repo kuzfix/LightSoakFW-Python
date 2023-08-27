@@ -9,7 +9,7 @@ import os
 import shutil
 
 # config_file = "test_config.json"
-config_file = "data/config4.json"
+config_file = "data/config6.json"
 output_dir = "data/output/"
 
 # Check if the directory exists
@@ -132,7 +132,7 @@ while(True):
         break
 
 # run incoming data parser
-
+lastledtemp = 0.0
 while(True):
 
     # run parser
@@ -162,6 +162,11 @@ while(True):
 
         # add temperature to data dict
         data_dict["DUT_temp"] = tempctrl.get_dut_temp()
+        # for testing purposes, add led temp to data dict
+        data_dict["ledtemp"] = hw.get_led_temp()
+
+        time.sleep(0.1)
+        print(data_dict.get("ledtemp", None))
         db.save_to_db(data_dict)
         pass
     

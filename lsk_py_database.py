@@ -43,6 +43,9 @@ class LightSoakDatabase:
 
         elif(data_dict["type"] == "getivchar"):
             self.__save_getivchar(data_dict)
+        
+        elif(data_dict["type"] == "getledtemp"):
+            self.__save_getledtemp(data_dict)
 
 
 
@@ -93,7 +96,9 @@ class LightSoakDatabase:
             ch5_curr = data_dict.get("ch5_curr", None),
             ch6_curr = data_dict.get("ch6_curr", None),
             DUT_temp = data_dict.get("DUT_temp", None),
-            meas_type = data_dict.get("type")
+            meas_type = data_dict.get("type"),
+            # for testing
+            ledtemp = data_dict.get("ledtemp", None)
         )
         meas.save()
 
@@ -446,6 +451,15 @@ class LightSoakDatabase:
             chariv.save()
         pass
 
+    def __save_getledtemp(self, data_dict):
+        meas = Measurement(
+            timestamp = data_dict.get("timestamp", None),
+            DUT_temp = data_dict.get("DUT_temp", None),
+            meas_type = data_dict.get("type"),
+            ledtemp = data_dict.get("ledtemp", None),
+        )
+        meas.save()
+            
 
 
 
@@ -473,6 +487,7 @@ class Measurement(BaseModel):
     ch5_curr = FloatField(null=True)
     ch6_curr = FloatField(null=True)
     DUT_temp = FloatField()
+    ledtemp = FloatField(null=True)
     meas_type = TextField()
     sample_count = IntegerField(null=True)
 

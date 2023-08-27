@@ -130,6 +130,16 @@ class LightSoakDataInParser:
                 is_req_new_cmd = False
                 return (data_dict, is_end_sequence, is_req_new_cmd)
 
+            elif(line == "LEDTEMP:"):
+                data = []
+                for i in range(0, 2):
+                    data.append(self.__read_line())
+                # parse
+                data_dict = self.parse_getledtemp(data)
+                is_end_sequence = False
+                is_req_new_cmd = False
+                return (data_dict, is_end_sequence, is_req_new_cmd)
+
             elif(line == "REQ_SCHED_CMD"):
                 # HW requested new cmds. return to run loop
                 is_end_sequence = False
@@ -476,5 +486,21 @@ class LightSoakDataInParser:
             samplecnt += 1
 
         result_dict["sample_count"] = samplecnt
+
+        return result_dict
+    
+    def parse_getledtemp(self, data_list):
+        # Create dictionary to return
+        result_dict = {}
+        result_dict["type"] = "getledtemp"
+
+        # Parse the timestamp
+        base_timestamp = int(data_list[0].split(':')[1])
+        result_dict["timestamp"] = base_timestamp
+
+        # Parse the temperature
+        temp = float(data_list[1].split(':')[1])
+
+        result_dict["ledtemp"] = temp
 
         return result_dict
