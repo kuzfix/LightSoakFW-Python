@@ -14,6 +14,13 @@
             "repeat": 5,
             "interval": 0.1
         },
+        {
+            "cli_cmd": "flashmeasure -illum 1.3 -t 1000 -DUMP",
+            "time_type": "rel",
+            "time": 2,
+            "repeat": 0,
+            "interval": 0
+        },
 
         {
             "cli_cmd": "getcurr -c 3",
@@ -38,7 +45,7 @@
         },
 
         {
-            "cli_cmd": "flashmeasure -illum 0.5 -t 500 -DUMP",
+            "cli_cmd": "flashmeasure -illum 0.3 -t 1000 -DUMP",
             "time_type": "rel",
             "time": 2,
             "repeat": 0,

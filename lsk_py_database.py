@@ -168,12 +168,12 @@ class LightSoakDatabase:
         meas = Measurement(
             timestamp = data_dict.get("timestamp", None),
             # todo: implement getting voltage from bufferfump if needed
-            ch1 = None,
-            ch2 = None,
-            ch3 = None,
-            ch4 = None,
-            ch5 = None,
-            ch6 = None,
+            ch1 = data_dict.get("ch1", None),
+            ch2 = data_dict.get("ch2", None),
+            ch3 = data_dict.get("ch3", None),
+            ch4 = data_dict.get("ch4", None),
+            ch5 = data_dict.get("ch5", None),
+            ch6 = data_dict.get("ch6", None),
             DUT_temp = data_dict.get("DUT_temp", None),
             meas_type = data_dict.get("type"),
             sample_count = data_dict.get("sample_count")

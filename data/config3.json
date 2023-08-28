@@ -19,7 +19,7 @@
             "time_type": "rel",
             "time": 0.1,
             "repeat": 10,
-            "interval": 0.1
+            "interval": 1
         },
         {
             "cli_cmd": "getivpoint -c 4 -v 0.1",

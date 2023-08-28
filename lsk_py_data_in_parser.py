@@ -11,6 +11,7 @@
 
 
 import time
+import statistics
 
 class LightSoakDataInParser:
     def __init__(self, read_line_funct, print_funct, out_dir):
@@ -78,6 +79,8 @@ class LightSoakDataInParser:
                         break
                 # parse
                 data_dict = self.parse_flashmeasure_dump(data)
+                #todo: calculate voltages from dump to have a single voltage reading per channel
+                data_dict = self.volt_from_flashdump(data_dict)
                 is_end_sequence = False
                 is_req_new_cmd = False
                 return (data_dict, is_end_sequence, is_req_new_cmd)
@@ -290,12 +293,12 @@ class LightSoakDataInParser:
             ret = self.parse_dumpvolt(data_list)
             ret["type"] = "flashmeasure_dumpvolt"
             return ret
-        if (data_list[0] == "DUMPCURR[mA]:"):
-            data_list.pop(0) #remove DUMPCURR[mA]: line so data is consistent for parse_dumpcurr
-            ret = {}
-            ret = self.parse_dumpcurr(data_list)
-            ret["type"] = "flashmeasure_dumpcurr"
-            return ret
+        # if (data_list[0] == "DUMPCURR[mA]:"):
+        #     data_list.pop(0) #remove DUMPCURR[mA]: line so data is consistent for parse_dumpcurr
+        #     ret = {}
+        #     ret = self.parse_dumpcurr(data_list)
+        #     ret["type"] = "flashmeasure_dumpcurr"
+        #     return ret
         else:
             raise NotImplementedError("This type of data is not implemented yet.")
             # could be flashmeasure_dumpcurrent or flashmeasure_dumpiv for example
@@ -504,3 +507,31 @@ class LightSoakDataInParser:
         result_dict["ledtemp"] = temp
 
         return result_dict
+    
+
+
+    def volt_from_flashdump(self, data_dict):
+        sample_count = data_dict.get("sample_count", 0)
+        
+        # average center one fifth of the led-on pulse 
+        num_avg = int((sample_count-2*200)/5)
+        # Calculate the start and end index for the middle 64 samples
+        start_idx = (sample_count - num_avg) // 2
+        end_idx = start_idx + num_avg
+        
+        for channel in range(1, 7):  # Loop through channels 1 to 6
+            key = f"CH{channel}_samples"
+            
+            if key in data_dict:  # Check if the channel exists in the data_dict
+                # Extract the sample values, disregarding the timestamps
+                samples = [sample[1] for sample in data_dict[key][start_idx:end_idx]]
+                
+                # Calculate the average and standard deviation
+                avg = sum(samples) / num_avg
+                stdev = statistics.stdev(samples)
+                
+                # Update the data_dict with the calculated values
+                data_dict[f"ch{channel}"] = avg
+                data_dict[f"ch{channel}_stdev"] = stdev
+                
+        return data_dict
