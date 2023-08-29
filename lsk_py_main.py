@@ -40,6 +40,7 @@ if os.path.exists(output_dir):
         os.makedirs(output_dir)
     else:
         print("Invalid choice.")
+        raise SystemExit
 else:
     # Create the directory if it doesn't exist
     os.makedirs(output_dir)
