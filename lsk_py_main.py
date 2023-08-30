@@ -75,7 +75,7 @@ data = lsk_py_data_in_parser.LightSoakDataInParser(lambda: hw.read_line(), lambd
 
 
 # open txt file for general test info
-infotxt = open(output_dir + "info_" + cnfg.test_id + ".txt" , "w")
+infotxt = open(output_dir + "info.txt" , "w")
 
 # write general test info to file
 infotxt.write(" ### General Test Info ### \n")
