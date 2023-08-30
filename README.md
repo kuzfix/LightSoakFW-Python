@@ -2,7 +2,7 @@
 This code is a Python data logger to be used with the LightSoak Hardware: https://github.com/mrmp17/LightSoakFW-STM. It implements data logging to a database, specialized for light soaking measurements for perovskite solar cell samples. This was developed as a part of my Masters thesis.
 
 ## Quick start quide
-> First, get familiar with the standalone use of the LighSoak hardware. Programming measurement sequences follows the same practices as standalone use. Follow https://github.com/mrmp17/LightSoakFW-STM for direction.
+> First, get familiar with the standalone use of the LighSoak hardware. Programming measurement sequences follows the same practices as standalone use. Follow https://github.com/mrmp17/LightSoakFW-STM for directions.
 
 > Required libraries: pySerial, Peewee
 

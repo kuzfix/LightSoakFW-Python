@@ -6,6 +6,10 @@ __pycache__/
 # C extensions
 *.so
 
+# testconfigs
+config[1-9].json
+config[1-9][0-9]*.json
+
 # Distribution / packaging
 .Python
 build/
