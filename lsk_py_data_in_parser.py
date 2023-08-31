@@ -51,7 +51,7 @@ class LightSoakDataInParser:
                 is_req_new_cmd = False
                 return (data_dict, is_end_sequence, is_req_new_cmd)
             
-            elif(line == "CURR[mA]:"):
+            elif(line == "CURR[uA]:"):
                 data = []
                 for i in range(0, 3):
                     data.append(self.__read_line())
@@ -61,7 +61,7 @@ class LightSoakDataInParser:
                 is_req_new_cmd = False
                 return (data_dict, is_end_sequence, is_req_new_cmd)
             
-            elif(line == "IV[mA__V]:"):
+            elif(line == "IV[uA__V]:"):
                 data = []
                 for i in range(0, 3):
                     data.append(self.__read_line())
@@ -97,7 +97,7 @@ class LightSoakDataInParser:
                 is_req_new_cmd = False
                 return (data_dict, is_end_sequence, is_req_new_cmd)
             
-            elif(line == "DUMPCURR[mA]:"):
+            elif(line == "DUMPCURR[uA]:"):
                 data = []
                 while(True):
                     data.append(self.__read_line())
@@ -109,7 +109,7 @@ class LightSoakDataInParser:
                 is_req_new_cmd = False
                 return (data_dict, is_end_sequence, is_req_new_cmd)
 
-            elif(line == "DUMPIVPT[mA__V]:"):
+            elif(line == "DUMPIVPT[uA__V]:"):
                 data = []
                 while(True):
                     data.append(self.__read_line())
@@ -121,7 +121,7 @@ class LightSoakDataInParser:
                 is_req_new_cmd = False
                 return (data_dict, is_end_sequence, is_req_new_cmd)
             
-            elif(line == "IVCHAR[mA__V]:"):
+            elif(line == "IVCHAR[uA__V]:"):
                 data = []
                 while(True):
                     data.append(self.__read_line())
@@ -293,8 +293,8 @@ class LightSoakDataInParser:
             ret = self.parse_dumpvolt(data_list)
             ret["type"] = "flashmeasure_dumpvolt"
             return ret
-        # if (data_list[0] == "DUMPCURR[mA]:"):
-        #     data_list.pop(0) #remove DUMPCURR[mA]: line so data is consistent for parse_dumpcurr
+        # if (data_list[0] == "DUMPCURR[uA]:"):
+        #     data_list.pop(0) #remove DUMPCURR[uA]: line so data is consistent for parse_dumpcurr
         #     ret = {}
         #     ret = self.parse_dumpcurr(data_list)
         #     ret["type"] = "flashmeasure_dumpcurr"
