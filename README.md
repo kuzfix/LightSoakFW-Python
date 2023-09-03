@@ -11,7 +11,8 @@ This code is a Python data logger to be used with the LightSoak Hardware: https:
 ### File structure
 - *Root directory*
     - *lsk_py_main.py* (main Python script)
-    - *Other helper Python modules*
+    - *utils*
+        - *Other helper Python modules*
     - *data*
         - *config.json*
         - *output*

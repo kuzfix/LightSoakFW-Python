@@ -1,15 +1,15 @@
 import datetime
 import time
-import lsk_py_hardware_comms
-import lsk_py_sequence_parser
-import lsk_py_data_in_parser
-import lsk_py_temp_control
-import lsk_py_database
+from utils import lsk_py_hardware_comms
+from utils import lsk_py_sequence_parser
+from utils import lsk_py_data_in_parser
+from utils import lsk_py_temp_control
+from utils import lsk_py_database
 import os
 import shutil
 
 # config_file = "test_config.json"
-config_file = "data/config.json"
+config_file = "data/config9.json"
 output_dir = "data/output/"
 
 # Check if the directory exists
