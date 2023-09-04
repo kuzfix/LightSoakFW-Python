@@ -1,5 +1,5 @@
  ### General Test Info ### 
-Time: 03-09-2023 18:44:01
+Time: 04-09-2023 13:04:58
 Test ID: test123
 Test Notes: This is a test
 DUT Serial: 123we4sdfgqw56
@@ -8,25 +8,27 @@ HW serial port: /dev/cu.usbserial-02B11B94
 
 
  ### Command List ### 
-Number of sequence commands: 13
+Number of sequence commands: 15
 ########################
 setledillum -illum 0.3 -sched 2000000
 getvolt -sched 4000000
-setledillum -illum 0.0 -sched 6000000
-flashmeasure -illum 0.3 -t 1000 -DUMP -sched 8000000
-measuredump -n 2000 -IV -sched 10000000
-setledillum -illum 0.3 -sched 15000000
-enablecurrent -sched 17000000
-setshunt -10x -sched 18000000
-setforcevolt -v 0.0 -sched 19000000
-getvolt -sched 21000000
-getcurr -sched 23000000
-measuredump -n 2000 -CURR -sched 25000000
-ENDSEQUENCE -sched 30000000
+getnoise -VOLT -sched 6000000
+getnoise -CURR -sched 8000000
+setledillum -illum 0.0 -sched 10000000
+flashmeasure -illum 0.3 -t 1000 -DUMP -sched 12000000
+measuredump -n 2000 -IV -sched 14000000
+setledillum -illum 0.3 -sched 19000000
+enablecurrent -sched 21000000
+setshunt -10x -sched 22000000
+setforcevolt -v 0.0 -sched 23000000
+getvolt -sched 25000000
+getcurr -sched 27000000
+measuredump -n 2000 -CURR -sched 29000000
+ENDSEQUENCE -sched 34000000
 ########################
 
-Estimated total test Duration: 30.0s
+Estimated total test Duration: 34.0s
 
-LED Temperature at start of test: 25.375C
+LED Temperature at start of test: 27.625C
 
  ### End of Test ### 

@@ -142,6 +142,28 @@ class LightSoakDataInParser:
                 is_end_sequence = False
                 is_req_new_cmd = False
                 return (data_dict, is_end_sequence, is_req_new_cmd)
+            
+            elif(line == "RMS_VOLTNOISE[mV]:"):
+                data = []
+                for i in range(0, 3):
+                    data.append(self.__read_line())
+                # parse
+                data_dict = self.parse_getnoisevoltrms(data)
+                is_end_sequence = False
+                is_req_new_cmd = False
+                return (data_dict, is_end_sequence, is_req_new_cmd)
+            
+            elif(line == "RMS_CURRNOISE[uA]:"):
+                data = []
+                for i in range(0, 3):
+                    data.append(self.__read_line())
+                # parse
+                data_dict = self.parse_getnoisecurrrms(data)
+                is_end_sequence = False
+                is_req_new_cmd = False
+                return (data_dict, is_end_sequence, is_req_new_cmd)
+            
+
 
             elif(line == "REQ_SCHED_CMD"):
                 # HW requested new cmds. return to run loop
@@ -507,6 +529,105 @@ class LightSoakDataInParser:
         result_dict["ledtemp"] = temp
 
         return result_dict
+    
+    def parse_getnoisevoltrms(self, data_list):
+        # todo: does not handle anything else than 1 or all 6 channels
+        # Ensure there are three elements in the data list
+        if len(data_list) != 3:
+            raise ValueError("Expected data list to have three elements.")
+
+        # Split the channel data string
+        channel_data = data_list[0].split(':')
+
+        # Check the number of channels based on the channel data length
+        if len(channel_data) == 1:
+            num_channels = 1
+            channel_num = int(channel_data[0][2:])  # Extract the channel number from CHx
+        elif len(channel_data) == 6:
+            num_channels = 6
+        else:
+            raise ValueError("Unexpected number of channels.")
+
+        # Parse the timestamp into an integer
+        timestamp = int(data_list[1].split(':')[1])
+
+        # Parse the noise values based on the number of channels
+        noise_data = data_list[2].split(':')
+        
+        # Validate noise data
+        if num_channels == 1 and len(noise_data) != 1:
+            raise ValueError("Expected only one voltage reading for one channel.")
+        elif num_channels == 6 and len(noise_data) != 6:
+            raise ValueError("Expected six voltage readings for six channels.")
+        
+        # Convert the voltage data strings to floats
+        noise_vals = [float(v) for v in noise_data]
+
+        # Create dictionary to return
+        result_dict = {}
+
+        result_dict["type"] = "getnoise_volt_rms[mV]"
+        result_dict["timestamp"] = timestamp
+        
+        if num_channels == 1:
+            
+            result_dict[f"ch{channel_num}"] = noise_vals[0]
+        else:
+            for i, noise_val in enumerate(noise_vals, 1):
+                result_dict[f"ch{i}"] = noise_val
+
+        return result_dict
+
+    def parse_getnoisecurrrms(self, data_list):
+        # todo: does not handle anything else than 1 or all 6 channels
+        # Ensure there are three elements in the data list
+        if len(data_list) != 3:
+            raise ValueError("Expected data list to have three elements.")
+
+        # Split the channel data string
+        channel_data = data_list[0].split(':')
+
+        # Check the number of channels based on the channel data length
+        if len(channel_data) == 1:
+            num_channels = 1
+            channel_num = int(channel_data[0][2:])  # Extract the channel number from CHx
+        elif len(channel_data) == 6:
+            num_channels = 6
+        else:
+            raise ValueError("Unexpected number of channels.")
+
+        # Parse the timestamp into an integer
+        timestamp = int(data_list[1].split(':')[1])
+
+        # Parse the noise values based on the number of channels
+        noise_data = data_list[2].split(':')
+        
+        # Validate noise data
+        if num_channels == 1 and len(noise_data) != 1:
+            raise ValueError("Expected only one voltage reading for one channel.")
+        elif num_channels == 6 and len(noise_data) != 6:
+            raise ValueError("Expected six voltage readings for six channels.")
+        
+        # Convert the voltage data strings to floats
+        noise_vals = [float(v) for v in noise_data]
+
+        # Create dictionary to return
+        result_dict = {}
+
+        result_dict["type"] = "getnoise_curr_rms[uA]"
+        result_dict["timestamp"] = timestamp
+        
+        if num_channels == 1:
+            
+            result_dict[f"ch{channel_num}_curr"] = noise_vals[0]
+        else:
+            for i, noise_val in enumerate(noise_vals, 1):
+                result_dict[f"ch{i}_curr"] = noise_val
+
+        return result_dict
+
+
+
     
 
 
