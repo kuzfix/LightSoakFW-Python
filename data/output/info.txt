@@ -1,34 +1,249 @@
  ### General Test Info ### 
-Time: 04-09-2023 13:04:58
-Test ID: test123
-Test Notes: This is a test
-DUT Serial: 123we4sdfgqw56
+Time: 04-09-2023 16:17:25
+Test ID: accuracy_curr_1X
+Test Notes: Accuracy test with SMU for current channels on 1x range
+DUT Serial: --
 DUT Target Temp: 25.0
 HW serial port: /dev/cu.usbserial-02B11B94
 
 
  ### Command List ### 
-Number of sequence commands: 15
+Number of sequence commands: 231
 ########################
-setledillum -illum 0.3 -sched 2000000
-getvolt -sched 4000000
-getnoise -VOLT -sched 6000000
-getnoise -CURR -sched 8000000
-setledillum -illum 0.0 -sched 10000000
-flashmeasure -illum 0.3 -t 1000 -DUMP -sched 12000000
-measuredump -n 2000 -IV -sched 14000000
-setledillum -illum 0.3 -sched 19000000
-enablecurrent -sched 21000000
-setshunt -10x -sched 22000000
-setforcevolt -v 0.0 -sched 23000000
-getvolt -sched 25000000
-getcurr -sched 27000000
-measuredump -n 2000 -CURR -sched 29000000
-ENDSEQUENCE -sched 34000000
+setnumavg -n 2000 -sched 10000000
+setforcevolt -v 0.0 -sched 10100000
+setshunt -1x -sched 10200000
+enablecurrent -sched 10300000
+getvolt -sched 10400000
+getcurr -sched 18400000
+getcurr -sched 18785100
+getcurr -sched 19170200
+getcurr -sched 19555300
+getcurr -sched 19940400
+getcurr -sched 20325500
+getcurr -sched 20710600
+getcurr -sched 21095700
+getcurr -sched 21480800
+getcurr -sched 21865900
+getnoise -CURR -sched 21965900
+getnoise -CURR -sched 22187200
+getnoise -CURR -sched 22408500
+getnoise -CURR -sched 22629800
+getnoise -CURR -sched 22851100
+getcurr -sched 30851100
+getcurr -sched 31236200
+getcurr -sched 31621300
+getcurr -sched 32006400
+getcurr -sched 32391500
+getcurr -sched 32776600
+getcurr -sched 33161700
+getcurr -sched 33546800
+getcurr -sched 33931900
+getcurr -sched 34317000
+getnoise -CURR -sched 34417000
+getnoise -CURR -sched 34638300
+getnoise -CURR -sched 34859600
+getnoise -CURR -sched 35080900
+getnoise -CURR -sched 35302200
+getcurr -sched 43302200
+getcurr -sched 43687300
+getcurr -sched 44072400
+getcurr -sched 44457500
+getcurr -sched 44842600
+getcurr -sched 45227700
+getcurr -sched 45612800
+getcurr -sched 45997900
+getcurr -sched 46383000
+getcurr -sched 46768100
+getnoise -CURR -sched 46868100
+getnoise -CURR -sched 47089400
+getnoise -CURR -sched 47310700
+getnoise -CURR -sched 47532000
+getnoise -CURR -sched 47753300
+getcurr -sched 55753300
+getcurr -sched 56138400
+getcurr -sched 56523500
+getcurr -sched 56908600
+getcurr -sched 57293700
+getcurr -sched 57678800
+getcurr -sched 58063900
+getcurr -sched 58449000
+getcurr -sched 58834100
+getcurr -sched 59219200
+getnoise -CURR -sched 59319200
+getnoise -CURR -sched 59540500
+getnoise -CURR -sched 59761800
+getnoise -CURR -sched 59983100
+getnoise -CURR -sched 60204400
+getcurr -sched 68204400
+getcurr -sched 68589500
+getcurr -sched 68974600
+getcurr -sched 69359700
+getcurr -sched 69744800
+getcurr -sched 70129900
+getcurr -sched 70515000
+getcurr -sched 70900100
+getcurr -sched 71285200
+getcurr -sched 71670300
+getnoise -CURR -sched 71770300
+getnoise -CURR -sched 71991600
+getnoise -CURR -sched 72212900
+getnoise -CURR -sched 72434200
+getnoise -CURR -sched 72655500
+getcurr -sched 80655500
+getcurr -sched 81040600
+getcurr -sched 81425700
+getcurr -sched 81810800
+getcurr -sched 82195900
+getcurr -sched 82581000
+getcurr -sched 82966100
+getcurr -sched 83351200
+getcurr -sched 83736300
+getcurr -sched 84121400
+getnoise -CURR -sched 84221400
+getnoise -CURR -sched 84442700
+getnoise -CURR -sched 84664000
+getnoise -CURR -sched 84885300
+getnoise -CURR -sched 85106600
+getcurr -sched 93106600
+getcurr -sched 93491700
+getcurr -sched 93876800
+getcurr -sched 94261900
+getcurr -sched 94647000
+getcurr -sched 95032100
+getcurr -sched 95417200
+getcurr -sched 95802300
+getcurr -sched 96187400
+getcurr -sched 96572500
+getnoise -CURR -sched 96672500
+getnoise -CURR -sched 96893800
+getnoise -CURR -sched 97115100
+getnoise -CURR -sched 97336400
+getnoise -CURR -sched 97557700
+getcurr -sched 105557700
+getcurr -sched 105942800
+getcurr -sched 106327900
+getcurr -sched 106713000
+getcurr -sched 107098100
+getcurr -sched 107483200
+getcurr -sched 107868300
+getcurr -sched 108253400
+getcurr -sched 108638500
+getcurr -sched 109023600
+getnoise -CURR -sched 109123600
+getnoise -CURR -sched 109344900
+getnoise -CURR -sched 109566200
+getnoise -CURR -sched 109787500
+getnoise -CURR -sched 110008800
+getcurr -sched 118008800
+getcurr -sched 118393900
+getcurr -sched 118779000
+getcurr -sched 119164100
+getcurr -sched 119549200
+getcurr -sched 119934300
+getcurr -sched 120319400
+getcurr -sched 120704500
+getcurr -sched 121089600
+getcurr -sched 121474700
+getnoise -CURR -sched 121574700
+getnoise -CURR -sched 121796000
+getnoise -CURR -sched 122017300
+getnoise -CURR -sched 122238600
+getnoise -CURR -sched 122459900
+getcurr -sched 130459900
+getcurr -sched 130845000
+getcurr -sched 131230100
+getcurr -sched 131615200
+getcurr -sched 132000300
+getcurr -sched 132385400
+getcurr -sched 132770500
+getcurr -sched 133155600
+getcurr -sched 133540700
+getcurr -sched 133925800
+getnoise -CURR -sched 134025800
+getnoise -CURR -sched 134247100
+getnoise -CURR -sched 134468400
+getnoise -CURR -sched 134689700
+getnoise -CURR -sched 134911000
+getcurr -sched 142911000
+getcurr -sched 143296100
+getcurr -sched 143681200
+getcurr -sched 144066300
+getcurr -sched 144451400
+getcurr -sched 144836500
+getcurr -sched 145221600
+getcurr -sched 145606700
+getcurr -sched 145991800
+getcurr -sched 146376900
+getnoise -CURR -sched 146476900
+getnoise -CURR -sched 146698200
+getnoise -CURR -sched 146919500
+getnoise -CURR -sched 147140800
+getnoise -CURR -sched 147362100
+getcurr -sched 155362100
+getcurr -sched 155747200
+getcurr -sched 156132300
+getcurr -sched 156517400
+getcurr -sched 156902500
+getcurr -sched 157287600
+getcurr -sched 157672700
+getcurr -sched 158057800
+getcurr -sched 158442900
+getcurr -sched 158828000
+getnoise -CURR -sched 158928000
+getnoise -CURR -sched 159149300
+getnoise -CURR -sched 159370600
+getnoise -CURR -sched 159591900
+getnoise -CURR -sched 159813200
+getcurr -sched 167813200
+getcurr -sched 168198300
+getcurr -sched 168583400
+getcurr -sched 168968500
+getcurr -sched 169353600
+getcurr -sched 169738700
+getcurr -sched 170123800
+getcurr -sched 170508900
+getcurr -sched 170894000
+getcurr -sched 171279100
+getnoise -CURR -sched 171379100
+getnoise -CURR -sched 171600400
+getnoise -CURR -sched 171821700
+getnoise -CURR -sched 172043000
+getnoise -CURR -sched 172264300
+getcurr -sched 180264300
+getcurr -sched 180649400
+getcurr -sched 181034500
+getcurr -sched 181419600
+getcurr -sched 181804700
+getcurr -sched 182189800
+getcurr -sched 182574900
+getcurr -sched 182960000
+getcurr -sched 183345100
+getcurr -sched 183730200
+getnoise -CURR -sched 183830200
+getnoise -CURR -sched 184051500
+getnoise -CURR -sched 184272800
+getnoise -CURR -sched 184494100
+getnoise -CURR -sched 184715400
+getcurr -sched 192715400
+getcurr -sched 193100500
+getcurr -sched 193485600
+getcurr -sched 193870700
+getcurr -sched 194255800
+getcurr -sched 194640900
+getcurr -sched 195026000
+getcurr -sched 195411100
+getcurr -sched 195796200
+getcurr -sched 196181300
+getnoise -CURR -sched 196281300
+getnoise -CURR -sched 196502600
+getnoise -CURR -sched 196723900
+getnoise -CURR -sched 196945200
+getnoise -CURR -sched 197166500
+ENDSEQUENCE -sched 202166500
 ########################
 
-Estimated total test Duration: 34.0s
+Estimated total test Duration: 202.1665s
 
-LED Temperature at start of test: 27.625C
+LED Temperature at start of test: 26.5625C
 
- ### End of Test ### 

@@ -44,7 +44,7 @@ In *sequence* section, user shall define the sequence of the test procedure. Eac
 A basic configuration example is provided in this repository.
 
 #### Test sequence programing notes
-- Timing of command execution is handled by hardware. At the start of sequence, commands are loaded into a execution queue on hardware. Transfer of commands tkaes some time, thus scheduling commands earlier than *10s* is not recommended.
+- Timing of command execution is handled by hardware. At the start of sequence, commands are loaded into a execution queue on hardware. Transfer of commands takes some time, thus scheduling commands earlier than *10s* into the sequence is not allowed.
 - If there are more commands than the length of command queue on hardware (128), additional commands will be loaded during the sequence. Do not schedule a large number of commands with little space (<50ms) between. This might result in missed commands.
 - After a command is executed on hardware, data is transfered via the serial interface. In case of buffer dumps, this can take up to several seconds. If the next command is scheduled before the transfer is finished, its execution will be delayed. Check timing requirements in standalone operation. Most functions report their execution time to debug serial (accessible through STLINK debug connector)
 - Parsing of incoming data is independent of command scheduling. All commands supported by HW's command line interface can be scheduled and executed, but not all can be parsed and saved. Additional parsing can be implemented by following the instructions in *lsk_py_data_in_parser.py*. Incoming data that does not have a parser implemented will be skipped, but will still be visible in *serial_log.txt*.

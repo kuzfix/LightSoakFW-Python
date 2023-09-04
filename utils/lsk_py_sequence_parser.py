@@ -12,7 +12,7 @@ class LightSoakerSequenceParser:
         self.config_file = config_file
         self.cmdlist = []
         self.test_duration = 0
-        self.__seq_begin_deadtime_us = 1000000
+        self.__seq_begin_deadtime_us = 10000000
 
 
     def parse(self):
@@ -42,7 +42,7 @@ class LightSoakerSequenceParser:
                     cmd = f"{elem['cli_cmd']} -sched {sched_time}"
                     cmd += "\n"
                     if(sched_time < self.__seq_begin_deadtime_us):
-                        raise Exception('Commands scheduled earlier than 1s after sequence begin are not allowed!')
+                        raise Exception('Commands scheduled earlier than 10s after sequence begin are not allowed!')
                     self.cmdlist.append(cmd)
                 self.__last_sched_time = sched_time
             else:
