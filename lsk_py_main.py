@@ -1,5 +1,8 @@
 import datetime
 import time
+import atexit
+import signal
+import sys
 from utils import lsk_py_hardware_comms
 from utils import lsk_py_sequence_parser
 from utils import lsk_py_data_in_parser
@@ -7,6 +10,19 @@ from utils import lsk_py_temp_control
 from utils import lsk_py_database
 import os
 import shutil
+
+def exit_handler():
+     # disable temperature control
+    print("Disabling temperature control...")
+    tempctrl.disable_temp_ctrl()
+    time.sleep(1)
+    #reboot HW
+    hw.reboot()
+    raise SystemExit
+
+atexit.register(exit_handler)
+signal.signal(signal.SIGINT, exit_handler)
+signal.signal(signal.SIGTERM, exit_handler)
 
 # config_file = "test_config.json"
 config_file = "data/config3.json"
@@ -136,76 +152,79 @@ if(cnfg.target_dut_temp != "False"):
 else:
     print("No DUT temperature control requested.")
 
+try:
+    #begin sequence
+    hw.sendcmd_reset_timestamp()
+    print("!!! Loading & starting sequence !!!")
+    eta = datetime.datetime.now() + datetime.timedelta(seconds=cnfg.test_duration)
+    print("ETA: ", eta.strftime('%d-%m-%Y %H:%M:%S'))
+    print("Sequence in progress...")
 
-
-#begin sequence
-hw.sendcmd_reset_timestamp()
-print("!!! Loading & starting sequence !!!")
-eta = datetime.datetime.now() + datetime.timedelta(seconds=cnfg.test_duration)
-print("ETA: ", eta.strftime('%d-%m-%Y %H:%M:%S'))
-print("Sequence in progress...")
-
-# send cmds to buffer
-while(True):
-    # pop first cmd from list (works like fifo) and try to schedule it
-    if(len(cnfg.cmdlist) == 0):
+    # send cmds to buffer
+    while(True):
+        # pop first cmd from list (works like fifo) and try to schedule it
+        if(len(cnfg.cmdlist) == 0):
+                break
+        cmd = cnfg.cmdlist.pop(0)
+        schedok = hw.send_sched_cmd(cmd)
+        # if sched fails, we have run out of cmd buffer on HW
+        if(schedok == False):
+            # if scheduling fails, put cmd back into list and try again later
+            cnfg.cmdlist.insert(0, cmd)
             break
-    cmd = cnfg.cmdlist.pop(0)
-    schedok = hw.send_sched_cmd(cmd)
-    # if sched fails, we have run out of cmd buffer on HW
-    if(schedok == False):
-        # if scheduling fails, put cmd back into list and try again later
-        cnfg.cmdlist.insert(0, cmd)
-        break
 
-# run incoming data parser
-while(True):
+    # run incoming data parser
+    while(True):
 
-    # run parser
-    (data_dict, is_end_sequence, is_new_cmd_requested) = data.parser()
+        # run parser
+        (data_dict, is_end_sequence, is_new_cmd_requested) = data.parser()
 
-    if(is_end_sequence == True):
-        #end of sequence, end loop
-        break
-    if(is_new_cmd_requested == True):
-        # cmd loading has priority over saving data, because is time critical
-        #  try to load some cmds into buffer
-        while(True):
-            # pop first cmd from list (works like fifo) and try to schedule it
-            if(len(cnfg.cmdlist) == 0):
-                break
-            cmd = cnfg.cmdlist.pop(0)
-            schedok = hw.send_sched_cmd(cmd)
-            # if sched fails, we have run out of cmd buffer on HW
-            if(schedok == False):
-                # if scheduling fails, put cmd back into list and try again later
-                cnfg.cmdlist.insert(0, cmd)
-                break
-    
-    if(data_dict != None):
-        # we got some data bois
-        # get dut temperature and save to database
+        if(is_end_sequence == True):
+            #end of sequence, end loop
+            break
+        if(is_new_cmd_requested == True):
+            # cmd loading has priority over saving data, because is time critical
+            #  try to load some cmds into buffer
+            while(True):
+                # pop first cmd from list (works like fifo) and try to schedule it
+                if(len(cnfg.cmdlist) == 0):
+                    break
+                cmd = cnfg.cmdlist.pop(0)
+                schedok = hw.send_sched_cmd(cmd)
+                # if sched fails, we have run out of cmd buffer on HW
+                if(schedok == False):
+                    # if scheduling fails, put cmd back into list and try again later
+                    cnfg.cmdlist.insert(0, cmd)
+                    break
+        
+        if(data_dict != None):
+            # we got some data bois
+            # get dut temperature and save to database
 
-        # add temperature to data dict
-        data_dict["DUT_temp"] = tempctrl.get_dut_temp()
-        # for testing purposes, add led temp to data dict
-        # data_dict["ledtemp"] = hw.get_led_temp()
+            # add temperature to data dict
+            data_dict["DUT_temp"] = tempctrl.get_dut_temp()
+            # for testing purposes, add led temp to data dict
+            # data_dict["ledtemp"] = hw.get_led_temp()
 
-        # time.sleep(0.1)
-        # print(data_dict.get("ledtemp", None))
-        db.save_to_db(data_dict)
-        pass
-    
+            # time.sleep(0.1)
+            # print(data_dict.get("ledtemp", None))
+            db.save_to_db(data_dict)
+            pass
+        
 
 
-#close txt file
-infotxt.write(" ### End of Test ### \n")
-infotxt.close()
+    #close txt file
+    infotxt.write(" ### End of Test ### \n")
+    infotxt.close()
 
-# disable temperature control
-print("Disabling temperature control...")
-tempctrl.disable_temp_ctrl()
-time.sleep(1)
+    exit_handler()
+
+except Exception as e:
+    print("Exception occured: ", e)
+    print("Shutting down and exiting...")
+    exit_handler()
 
 print("end")
 raise SystemExit
+
+

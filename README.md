@@ -50,7 +50,7 @@ A basic configuration example is provided in this repository.
 - Parsing of incoming data is independent of command scheduling. All commands supported by HW's command line interface can be scheduled and executed, but not all can be parsed and saved. Additional parsing can be implemented by following the instructions in *lsk_py_data_in_parser.py*. Incoming data that does not have a parser implemented will be skipped, but will still be visible in *serial_log.txt*.
 - Validity of the commands in *config.py* is **not** checked. It is expected that user inputs only valid and correct commands. Failure to do so might result in undefined behaviour. It is highly recomended to test every command in standalone operation
 - In case of issues, reviewing *serial_log.txt* is a good practice.
-
+- If an exception is raised during execution or the keyboard interrupt is triggered (user presses *ctrl+c*), this code will attempt to disable temperature control and reboot the hardware to stop the sequence.
 ### Database structure
 
 Data is saved into a SQLite database. It consists of three tables:
