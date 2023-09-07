@@ -51,6 +51,10 @@ A basic configuration example is provided in this repository.
 - Validity of the commands in *config.py* is **not** checked. It is expected that user inputs only valid and correct commands. Failure to do so might result in undefined behaviour. It is highly recomended to test every command in standalone operation
 - In case of issues, reviewing *serial_log.txt* is a good practice.
 - If an exception is raised during execution or the keyboard interrupt is triggered (user presses *ctrl+c*), this code will attempt to disable temperature control and reboot the hardware to stop the sequence.
+
+### Temperature control
+Temperature control is done by a TEC-1091 module mounted to the main board. To use it with this Python software, it needs to be connected by a sepparate USB cable and the serial port specified in the *config.json* file. If the module is not connected, set temperature target to *"False"*.
+
 ### Database structure
 
 Data is saved into a SQLite database. It consists of three tables:
