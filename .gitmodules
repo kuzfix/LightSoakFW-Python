@@ -1,0 +1,3 @@
+[submodule "utils/pyMeCom"]
+	path = utils/pyMeCom
+	url = https://github.com/spomjaksilp/pyMeCom.git
