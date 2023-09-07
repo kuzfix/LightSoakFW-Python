@@ -23,8 +23,10 @@ class LightSoakerSequenceParser:
         self.test_id = config['parameters']['Test_ID']
         self.dut_serial = config['parameters']['DUT_Serial_Number']
         self.target_dut_temp = config['parameters']['DUT_target_temperature']
+        self.wait_temp_settle = config['parameters']['DUT_wait_temp_settle']
         self.test_notes = config['parameters']['Test_notes']
         self.hw_port = config['parameters']['hw_port']
+        self.temp_ctrl_port = config['parameters']['temp_ctrl_port']
 
         for elem in config['sequence']:
             if 'repeat' in elem and elem['repeat'] > 0:

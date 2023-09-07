@@ -1,5 +1,5 @@
  ### General Test Info ### 
-Time: 07-09-2023 15:13:30
+Time: 07-09-2023 21:19:29
 Test ID: test123
 Test Notes: This is a test
 DUT Serial: 123we4sdfgqw56
@@ -38,6 +38,6 @@ Estimated total test Duration: 22.1s
 
 LED Temperature at start of test: 0.0C
 
-DUT Temperature at start of test: 16.713180541992188C
+DUT Temperature at start of test: 29.996719360351562C
 
  ### End of Test ### 

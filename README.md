@@ -30,7 +30,7 @@ If *output* folder is not present when the code is run, it will be created. If I
 ### Test configuration
 Test configuration and sequence is defined in *config.json*.
 
-In *parameters* section, user can define test parameter and some general information to be logged into *info.txt*. Importantly, the serial port is defined here. Target temperature for DUT temperature control is also specified here.
+In *parameters* section, user can define test parameter and some general information to be logged into *info.txt*. Importantly, the serial port is defined here. Target temperature for DUT temperature control is also specified here. If no temperature control should be used, set *DUT_target_temperature* to *"False"*. Parameter *DUT_wait_temp_settle* is used to specify waiting time after temperature controller reports stable control loop. Set *tem_ctrl_port* variable to the serial port of the temperature controller.
 
 In *sequence* section, user shall define the sequence of the test procedure. Each entry consists of:
 - *cli_cmd*: command to send to hardware. Consistent with standalone usage.

@@ -57,7 +57,6 @@ cnfg = lsk_py_sequence_parser.LightSoakerSequenceParser(config_file)
 
 db = lsk_py_database.LightSoakDatabase(output_dir)
 
-tempctrl = lsk_py_temp_control.LightSoakTempControl("/dev/tty.usbserial-DM01ZEIN") #todo: get port from config json
 
 db.open_db()
 
@@ -71,7 +70,7 @@ hw = lsk_py_hardware_comms.LightSoakHWComms(hw_port, output_dir, log_all_serial=
 
 data = lsk_py_data_in_parser.LightSoakDataInParser(lambda: hw.read_line(), lambda msg: hw.print_hw(msg), output_dir)
 
-
+tempctrl = lsk_py_temp_control.LightSoakTempControl(cnfg.temp_ctrl_port)
 
 
 # open txt file for general test info
@@ -110,20 +109,32 @@ led_temp = hw.get_led_temp()
 infotxt.write("LED Temperature at start of test: " + str(led_temp) + "C\n\n")
 
 
-# todo: set DUT temperature and wait for it to stabilize
-print("Connecting to temperature controller...")
-tempctrl.connect_to_hw()
+if(cnfg.target_dut_temp != "False"):
+    # todo: set DUT temperature and wait for it to stabilize
+    print("Connecting to temperature controller...")
+    tempctrl.connect_to_hw()
 
-infotxt.write("DUT Temperature at start of test: " + str(tempctrl.get_dut_temp()) + "C\n\n")
+    infotxt.write("DUT Temperature at start of test: " + str(tempctrl.get_dut_temp()) + "C\n\n")
 
-print("Setting DUT temperature...")
-tempctrl.set_dut_temp(cnfg.target_dut_temp)
-time.sleep(0.5)
-print("Waiting for DUT temperature to stabilize...")
-while(tempctrl.is_stable() == False):
-    print("Current temperature: ", str(tempctrl.get_dut_temp()), "C")
-    time.sleep(2)
-print("Temperature stable!")
+    # enable temperature control
+    print("Enabling temperature control...")
+    tempctrl.enable_temp_ctrl()
+
+    print("Setting DUT temperature target...")
+    tempctrl.set_dut_temp(cnfg.target_dut_temp)
+    time.sleep(0.5)
+    # enable temperature control
+    print("Enabling temperature control...")
+    tempctrl.enable_temp_ctrl()
+    time.sleep(0.5)
+    print("Waiting for DUT temperature to stabilize...")
+    while(tempctrl.is_stable() == False):
+        print("Current temperature: ", str(tempctrl.get_dut_temp()), "C")
+        time.sleep(2)
+    print("Temperature ctrl loop stable! Waiting for additional settling time...")
+    time.sleep(cnfg.wait_temp_settle)
+else:
+    print("No DUT temperature control requested.")
 
 
 
@@ -190,6 +201,11 @@ while(True):
 #close txt file
 infotxt.write(" ### End of Test ### \n")
 infotxt.close()
+
+# disable temperature control
+print("Disabling temperature control...")
+tempctrl.disable_temp_ctrl()
+time.sleep(1)
 
 print("end")
 raise SystemExit

@@ -3,8 +3,10 @@
         "Test_ID": "test123",
         "Test_notes": "This is a test",
         "DUT_Serial_Number": "123we4sdfgqw56",
-        "DUT_target_temperature": 25.0,
-        "hw_port": "/dev/cu.usbserial-02B11B94"
+        "DUT_target_temperature": 30.0,
+        "DUT_wait_temp_settle": 10.0,
+        "hw_port": "/dev/cu.usbserial-02B11B94",
+        "temp_ctrl_port": "/dev/tty.usbserial-DM01ZEIN"
     },
     "sequence": [
         {

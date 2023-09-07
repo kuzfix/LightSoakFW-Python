@@ -4,7 +4,6 @@ from utils.pyMeCom.mecom import MeCom
 class LightSoakTempControl:
     def __init__(self, port):
         self._usb_port = port
-        
         pass
 
     def connect_to_hw(self):
@@ -31,8 +30,16 @@ class LightSoakTempControl:
         pass
 
     def enable_temp_ctrl(self):
+        success = self._mc.set_parameter(value=1, parameter_id=2010)
+        if not success:
+            print("TEMPCTRL: failed to enable temperature control")
+            raise Exception("TEMPCTRL: failed to enable temperature control")
         pass
     def disable_temp_ctrl(self):
+        success = self._mc.set_parameter(value=0, parameter_id=2010)
+        if not success:
+            print("TEMPCTRL: failed to disable temperature control")
+            raise Exception("TEMPCTRL: failed to disable temperature control")
         pass
     def is_stable(self):
         stable_id = self._mc.get_parameter(parameter_name="Temperature is Stable", address=self._hw_address)
