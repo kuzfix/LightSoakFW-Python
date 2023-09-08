@@ -1,42 +1,755 @@
  ### General Test Info ### 
-Time: 07-09-2023 21:33:52
-Test ID: test123
-Test Notes: This is a test
+Time: 08-09-2023 12:34:35
+Test ID: Dummy light soaking test
+Test Notes: A demo light soaking test
 DUT Serial: 123we4sdfgqw56
-DUT Target Temp: 30.0
+DUT Target Temp: 18.0
 HW serial port: /dev/cu.usbserial-02B11B94
 
 
  ### Command List ### 
-Number of sequence commands: 22
+Number of sequence commands: 734
 ########################
-getvolt -sched 10000000
-getledtemp -sched 10100000
-getledtemp -sched 11100000
-getledtemp -sched 12100000
-getledtemp -sched 13100000
-getledtemp -sched 14100000
-getledtemp -sched 15100000
-getledtemp -sched 16100000
-getledtemp -sched 17100000
-getledtemp -sched 18100000
-getledtemp -sched 19100000
-getvolt -sched 19200000
-getvolt -sched 19300000
-getvolt -sched 19400000
-getvolt -sched 19500000
-getvolt -sched 19600000
-getvolt -sched 19700000
-getvolt -sched 19800000
-getvolt -sched 19900000
-getvolt -sched 20000000
+calibillum -illum 1.0 -i 1.14 -sched 10000000
+getvolt -sched 12000000
+getvolt -sched 13000000
+getvolt -sched 14000000
+getvolt -sched 15000000
+getvolt -sched 16000000
+flashmeasure -illum 1.0 -t 1000 -DUMP -sched 17000000
+setledillum -illum 1.0 -sched 20000000
 getvolt -sched 20100000
-ENDSEQUENCE -sched 22100000
+getvolt -sched 21100000
+getvolt -sched 22100000
+getvolt -sched 23100000
+getvolt -sched 24100000
+getvolt -sched 25100000
+getvolt -sched 26100000
+getvolt -sched 27100000
+getvolt -sched 28100000
+getvolt -sched 29100000
+getvolt -sched 30100000
+getvolt -sched 31100000
+getvolt -sched 32100000
+getvolt -sched 33100000
+getvolt -sched 34100000
+getvolt -sched 35100000
+getvolt -sched 36100000
+getvolt -sched 37100000
+getvolt -sched 38100000
+getvolt -sched 39100000
+getvolt -sched 40100000
+getvolt -sched 41100000
+getvolt -sched 42100000
+getvolt -sched 43100000
+getvolt -sched 44100000
+getvolt -sched 45100000
+getvolt -sched 46100000
+getvolt -sched 47100000
+getvolt -sched 48100000
+getvolt -sched 49100000
+getvolt -sched 50100000
+getvolt -sched 51100000
+getvolt -sched 52100000
+getvolt -sched 53100000
+getvolt -sched 54100000
+getvolt -sched 55100000
+getvolt -sched 56100000
+getvolt -sched 57100000
+getvolt -sched 58100000
+getvolt -sched 59100000
+getvolt -sched 60100000
+getvolt -sched 61100000
+getvolt -sched 62100000
+getvolt -sched 63100000
+getvolt -sched 64100000
+getvolt -sched 65100000
+getvolt -sched 66100000
+getvolt -sched 67100000
+getvolt -sched 68100000
+getvolt -sched 69100000
+getvolt -sched 70100000
+getvolt -sched 71100000
+getvolt -sched 72100000
+getvolt -sched 73100000
+getvolt -sched 74100000
+getvolt -sched 75100000
+getvolt -sched 76100000
+getvolt -sched 77100000
+getvolt -sched 78100000
+getvolt -sched 79100000
+getvolt -sched 80100000
+getvolt -sched 81100000
+getvolt -sched 82100000
+getvolt -sched 83100000
+getvolt -sched 84100000
+getvolt -sched 85100000
+getvolt -sched 86100000
+getvolt -sched 87100000
+getvolt -sched 88100000
+getvolt -sched 89100000
+getvolt -sched 90100000
+getvolt -sched 91100000
+getvolt -sched 92100000
+getvolt -sched 93100000
+getvolt -sched 94100000
+getvolt -sched 95100000
+getvolt -sched 96100000
+getvolt -sched 97100000
+getvolt -sched 98100000
+getvolt -sched 99100000
+getvolt -sched 100100000
+getvolt -sched 101100000
+getvolt -sched 102100000
+getvolt -sched 103100000
+getvolt -sched 104100000
+getvolt -sched 105100000
+getvolt -sched 106100000
+getvolt -sched 107100000
+getvolt -sched 108100000
+getvolt -sched 109100000
+getvolt -sched 110100000
+getvolt -sched 111100000
+getvolt -sched 112100000
+getvolt -sched 113100000
+getvolt -sched 114100000
+getvolt -sched 115100000
+getvolt -sched 116100000
+getvolt -sched 117100000
+getvolt -sched 118100000
+getvolt -sched 119100000
+getvolt -sched 120100000
+getvolt -sched 121100000
+getvolt -sched 122100000
+getvolt -sched 123100000
+getvolt -sched 124100000
+getvolt -sched 125100000
+getvolt -sched 126100000
+getvolt -sched 127100000
+getvolt -sched 128100000
+getvolt -sched 129100000
+getvolt -sched 130100000
+getvolt -sched 131100000
+getvolt -sched 132100000
+getvolt -sched 133100000
+getvolt -sched 134100000
+getvolt -sched 135100000
+getvolt -sched 136100000
+getvolt -sched 137100000
+getvolt -sched 138100000
+getvolt -sched 139100000
+getvolt -sched 140100000
+getvolt -sched 141100000
+getvolt -sched 142100000
+getvolt -sched 143100000
+getvolt -sched 144100000
+getvolt -sched 145100000
+getvolt -sched 146100000
+getvolt -sched 147100000
+getvolt -sched 148100000
+getvolt -sched 149100000
+getvolt -sched 150100000
+getvolt -sched 151100000
+getvolt -sched 152100000
+getvolt -sched 153100000
+getvolt -sched 154100000
+getvolt -sched 155100000
+getvolt -sched 156100000
+getvolt -sched 157100000
+getvolt -sched 158100000
+getvolt -sched 159100000
+getvolt -sched 160100000
+getvolt -sched 161100000
+getvolt -sched 162100000
+getvolt -sched 163100000
+getvolt -sched 164100000
+getvolt -sched 165100000
+getvolt -sched 166100000
+getvolt -sched 167100000
+getvolt -sched 168100000
+getvolt -sched 169100000
+getvolt -sched 170100000
+getvolt -sched 171100000
+getvolt -sched 172100000
+getvolt -sched 173100000
+getvolt -sched 174100000
+getvolt -sched 175100000
+getvolt -sched 176100000
+getvolt -sched 177100000
+getvolt -sched 178100000
+getvolt -sched 179100000
+getvolt -sched 180100000
+getvolt -sched 181100000
+getvolt -sched 182100000
+getvolt -sched 183100000
+getvolt -sched 184100000
+getvolt -sched 185100000
+getvolt -sched 186100000
+getvolt -sched 187100000
+getvolt -sched 188100000
+getvolt -sched 189100000
+getvolt -sched 190100000
+getvolt -sched 191100000
+getvolt -sched 192100000
+getvolt -sched 193100000
+getvolt -sched 194100000
+getvolt -sched 195100000
+getvolt -sched 196100000
+getvolt -sched 197100000
+getvolt -sched 198100000
+getvolt -sched 199100000
+getvolt -sched 200100000
+getvolt -sched 201100000
+getvolt -sched 202100000
+getvolt -sched 203100000
+getvolt -sched 204100000
+getvolt -sched 205100000
+getvolt -sched 206100000
+getvolt -sched 207100000
+getvolt -sched 208100000
+getvolt -sched 209100000
+getvolt -sched 210100000
+getvolt -sched 211100000
+getvolt -sched 212100000
+getvolt -sched 213100000
+getvolt -sched 214100000
+getvolt -sched 215100000
+getvolt -sched 216100000
+getvolt -sched 217100000
+getvolt -sched 218100000
+getvolt -sched 219100000
+getvolt -sched 220100000
+getvolt -sched 221100000
+getvolt -sched 222100000
+getvolt -sched 223100000
+getvolt -sched 224100000
+getvolt -sched 225100000
+getvolt -sched 226100000
+getvolt -sched 227100000
+getvolt -sched 228100000
+getvolt -sched 229100000
+getvolt -sched 230100000
+getvolt -sched 231100000
+getvolt -sched 232100000
+getvolt -sched 233100000
+getvolt -sched 234100000
+getvolt -sched 235100000
+getvolt -sched 236100000
+getvolt -sched 237100000
+getvolt -sched 238100000
+getvolt -sched 239100000
+getvolt -sched 240100000
+getvolt -sched 241100000
+getvolt -sched 242100000
+getvolt -sched 243100000
+getvolt -sched 244100000
+getvolt -sched 245100000
+getvolt -sched 246100000
+getvolt -sched 247100000
+getvolt -sched 248100000
+getvolt -sched 249100000
+getvolt -sched 250100000
+getvolt -sched 251100000
+getvolt -sched 252100000
+getvolt -sched 253100000
+getvolt -sched 254100000
+getvolt -sched 255100000
+getvolt -sched 256100000
+getvolt -sched 257100000
+getvolt -sched 258100000
+getvolt -sched 259100000
+getvolt -sched 260100000
+getvolt -sched 261100000
+getvolt -sched 262100000
+getvolt -sched 263100000
+getvolt -sched 264100000
+getvolt -sched 265100000
+getvolt -sched 266100000
+getvolt -sched 267100000
+getvolt -sched 268100000
+getvolt -sched 269100000
+getvolt -sched 270100000
+getvolt -sched 271100000
+getvolt -sched 272100000
+getvolt -sched 273100000
+getvolt -sched 274100000
+getvolt -sched 275100000
+getvolt -sched 276100000
+getvolt -sched 277100000
+getvolt -sched 278100000
+getvolt -sched 279100000
+getvolt -sched 280100000
+getvolt -sched 281100000
+getvolt -sched 282100000
+getvolt -sched 283100000
+getvolt -sched 284100000
+getvolt -sched 285100000
+getvolt -sched 286100000
+getvolt -sched 287100000
+getvolt -sched 288100000
+getvolt -sched 289100000
+getvolt -sched 290100000
+getvolt -sched 291100000
+getvolt -sched 292100000
+getvolt -sched 293100000
+getvolt -sched 294100000
+getvolt -sched 295100000
+getvolt -sched 296100000
+getvolt -sched 297100000
+getvolt -sched 298100000
+getvolt -sched 299100000
+getvolt -sched 300100000
+getvolt -sched 301100000
+getvolt -sched 302100000
+getvolt -sched 303100000
+getvolt -sched 304100000
+getvolt -sched 305100000
+getvolt -sched 306100000
+getvolt -sched 307100000
+getvolt -sched 308100000
+getvolt -sched 309100000
+getvolt -sched 310100000
+getvolt -sched 311100000
+getvolt -sched 312100000
+getvolt -sched 313100000
+getvolt -sched 314100000
+getvolt -sched 315100000
+getvolt -sched 316100000
+getvolt -sched 317100000
+getvolt -sched 318100000
+getvolt -sched 319100000
+getvolt -sched 320100000
+getvolt -sched 321100000
+getvolt -sched 322100000
+getvolt -sched 323100000
+getvolt -sched 324100000
+getvolt -sched 325100000
+getvolt -sched 326100000
+getvolt -sched 327100000
+getvolt -sched 328100000
+getvolt -sched 329100000
+getvolt -sched 330100000
+getvolt -sched 331100000
+getvolt -sched 332100000
+getvolt -sched 333100000
+getvolt -sched 334100000
+getvolt -sched 335100000
+getvolt -sched 336100000
+getvolt -sched 337100000
+getvolt -sched 338100000
+getvolt -sched 339100000
+getvolt -sched 340100000
+getvolt -sched 341100000
+getvolt -sched 342100000
+getvolt -sched 343100000
+getvolt -sched 344100000
+getvolt -sched 345100000
+getvolt -sched 346100000
+getvolt -sched 347100000
+getvolt -sched 348100000
+getvolt -sched 349100000
+getvolt -sched 350100000
+getvolt -sched 351100000
+getvolt -sched 352100000
+getvolt -sched 353100000
+getvolt -sched 354100000
+getvolt -sched 355100000
+getvolt -sched 356100000
+getvolt -sched 357100000
+getvolt -sched 358100000
+getvolt -sched 359100000
+getvolt -sched 360100000
+getvolt -sched 361100000
+getvolt -sched 362100000
+getvolt -sched 363100000
+getvolt -sched 364100000
+getvolt -sched 365100000
+getvolt -sched 366100000
+getvolt -sched 367100000
+getvolt -sched 368100000
+getvolt -sched 369100000
+getvolt -sched 370100000
+getvolt -sched 371100000
+getvolt -sched 372100000
+getvolt -sched 373100000
+getvolt -sched 374100000
+getvolt -sched 375100000
+getvolt -sched 376100000
+getvolt -sched 377100000
+getvolt -sched 378100000
+getvolt -sched 379100000
+getvolt -sched 380100000
+getvolt -sched 381100000
+getvolt -sched 382100000
+getvolt -sched 383100000
+getvolt -sched 384100000
+getvolt -sched 385100000
+getvolt -sched 386100000
+getvolt -sched 387100000
+getvolt -sched 388100000
+getvolt -sched 389100000
+getvolt -sched 390100000
+getvolt -sched 391100000
+getvolt -sched 392100000
+getvolt -sched 393100000
+getvolt -sched 394100000
+getvolt -sched 395100000
+getvolt -sched 396100000
+getvolt -sched 397100000
+getvolt -sched 398100000
+getvolt -sched 399100000
+getvolt -sched 400100000
+getvolt -sched 401100000
+getvolt -sched 402100000
+getvolt -sched 403100000
+getvolt -sched 404100000
+getvolt -sched 405100000
+getvolt -sched 406100000
+getvolt -sched 407100000
+getvolt -sched 408100000
+getvolt -sched 409100000
+getvolt -sched 410100000
+getvolt -sched 411100000
+getvolt -sched 412100000
+getvolt -sched 413100000
+getvolt -sched 414100000
+getvolt -sched 415100000
+getvolt -sched 416100000
+getvolt -sched 417100000
+getvolt -sched 418100000
+getvolt -sched 419100000
+getvolt -sched 420100000
+getvolt -sched 421100000
+getvolt -sched 422100000
+getvolt -sched 423100000
+getvolt -sched 424100000
+getvolt -sched 425100000
+getvolt -sched 426100000
+getvolt -sched 427100000
+getvolt -sched 428100000
+getvolt -sched 429100000
+getvolt -sched 430100000
+getvolt -sched 431100000
+getvolt -sched 432100000
+getvolt -sched 433100000
+getvolt -sched 434100000
+getvolt -sched 435100000
+getvolt -sched 436100000
+getvolt -sched 437100000
+getvolt -sched 438100000
+getvolt -sched 439100000
+getvolt -sched 440100000
+getvolt -sched 441100000
+getvolt -sched 442100000
+getvolt -sched 443100000
+getvolt -sched 444100000
+getvolt -sched 445100000
+getvolt -sched 446100000
+getvolt -sched 447100000
+getvolt -sched 448100000
+getvolt -sched 449100000
+getvolt -sched 450100000
+getvolt -sched 451100000
+getvolt -sched 452100000
+getvolt -sched 453100000
+getvolt -sched 454100000
+getvolt -sched 455100000
+getvolt -sched 456100000
+getvolt -sched 457100000
+getvolt -sched 458100000
+getvolt -sched 459100000
+getvolt -sched 460100000
+getvolt -sched 461100000
+getvolt -sched 462100000
+getvolt -sched 463100000
+getvolt -sched 464100000
+getvolt -sched 465100000
+getvolt -sched 466100000
+getvolt -sched 467100000
+getvolt -sched 468100000
+getvolt -sched 469100000
+getvolt -sched 470100000
+getvolt -sched 471100000
+getvolt -sched 472100000
+getvolt -sched 473100000
+getvolt -sched 474100000
+getvolt -sched 475100000
+getvolt -sched 476100000
+getvolt -sched 477100000
+getvolt -sched 478100000
+getvolt -sched 479100000
+getvolt -sched 480100000
+getvolt -sched 481100000
+getvolt -sched 482100000
+getvolt -sched 483100000
+getvolt -sched 484100000
+getvolt -sched 485100000
+getvolt -sched 486100000
+getvolt -sched 487100000
+getvolt -sched 488100000
+getvolt -sched 489100000
+getvolt -sched 490100000
+getvolt -sched 491100000
+getvolt -sched 492100000
+getvolt -sched 493100000
+getvolt -sched 494100000
+getvolt -sched 495100000
+getvolt -sched 496100000
+getvolt -sched 497100000
+getvolt -sched 498100000
+getvolt -sched 499100000
+getvolt -sched 500100000
+getvolt -sched 501100000
+getvolt -sched 502100000
+getvolt -sched 503100000
+getvolt -sched 504100000
+getvolt -sched 505100000
+getvolt -sched 506100000
+getvolt -sched 507100000
+getvolt -sched 508100000
+getvolt -sched 509100000
+getvolt -sched 510100000
+getvolt -sched 511100000
+getvolt -sched 512100000
+getvolt -sched 513100000
+getvolt -sched 514100000
+getvolt -sched 515100000
+getvolt -sched 516100000
+getvolt -sched 517100000
+getvolt -sched 518100000
+getvolt -sched 519100000
+getvolt -sched 520100000
+getvolt -sched 521100000
+getvolt -sched 522100000
+getvolt -sched 523100000
+getvolt -sched 524100000
+getvolt -sched 525100000
+getvolt -sched 526100000
+getvolt -sched 527100000
+getvolt -sched 528100000
+getvolt -sched 529100000
+getvolt -sched 530100000
+getvolt -sched 531100000
+getvolt -sched 532100000
+getvolt -sched 533100000
+getvolt -sched 534100000
+getvolt -sched 535100000
+getvolt -sched 536100000
+getvolt -sched 537100000
+getvolt -sched 538100000
+getvolt -sched 539100000
+getvolt -sched 540100000
+getvolt -sched 541100000
+getvolt -sched 542100000
+getvolt -sched 543100000
+getvolt -sched 544100000
+getvolt -sched 545100000
+getvolt -sched 546100000
+getvolt -sched 547100000
+getvolt -sched 548100000
+getvolt -sched 549100000
+getvolt -sched 550100000
+getvolt -sched 551100000
+getvolt -sched 552100000
+getvolt -sched 553100000
+getvolt -sched 554100000
+getvolt -sched 555100000
+getvolt -sched 556100000
+getvolt -sched 557100000
+getvolt -sched 558100000
+getvolt -sched 559100000
+getvolt -sched 560100000
+getvolt -sched 561100000
+getvolt -sched 562100000
+getvolt -sched 563100000
+getvolt -sched 564100000
+getvolt -sched 565100000
+getvolt -sched 566100000
+getvolt -sched 567100000
+getvolt -sched 568100000
+getvolt -sched 569100000
+getvolt -sched 570100000
+getvolt -sched 571100000
+getvolt -sched 572100000
+getvolt -sched 573100000
+getvolt -sched 574100000
+getvolt -sched 575100000
+getvolt -sched 576100000
+getvolt -sched 577100000
+getvolt -sched 578100000
+getvolt -sched 579100000
+getvolt -sched 580100000
+getvolt -sched 581100000
+getvolt -sched 582100000
+getvolt -sched 583100000
+getvolt -sched 584100000
+getvolt -sched 585100000
+getvolt -sched 586100000
+getvolt -sched 587100000
+getvolt -sched 588100000
+getvolt -sched 589100000
+getvolt -sched 590100000
+getvolt -sched 591100000
+getvolt -sched 592100000
+getvolt -sched 593100000
+getvolt -sched 594100000
+getvolt -sched 595100000
+getvolt -sched 596100000
+getvolt -sched 597100000
+getvolt -sched 598100000
+getvolt -sched 599100000
+getvolt -sched 600100000
+getvolt -sched 601100000
+getvolt -sched 602100000
+getvolt -sched 603100000
+getvolt -sched 604100000
+getvolt -sched 605100000
+getvolt -sched 606100000
+getvolt -sched 607100000
+getvolt -sched 608100000
+getvolt -sched 609100000
+getvolt -sched 610100000
+getvolt -sched 611100000
+getvolt -sched 612100000
+getvolt -sched 613100000
+getvolt -sched 614100000
+getvolt -sched 615100000
+getvolt -sched 616100000
+getvolt -sched 617100000
+getvolt -sched 618100000
+getvolt -sched 619100000
+setledillum -illum 0.0 -sched 619600000
+flashmeasure -illum 1.0 -t 1000 -DUMP -sched 620100000
+flashmeasure -illum 1.0 -t 1000 -DUMP -sched 625100000
+flashmeasure -illum 1.0 -t 1000 -DUMP -sched 630100000
+flashmeasure -illum 1.0 -t 1000 -DUMP -sched 635100000
+flashmeasure -illum 1.0 -t 1000 -DUMP -sched 640100000
+flashmeasure -illum 1.0 -t 1000 -DUMP -sched 645100000
+flashmeasure -illum 1.0 -t 1000 -DUMP -sched 650100000
+flashmeasure -illum 1.0 -t 1000 -DUMP -sched 655100000
+flashmeasure -illum 1.0 -t 1000 -DUMP -sched 660100000
+flashmeasure -illum 1.0 -t 1000 -DUMP -sched 665100000
+flashmeasure -illum 1.0 -t 1000 -DUMP -sched 670100000
+flashmeasure -illum 1.0 -t 1000 -DUMP -sched 675100000
+flashmeasure -illum 1.0 -t 1000 -DUMP -sched 680100000
+flashmeasure -illum 1.0 -t 1000 -DUMP -sched 685100000
+flashmeasure -illum 1.0 -t 1000 -DUMP -sched 690100000
+flashmeasure -illum 1.0 -t 1000 -DUMP -sched 695100000
+flashmeasure -illum 1.0 -t 1000 -DUMP -sched 700100000
+flashmeasure -illum 1.0 -t 1000 -DUMP -sched 705100000
+flashmeasure -illum 1.0 -t 1000 -DUMP -sched 710100000
+flashmeasure -illum 1.0 -t 1000 -DUMP -sched 715100000
+flashmeasure -illum 1.0 -t 1000 -DUMP -sched 720100000
+flashmeasure -illum 1.0 -t 1000 -DUMP -sched 725100000
+flashmeasure -illum 1.0 -t 1000 -DUMP -sched 730100000
+flashmeasure -illum 1.0 -t 1000 -DUMP -sched 735100000
+flashmeasure -illum 1.0 -t 1000 -DUMP -sched 740100000
+flashmeasure -illum 1.0 -t 1000 -DUMP -sched 745100000
+flashmeasure -illum 1.0 -t 1000 -DUMP -sched 750100000
+flashmeasure -illum 1.0 -t 1000 -DUMP -sched 755100000
+flashmeasure -illum 1.0 -t 1000 -DUMP -sched 760100000
+flashmeasure -illum 1.0 -t 1000 -DUMP -sched 765100000
+flashmeasure -illum 1.0 -t 1000 -DUMP -sched 770100000
+flashmeasure -illum 1.0 -t 1000 -DUMP -sched 775100000
+flashmeasure -illum 1.0 -t 1000 -DUMP -sched 780100000
+flashmeasure -illum 1.0 -t 1000 -DUMP -sched 785100000
+flashmeasure -illum 1.0 -t 1000 -DUMP -sched 790100000
+flashmeasure -illum 1.0 -t 1000 -DUMP -sched 795100000
+flashmeasure -illum 1.0 -t 1000 -DUMP -sched 800100000
+flashmeasure -illum 1.0 -t 1000 -DUMP -sched 805100000
+flashmeasure -illum 1.0 -t 1000 -DUMP -sched 810100000
+flashmeasure -illum 1.0 -t 1000 -DUMP -sched 815100000
+flashmeasure -illum 1.0 -t 1000 -DUMP -sched 820100000
+flashmeasure -illum 1.0 -t 1000 -DUMP -sched 825100000
+flashmeasure -illum 1.0 -t 1000 -DUMP -sched 830100000
+flashmeasure -illum 1.0 -t 1000 -DUMP -sched 835100000
+flashmeasure -illum 1.0 -t 1000 -DUMP -sched 840100000
+flashmeasure -illum 1.0 -t 1000 -DUMP -sched 845100000
+flashmeasure -illum 1.0 -t 1000 -DUMP -sched 850100000
+flashmeasure -illum 1.0 -t 1000 -DUMP -sched 855100000
+flashmeasure -illum 1.0 -t 1000 -DUMP -sched 860100000
+flashmeasure -illum 1.0 -t 1000 -DUMP -sched 865100000
+flashmeasure -illum 1.0 -t 1000 -DUMP -sched 870100000
+flashmeasure -illum 1.0 -t 1000 -DUMP -sched 875100000
+flashmeasure -illum 1.0 -t 1000 -DUMP -sched 880100000
+flashmeasure -illum 1.0 -t 1000 -DUMP -sched 885100000
+flashmeasure -illum 1.0 -t 1000 -DUMP -sched 890100000
+flashmeasure -illum 1.0 -t 1000 -DUMP -sched 895100000
+flashmeasure -illum 1.0 -t 1000 -DUMP -sched 900100000
+flashmeasure -illum 1.0 -t 1000 -DUMP -sched 905100000
+flashmeasure -illum 1.0 -t 1000 -DUMP -sched 910100000
+flashmeasure -illum 1.0 -t 1000 -DUMP -sched 915100000
+flashmeasure -illum 1.0 -t 1000 -DUMP -sched 920100000
+flashmeasure -illum 1.0 -t 1000 -DUMP -sched 925100000
+flashmeasure -illum 1.0 -t 1000 -DUMP -sched 930100000
+flashmeasure -illum 1.0 -t 1000 -DUMP -sched 935100000
+flashmeasure -illum 1.0 -t 1000 -DUMP -sched 940100000
+flashmeasure -illum 1.0 -t 1000 -DUMP -sched 945100000
+flashmeasure -illum 1.0 -t 1000 -DUMP -sched 950100000
+flashmeasure -illum 1.0 -t 1000 -DUMP -sched 955100000
+flashmeasure -illum 1.0 -t 1000 -DUMP -sched 960100000
+flashmeasure -illum 1.0 -t 1000 -DUMP -sched 965100000
+flashmeasure -illum 1.0 -t 1000 -DUMP -sched 970100000
+flashmeasure -illum 1.0 -t 1000 -DUMP -sched 975100000
+flashmeasure -illum 1.0 -t 1000 -DUMP -sched 980100000
+flashmeasure -illum 1.0 -t 1000 -DUMP -sched 985100000
+flashmeasure -illum 1.0 -t 1000 -DUMP -sched 990100000
+flashmeasure -illum 1.0 -t 1000 -DUMP -sched 995100000
+flashmeasure -illum 1.0 -t 1000 -DUMP -sched 1000100000
+flashmeasure -illum 1.0 -t 1000 -DUMP -sched 1005100000
+flashmeasure -illum 1.0 -t 1000 -DUMP -sched 1010100000
+flashmeasure -illum 1.0 -t 1000 -DUMP -sched 1015100000
+flashmeasure -illum 1.0 -t 1000 -DUMP -sched 1020100000
+flashmeasure -illum 1.0 -t 1000 -DUMP -sched 1025100000
+flashmeasure -illum 1.0 -t 1000 -DUMP -sched 1030100000
+flashmeasure -illum 1.0 -t 1000 -DUMP -sched 1035100000
+flashmeasure -illum 1.0 -t 1000 -DUMP -sched 1040100000
+flashmeasure -illum 1.0 -t 1000 -DUMP -sched 1045100000
+flashmeasure -illum 1.0 -t 1000 -DUMP -sched 1050100000
+flashmeasure -illum 1.0 -t 1000 -DUMP -sched 1055100000
+flashmeasure -illum 1.0 -t 1000 -DUMP -sched 1060100000
+flashmeasure -illum 1.0 -t 1000 -DUMP -sched 1065100000
+flashmeasure -illum 1.0 -t 1000 -DUMP -sched 1070100000
+flashmeasure -illum 1.0 -t 1000 -DUMP -sched 1075100000
+flashmeasure -illum 1.0 -t 1000 -DUMP -sched 1080100000
+flashmeasure -illum 1.0 -t 1000 -DUMP -sched 1085100000
+flashmeasure -illum 1.0 -t 1000 -DUMP -sched 1090100000
+flashmeasure -illum 1.0 -t 1000 -DUMP -sched 1095100000
+flashmeasure -illum 1.0 -t 1000 -DUMP -sched 1100100000
+flashmeasure -illum 1.0 -t 1000 -DUMP -sched 1105100000
+flashmeasure -illum 1.0 -t 1000 -DUMP -sched 1110100000
+flashmeasure -illum 1.0 -t 1000 -DUMP -sched 1115100000
+flashmeasure -illum 1.0 -t 1000 -DUMP -sched 1120100000
+flashmeasure -illum 1.0 -t 1000 -DUMP -sched 1125100000
+flashmeasure -illum 1.0 -t 1000 -DUMP -sched 1130100000
+flashmeasure -illum 1.0 -t 1000 -DUMP -sched 1135100000
+flashmeasure -illum 1.0 -t 1000 -DUMP -sched 1140100000
+flashmeasure -illum 1.0 -t 1000 -DUMP -sched 1145100000
+flashmeasure -illum 1.0 -t 1000 -DUMP -sched 1150100000
+flashmeasure -illum 1.0 -t 1000 -DUMP -sched 1155100000
+flashmeasure -illum 1.0 -t 1000 -DUMP -sched 1160100000
+flashmeasure -illum 1.0 -t 1000 -DUMP -sched 1165100000
+flashmeasure -illum 1.0 -t 1000 -DUMP -sched 1170100000
+flashmeasure -illum 1.0 -t 1000 -DUMP -sched 1175100000
+flashmeasure -illum 1.0 -t 1000 -DUMP -sched 1180100000
+flashmeasure -illum 1.0 -t 1000 -DUMP -sched 1185100000
+flashmeasure -illum 1.0 -t 1000 -DUMP -sched 1190100000
+flashmeasure -illum 1.0 -t 1000 -DUMP -sched 1195100000
+flashmeasure -illum 1.0 -t 1000 -DUMP -sched 1200100000
+flashmeasure -illum 1.0 -t 1000 -DUMP -sched 1205100000
+flashmeasure -illum 1.0 -t 1000 -DUMP -sched 1210100000
+flashmeasure -illum 1.0 -t 1000 -DUMP -sched 1215100000
+setledillum -illum 1.0 -sched 1220100000
+getivchar -c 1 -vs 0.0 -ve 0.6 -s 0.01 -sched 1220200000
+getivchar -c 3 -vs 0.0 -ve 0.6 -s 0.01 -sched 1222200000
+setledillum -illum 0.0 -sched 1224200000
+ENDSEQUENCE -sched 1226200000
 ########################
 
-Estimated total test Duration: 22.1s
+Estimated total test Duration: 1226.2s
 
-LED Temperature at start of test: 0.0C
+LED Temperature at start of test: 25.25C
 
-DUT Temperature at start of test: 29.565475463867188C
+DUT Temperature at start of test: 25.211227416992188C
 
+ ### End of Test ### 

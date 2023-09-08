@@ -12,10 +12,11 @@ import os
 import shutil
 
 def exit_handler():
-     # disable temperature control
-    print("Disabling temperature control...")
-    tempctrl.disable_temp_ctrl()
-    time.sleep(1)
+    # disable temperature control 
+    if(cnfg.target_dut_temp != "False"):
+        print("Disabling temperature control...")
+        tempctrl.disable_temp_ctrl()
+        time.sleep(1)
     #reboot HW
     hw.reboot()
     raise SystemExit
@@ -25,7 +26,7 @@ signal.signal(signal.SIGINT, exit_handler)
 signal.signal(signal.SIGTERM, exit_handler)
 
 # config_file = "test_config.json"
-config_file = "data/config3.json"
+config_file = "data/config.json"
 output_dir = "data/output/"
 
 # Check if the directory exists
@@ -202,7 +203,8 @@ try:
             # get dut temperature and save to database
 
             # add temperature to data dict
-            data_dict["DUT_temp"] = tempctrl.get_dut_temp()
+            if(cnfg.target_dut_temp != "False"):
+                data_dict["DUT_temp"] = tempctrl.get_dut_temp()
             # for testing purposes, add led temp to data dict
             # data_dict["ledtemp"] = hw.get_led_temp()
 
@@ -212,6 +214,7 @@ try:
             pass
         
 
+    print("Sequence complete!")
 
     #close txt file
     infotxt.write(" ### End of Test ### \n")

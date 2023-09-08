@@ -521,7 +521,7 @@ class Measurement(BaseModel):
     ch4_curr = FloatField(null=True)
     ch5_curr = FloatField(null=True)
     ch6_curr = FloatField(null=True)
-    DUT_temp = FloatField()
+    DUT_temp = FloatField(null=True)
     ledtemp = FloatField(null=True)
     meas_type = TextField()
     sample_count = IntegerField(null=True)

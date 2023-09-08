@@ -1,18 +1,25 @@
 {
     "parameters": {
-        "Test_ID": "test123",
-        "Test_notes": "This is a test",
+        "Test_ID": "Dummy light soaking test",
+        "Test_notes": "A demo light soaking test",
         "DUT_Serial_Number": "123we4sdfgqw56",
-        "DUT_target_temperature": 30.0,
-        "DUT_wait_temp_settle": 10.0,
+        "DUT_target_temperature": 18.0,
+        "DUT_wait_temp_settle": 60.0,
         "hw_port": "/dev/cu.usbserial-02B11B94",
         "temp_ctrl_port": "/dev/tty.usbserial-DM01ZEIN"
     },
     "sequence": [
         {
-            "cli_cmd": "getvolt",
+            "cli_cmd": "calibillum -illum 1.0 -i 1.14",
             "time_type": "abs",
             "time": 10,
+            "repeat": 0,
+            "interval": 0
+        },
+        {
+            "cli_cmd": "getvolt",
+            "time_type": "rel",
+            "time": 2,
             "repeat": 5,
             "interval": 1
         },
@@ -27,16 +34,16 @@
         {
             "cli_cmd": "setledillum -illum 1.0",
             "time_type": "rel",
-            "time": 1,
+            "time": 3,
             "repeat": 0,
             "interval": 0
         },
         {
             "cli_cmd": "getvolt",
             "time_type": "rel",
-            "time": 0.5,
-            "repeat": 20,
-            "interval": 0.5
+            "time": 0.1,
+            "repeat": 600,
+            "interval": 1
         },
         {
             "cli_cmd": "setledillum -illum 0.0",
@@ -49,9 +56,9 @@
         {
             "cli_cmd": "flashmeasure -illum 1.0 -t 1000 -DUMP",
             "time_type": "rel",
-            "time": 0.1,
-            "repeat": 30,
-            "interval": 2
+            "time": 0.5,
+            "repeat": 120,
+            "interval": 5
         },
         {
             "cli_cmd": "setledillum -illum 1.0",
@@ -68,9 +75,16 @@
             "interval": 0
         },
         {
+            "cli_cmd": "getivchar -c 3 -vs 0.0 -ve 0.6 -s 0.01",
+            "time_type": "rel",
+            "time": 2,
+            "repeat": 0,
+            "interval": 0
+        },
+        {
             "cli_cmd": "setledillum -illum 0.0",
             "time_type": "rel",
-            "time": 5,
+            "time": 2,
             "repeat": 0,
             "interval": 0
         },
