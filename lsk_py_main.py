@@ -12,6 +12,7 @@ import os
 import shutil
 
 def exit_handler():
+    print("END!")
     # disable temperature control 
     if(cnfg.target_dut_temp != "False"):
         print("Disabling temperature control...")
@@ -227,7 +228,7 @@ except Exception as e:
     print("Shutting down and exiting...")
     exit_handler()
 
-print("end")
+
 raise SystemExit
 
 

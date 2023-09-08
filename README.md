@@ -53,7 +53,7 @@ A basic configuration example is provided in this repository.
 - If an exception is raised during execution or the keyboard interrupt is triggered (user presses *ctrl+c*), this code will attempt to disable temperature control and reboot the hardware to stop the sequence.
 
 ### Temperature control
-Temperature control is done by a TEC-1091 module mounted to the main board. To use it with this Python software, it needs to be connected by a sepparate USB cable and the serial port specified in the *config.json* file. If the module is not connected, set temperature target to *"False"*.
+Temperature control is done by a TEC-1091 module mounted to the main board. To use it with this Python software, it needs to be connected by a sepparate USB cable and the serial port specified in the *config.json* file. If the module is not connected, set temperature target to *"False"*. In this case, DUT temperature reading will be empty.
 
 ### Database structure
 
