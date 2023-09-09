@@ -53,6 +53,9 @@ class LightSoakDatabase:
         elif(data_dict["type"] == "getnoise_curr_rms[uA]"):
             self.__save_getnoisecurrms(data_dict)
 
+        elif(data_dict["type"] == "setledillum"):
+            self.__save_setledillum(data_dict)
+
 
 
     def close_db(self):
@@ -494,6 +497,14 @@ class LightSoakDatabase:
             meas_type = data_dict.get("type")
         )
         meas.save()
+
+    def __save_setledillum(self, data_dict):
+        meas = Measurement(
+            timestamp = data_dict.get("timestamp", None),
+            ledillum = data_dict.get("ledillum", None),
+            meas_type = data_dict.get("type")
+        )
+        meas.save()
             
 
 
@@ -523,6 +534,7 @@ class Measurement(BaseModel):
     ch6_curr = FloatField(null=True)
     DUT_temp = FloatField(null=True)
     ledtemp = FloatField(null=True)
+    ledillum = FloatField(null=True)
     meas_type = TextField()
     sample_count = IntegerField(null=True)
 

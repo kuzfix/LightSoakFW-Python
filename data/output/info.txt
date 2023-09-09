@@ -1,9 +1,9 @@
  ### General Test Info ### 
-Time: 08-09-2023 12:34:35
+Time: 09-09-2023 17:29:14
 Test ID: Dummy light soaking test
 Test Notes: A demo light soaking test
 DUT Serial: 123we4sdfgqw56
-DUT Target Temp: 18.0
+DUT Target Temp: False
 HW serial port: /dev/cu.usbserial-02B11B94
 
 
@@ -748,8 +748,5 @@ ENDSEQUENCE -sched 1226200000
 
 Estimated total test Duration: 1226.2s
 
-LED Temperature at start of test: 25.25C
+LED Temperature at start of test: 0.0C
 
-DUT Temperature at start of test: 25.211227416992188C
-
- ### End of Test ### 

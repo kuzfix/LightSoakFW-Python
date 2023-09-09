@@ -163,6 +163,16 @@ class LightSoakDataInParser:
                 is_req_new_cmd = False
                 return (data_dict, is_end_sequence, is_req_new_cmd)
             
+            elif(line == "SETLEDILLUM:"):
+                data = []
+                for i in range(0, 2):
+                    data.append(self.__read_line())
+                # parse
+                data_dict = self.parse_setledillum(data)
+                is_end_sequence = False
+                is_req_new_cmd = False
+                return (data_dict, is_end_sequence, is_req_new_cmd)
+            
 
 
             elif(line == "REQ_SCHED_CMD"):
@@ -626,6 +636,22 @@ class LightSoakDataInParser:
 
         return result_dict
 
+
+    def parse_setledillum(self, data_list):
+        # Create dictionary to return
+        result_dict = {}
+        result_dict["type"] = "setledillum"
+
+        # Parse the timestamp
+        base_timestamp = int(data_list[0].split(':')[1])
+        result_dict["timestamp"] = base_timestamp
+
+        # Parse the led illumination
+        illum = float(data_list[1].split(':')[1])
+
+        result_dict["ledillum"] = illum
+
+        return result_dict
 
 
     
