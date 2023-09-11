@@ -1,5 +1,5 @@
  ### General Test Info ### 
-Time: 09-09-2023 17:29:14
+Time: 11-09-2023 12:15:19
 Test ID: Dummy light soaking test
 Test Notes: A demo light soaking test
 DUT Serial: 123we4sdfgqw56

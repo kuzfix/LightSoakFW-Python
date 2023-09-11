@@ -96,25 +96,38 @@ infotxt = open(output_dir + "info.txt" , "w")
 
 # write general test info to file
 infotxt.write(" ### General Test Info ### \n")
+db.save_testinfo_line(" ### General Test Info ### \n")
 now = datetime.datetime.now()
 infotxt.write("Time: " + now.strftime("%d-%m-%Y %H:%M:%S") + "\n")
+db.save_testinfo_line("Time: " + now.strftime("%d-%m-%Y %H:%M:%S") + "\n")
 infotxt.write("Test ID: " + cnfg.test_id + "\n")
+db.save_testinfo_line("Test ID: " + cnfg.test_id + "\n")
 infotxt.write("Test Notes: " + cnfg.test_notes + "\n")
+db.save_testinfo_line("Test Notes: " + cnfg.test_notes + "\n")
 infotxt.write("DUT Serial: " + cnfg.dut_serial + "\n")
+db.save_testinfo_line("DUT Serial: " + cnfg.dut_serial + "\n")
 infotxt.write("DUT Target Temp: " + str(cnfg.target_dut_temp) + "\n")
+db.save_testinfo_line("DUT Target Temp: " + str(cnfg.target_dut_temp) + "\n")
 infotxt.write("HW serial port: " + hw_port + "\n")
+db.save_testinfo_line("HW serial port: " + hw_port + "\n")
 infotxt.write("\n\n")
 
 # write command list to file
 infotxt.write(" ### Command List ### \n")
+db.save_testinfo_line(" ### Command List ### \n")
 infotxt.write("Number of sequence commands: " + str(len(cnfg.cmdlist)) + "\n")
+db.save_testinfo_line("Number of sequence commands: " + str(len(cnfg.cmdlist)) + "\n")
 infotxt.write("########################\n")
+db.save_testinfo_line("########################\n")
 for cmd in cnfg.cmdlist:
     infotxt.write(cmd)
+    db.save_testinfo_line(cmd)
 infotxt.write("########################\n\n")
+db.save_testinfo_line("########################\n\n")
 
 # print test duration to file and console
 infotxt.write("Estimated total test Duration: " + str(cnfg.test_duration) + "s\n\n")
+db.save_testinfo_line("Estimated total test Duration: " + str(cnfg.test_duration) + "s\n\n")
 print("Total test Duration: " + str(cnfg.test_duration) + "s")
 
 
@@ -125,6 +138,7 @@ hw.connect()
 # check and report LED temperature at start of test
 led_temp = hw.get_led_temp()
 infotxt.write("LED Temperature at start of test: " + str(led_temp) + "C\n\n")
+db.save_testinfo_line("LED Temperature at start of test: " + str(led_temp) + "C\n\n")
 
 
 if(cnfg.target_dut_temp != "False"):
@@ -133,6 +147,7 @@ if(cnfg.target_dut_temp != "False"):
     tempctrl.connect_to_hw()
 
     infotxt.write("DUT Temperature at start of test: " + str(tempctrl.get_dut_temp()) + "C\n\n")
+    db.save_testinfo_line("DUT Temperature at start of test: " + str(tempctrl.get_dut_temp()) + "C\n\n")
 
     # enable temperature control
     print("Enabling temperature control...")
@@ -219,6 +234,7 @@ try:
 
     #close txt file
     infotxt.write(" ### End of Test ### \n")
+    db.save_testinfo_line(" ### End of Test ### \n")
     infotxt.close()
 
     exit_handler()

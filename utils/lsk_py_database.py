@@ -14,7 +14,7 @@ class LightSoakDatabase:
 
     def __create_tables(self):
         with self.db:
-            self.db.create_tables([Measurement, BufferDump, CharacteristicIV])
+            self.db.create_tables([Measurement, BufferDump, CharacteristicIV, TestInfo])
 
     def save_to_db(self, data_dict):
         if(data_dict["type"] == "getvolt"):
@@ -505,7 +505,12 @@ class LightSoakDatabase:
             meas_type = data_dict.get("type")
         )
         meas.save()
-            
+
+    def save_testinfo_line(self, line):
+        testinfo = TestInfo(
+            line = line
+        )
+        testinfo.save()
 
 
 
@@ -571,6 +576,10 @@ class CharacteristicIV(BaseModel):
     ch6_curr = FloatField(null=True)
     #reference to row from Measurement table
     measurement = ForeignKeyField(Measurement, backref='characteristic_iv')
+    
+
+class TestInfo(BaseModel):
+    line = TextField()
 
 
 

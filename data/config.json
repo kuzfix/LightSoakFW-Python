@@ -3,7 +3,7 @@
         "Test_ID": "Dummy light soaking test",
         "Test_notes": "A demo light soaking test",
         "DUT_Serial_Number": "123we4sdfgqw56",
-        "DUT_target_temperature": "False",
+        "DUT_target_temperature": "14.2",
         "DUT_wait_temp_settle": 60.0,
         "hw_port": "/dev/cu.usbserial-02B11B94",
         "temp_ctrl_port": "/dev/tty.usbserial-DM01ZEIN"
