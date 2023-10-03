@@ -38,10 +38,12 @@ class LightSoakDataInParser:
             # we got data bois
             self.__last_not_empty_time = time.time()
             if(line == "END_OF_SEQUENCE"):
+                print("Got data: END_OF_SEQUENCE")
                 is_end_sequence = True
                 is_req_new_cmd = False
                 return (None, is_end_sequence, is_req_new_cmd)
             elif(line == "VOLT[V]:"):
+                print("Got data: VOLT[V]:")
                 data = []
                 for i in range(0, 3):
                     data.append(self.__read_line())
@@ -52,6 +54,7 @@ class LightSoakDataInParser:
                 return (data_dict, is_end_sequence, is_req_new_cmd)
             
             elif(line == "CURR[uA]:"):
+                print("Got data: CURR[uA]:")
                 data = []
                 for i in range(0, 3):
                     data.append(self.__read_line())
@@ -62,6 +65,7 @@ class LightSoakDataInParser:
                 return (data_dict, is_end_sequence, is_req_new_cmd)
             
             elif(line == "IV[uA__V]:"):
+                print("Got data: IV[uA__V]:")
                 data = []
                 for i in range(0, 3):
                     data.append(self.__read_line())
@@ -72,6 +76,7 @@ class LightSoakDataInParser:
                 return (data_dict, is_end_sequence, is_req_new_cmd)
             
             elif(line == "FLASHMEAS_DUMP:"):
+                print("Got data: FLASHMEAS_DUMP:")
                 data = []
                 while(True):
                     data.append(self.__read_line())
@@ -86,6 +91,7 @@ class LightSoakDataInParser:
                 return (data_dict, is_end_sequence, is_req_new_cmd)
             
             elif(line == "DUMPVOLT[V]:"):
+                print("Got data: DUMPVOLT[V]:")
                 data = []
                 while(True):
                     data.append(self.__read_line())
@@ -98,6 +104,7 @@ class LightSoakDataInParser:
                 return (data_dict, is_end_sequence, is_req_new_cmd)
             
             elif(line == "DUMPCURR[uA]:"):
+                print("Got data: DUMPCURR[uA]:")
                 data = []
                 while(True):
                     data.append(self.__read_line())
@@ -110,6 +117,7 @@ class LightSoakDataInParser:
                 return (data_dict, is_end_sequence, is_req_new_cmd)
 
             elif(line == "DUMPIVPT[uA__V]:"):
+                print("Got data: DUMPIVPT[uA__V]:")
                 data = []
                 while(True):
                     data.append(self.__read_line())
@@ -122,6 +130,7 @@ class LightSoakDataInParser:
                 return (data_dict, is_end_sequence, is_req_new_cmd)
             
             elif(line == "IVCHAR[uA__V]:"):
+                print("Got data: IVCHAR[uA__V]:")
                 data = []
                 while(True):
                     data.append(self.__read_line())
@@ -134,6 +143,7 @@ class LightSoakDataInParser:
                 return (data_dict, is_end_sequence, is_req_new_cmd)
 
             elif(line == "LEDTEMP:"):
+                print("Got data: LEDTEMP:")
                 data = []
                 for i in range(0, 2):
                     data.append(self.__read_line())
@@ -144,6 +154,7 @@ class LightSoakDataInParser:
                 return (data_dict, is_end_sequence, is_req_new_cmd)
             
             elif(line == "RMS_VOLTNOISE[mV]:"):
+                print("Got data: RMS_VOLTNOISE[mV]:")
                 data = []
                 for i in range(0, 3):
                     data.append(self.__read_line())
@@ -154,6 +165,7 @@ class LightSoakDataInParser:
                 return (data_dict, is_end_sequence, is_req_new_cmd)
             
             elif(line == "RMS_CURRNOISE[uA]:"):
+                print("Got data: RMS_CURRNOISE[uA]:")
                 data = []
                 for i in range(0, 3):
                     data.append(self.__read_line())
@@ -164,6 +176,7 @@ class LightSoakDataInParser:
                 return (data_dict, is_end_sequence, is_req_new_cmd)
             
             elif(line == "SETLEDILLUM:"):
+                print("Got data: SETLEDILLUM:")
                 data = []
                 for i in range(0, 2):
                     data.append(self.__read_line())
@@ -176,6 +189,7 @@ class LightSoakDataInParser:
 
 
             elif(line == "REQ_SCHED_CMD"):
+                print("Got data: REQ_SCHED_CMD")
                 # HW requested new cmds. return to run loop
                 is_end_sequence = False
                 is_req_new_cmd = True

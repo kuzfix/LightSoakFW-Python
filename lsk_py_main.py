@@ -27,7 +27,7 @@ signal.signal(signal.SIGINT, exit_handler)
 signal.signal(signal.SIGTERM, exit_handler)
 
 # config_file = "test_config.json"
-config_file = "data/config.json"
+config_file = "data/config4.json"
 output_dir = "data/output/"
 
 # Check if the directory exists
@@ -225,6 +225,7 @@ try:
             # data_dict["ledtemp"] = hw.get_led_temp()
 
             # time.sleep(0.1)
+            # for testing purposes, print led temp
             # print(data_dict.get("ledtemp", None))
             db.save_to_db(data_dict)
             pass
