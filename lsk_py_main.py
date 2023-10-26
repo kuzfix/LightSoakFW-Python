@@ -26,8 +26,8 @@ atexit.register(exit_handler)
 signal.signal(signal.SIGINT, exit_handler)
 signal.signal(signal.SIGTERM, exit_handler)
 
-# config_file = "test_config.json"
-config_file = "data/config4.json"
+config_file = "data/config.json"
+# config_file = "config-test.json"
 output_dir = "data/output/"
 
 # Check if the directory exists
@@ -175,6 +175,7 @@ try:
     print("!!! Loading & starting sequence !!!")
     eta = datetime.datetime.now() + datetime.timedelta(seconds=cnfg.test_duration)
     print("ETA: ", eta.strftime('%d-%m-%Y %H:%M:%S'))
+    # infotxt.write("ETA: ", eta.strftime('%d-%m-%Y %H:%M:%S'))
     print("Sequence in progress...")
 
     # send cmds to buffer
@@ -213,6 +214,7 @@ try:
                     # if scheduling fails, put cmd back into list and try again later
                     cnfg.cmdlist.insert(0, cmd)
                     break
+                break #load only one and wait for new request
         
         if(data_dict != None):
             # we got some data bois
