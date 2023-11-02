@@ -9,6 +9,8 @@ __pycache__/
 # testconfigs
 config[1-9].json
 config[1-9][0-9]*.json
+info.txt
+serial_log.txt
 
 # Distribution / packaging
 .Python

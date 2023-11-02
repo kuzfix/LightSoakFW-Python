@@ -19,7 +19,6 @@ class LightSoakDataInParser:
         self.__read_line = read_line_funct
         self.__print_hw = print_funct
         
-    #todo: rewrite so it parses one set of data and return a touple: (data_dict, is_end_of_sequence, is_new_cmd_requested)
     # returns True if end of sequence is reached - END_OF_SEQUENCE received from hw
     def parser(self):
         self.__last_not_empty_time = time.time()
@@ -387,7 +386,11 @@ class LightSoakDataInParser:
 
             # Ensure correct number of samples for channels
             if len(sample_data) != num_channels:
-                raise ValueError("Unexpected number of samples for channels.")
+                # Fill with -1 to indicate an error
+                for ch in channels:
+                    result_dict[f"{ch}_samples"].append((sample_timestamp, -1))
+                print("parse_dumpvolt: Unexpected number of samples error. Scrapping line and continuing...")
+                continue  # Skip the rest of the loop and continue with the next line
 
             # Append samples to respective channel sample lists
             for ch, sample in zip(channels, sample_data):

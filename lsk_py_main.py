@@ -27,7 +27,7 @@ signal.signal(signal.SIGINT, exit_handler)
 signal.signal(signal.SIGTERM, exit_handler)
 
 config_file = "data/config.json"
-# config_file = "config-test.json"
+config_file = "data/config69test.json"
 output_dir = "data/output/"
 
 # Check if the directory exists
@@ -193,44 +193,47 @@ try:
 
     # run incoming data parser
     while(True):
+        try:
+            # run parser            
+            (data_dict, is_end_sequence, is_new_cmd_requested) = data.parser()
 
-        # run parser
-        (data_dict, is_end_sequence, is_new_cmd_requested) = data.parser()
+            if(is_end_sequence == True):
+                #end of sequence, end loop
+                break
+            if(is_new_cmd_requested == True):
+                # cmd loading has priority over saving data, because is time critical
+                #  try to load some cmds into buffer
+                while(True):
+                    # pop first cmd from list (works like fifo) and try to schedule it
+                    if(len(cnfg.cmdlist) == 0):
+                        break
+                    cmd = cnfg.cmdlist.pop(0)
+                    schedok = hw.send_sched_cmd(cmd)
+                    # if sched fails, we have run out of cmd buffer on HW
+                    if(schedok == False):
+                        # if scheduling fails, put cmd back into list and try again later
+                        cnfg.cmdlist.insert(0, cmd)
+                        break
+                    break #load only one and wait for new request
+            
+            if(data_dict != None):
+                # we got some data bois
+                # get dut temperature and save to database
 
-        if(is_end_sequence == True):
-            #end of sequence, end loop
-            break
-        if(is_new_cmd_requested == True):
-            # cmd loading has priority over saving data, because is time critical
-            #  try to load some cmds into buffer
-            while(True):
-                # pop first cmd from list (works like fifo) and try to schedule it
-                if(len(cnfg.cmdlist) == 0):
-                    break
-                cmd = cnfg.cmdlist.pop(0)
-                schedok = hw.send_sched_cmd(cmd)
-                # if sched fails, we have run out of cmd buffer on HW
-                if(schedok == False):
-                    # if scheduling fails, put cmd back into list and try again later
-                    cnfg.cmdlist.insert(0, cmd)
-                    break
-                break #load only one and wait for new request
-        
-        if(data_dict != None):
-            # we got some data bois
-            # get dut temperature and save to database
+                # add temperature to data dict
+                if(cnfg.target_dut_temp != "False"):
+                    data_dict["DUT_temp"] = tempctrl.get_dut_temp()
+                # for testing purposes, add led temp to data dict
+                # data_dict["ledtemp"] = hw.get_led_temp()
 
-            # add temperature to data dict
-            if(cnfg.target_dut_temp != "False"):
-                data_dict["DUT_temp"] = tempctrl.get_dut_temp()
-            # for testing purposes, add led temp to data dict
-            # data_dict["ledtemp"] = hw.get_led_temp()
+                # time.sleep(0.1)
+                # for testing purposes, print led temp
+                # print(data_dict.get("ledtemp", None))
+                db.save_to_db(data_dict)
+                pass
+        except:
+            print("Parser exception at" + now.strftime("%d-%m-%Y %H:%M:%S") + "!!! Data may have been missed. Contiuining...")
 
-            # time.sleep(0.1)
-            # for testing purposes, print led temp
-            # print(data_dict.get("ledtemp", None))
-            db.save_to_db(data_dict)
-            pass
         
 
     print("Sequence complete!")
