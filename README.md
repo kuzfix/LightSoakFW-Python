@@ -5,9 +5,9 @@ This code is a Python data logger to be used with the LightSoak Hardware: https:
 > First, get familiar with standalone use of the LighSoak hardware. Programming measurement sequences follows the same practices as standalone use. Follow https://github.com/mrmp17/LightSoakFW-STM for directions.
 
 > Required libraries: pySerial, Peewee, PythonCRC
-> pip install pyserial
-> pip install peewee
-> pip install pythoncrc
+- pip install pyserial
+- pip install peewee
+- pip install pythoncrc
 
 > Recomended database browser: DB browser for SQLite
 
