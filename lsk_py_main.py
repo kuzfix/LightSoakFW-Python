@@ -20,14 +20,13 @@ def exit_handler():
         time.sleep(1)
     #reboot HW
     hw.reboot()
-    raise SystemExit
+    exit()
 
-atexit.register(exit_handler)
-signal.signal(signal.SIGINT, exit_handler)
-signal.signal(signal.SIGTERM, exit_handler)
+# atexit.register(exit_handler)
+# signal.signal(signal.SIGINT, exit_handler)
+# signal.signal(signal.SIGTERM, exit_handler)
 
 config_file = "data/config.json"
-config_file = "data/config69test.json"
 output_dir = "data/output/"
 
 # Check if the directory exists
@@ -231,8 +230,12 @@ try:
                 # print(data_dict.get("ledtemp", None))
                 db.save_to_db(data_dict)
                 pass
-        except:
-            print("Parser exception at" + now.strftime("%d-%m-%Y %H:%M:%S") + "!!! Data may have been missed. Contiuining...")
+        #exit on ctrl+c
+        except KeyboardInterrupt:
+            print("Keyboard interrupt detected, shutting down and exiting...")
+            exit_handler()
+        except Exception as e:
+            print("Parser exception at " + now.strftime("%d-%m-%Y %H:%M:%S") + "!!! Data may have been missed. Contiuining...")
 
         
 
