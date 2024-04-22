@@ -14,7 +14,7 @@ import shutil
 def exit_handler():
     print("END!")
     # disable temperature control 
-    if(cnfg.target_dut_temp != "False"):
+    if(cnfg.DUT_Target_Temperature != "False"):
         print("Disabling temperature control...")
         tempctrl.disable_temp_ctrl()
         time.sleep(1)
@@ -83,14 +83,16 @@ db.open_db()
 cnfg.parse()
 
 # parse port from config
-hw_port = cnfg.hw_port
+hw_port = cnfg.LS_Instrument_Port
 
 hw = lsk_py_hardware_comms.LightSoakHWComms(hw_port, output_dir, log_all_serial=True)
 
 data = lsk_py_data_in_parser.LightSoakDataInParser(lambda: hw.read_line(), lambda msg: hw.print_hw(msg), output_dir)
 
-tempctrl = lsk_py_temp_control.LightSoakTempControl(cnfg.temp_ctrl_port)
+tempctrl = lsk_py_temp_control.LightSoakTempControl(cnfg.Temperature_Ctrl_Port)
 
+#Create new measurement sequence in the database
+db.save_meas_sequence(cnfg)
 
 # open txt file for general test info
 infotxt = open(output_dir + "info.txt" , "w")
@@ -101,14 +103,14 @@ db.save_testinfo_line(" ### General Test Info ### \n")
 now = datetime.datetime.now()
 infotxt.write("Time: " + now.strftime("%d-%m-%Y %H:%M:%S") + "\n")
 db.save_testinfo_line("Time: " + now.strftime("%d-%m-%Y %H:%M:%S") + "\n")
-infotxt.write("Test ID: " + cnfg.test_id + "\n")
-db.save_testinfo_line("Test ID: " + cnfg.test_id + "\n")
-infotxt.write("Test Notes: " + cnfg.test_notes + "\n")
-db.save_testinfo_line("Test Notes: " + cnfg.test_notes + "\n")
-infotxt.write("DUT Serial: " + cnfg.dut_serial + "\n")
-db.save_testinfo_line("DUT Serial: " + cnfg.dut_serial + "\n")
-infotxt.write("DUT Target Temp: " + str(cnfg.target_dut_temp) + "\n")
-db.save_testinfo_line("DUT Target Temp: " + str(cnfg.target_dut_temp) + "\n")
+infotxt.write("Test ID: " + cnfg.Test_Name + "\n")
+db.save_testinfo_line("Test ID: " + cnfg.Test_Name + "\n")
+infotxt.write("Test Notes: " + cnfg.Test_Notes + "\n")
+db.save_testinfo_line("Test Notes: " + cnfg.Test_Notes + "\n")
+infotxt.write("DUT Serial: " + cnfg.DUT_Name + "\n")
+db.save_testinfo_line("DUT Serial: " + cnfg.DUT_Name + "\n")
+infotxt.write("DUT Target Temp: " + str(cnfg.DUT_Target_Temperature) + "\n")
+db.save_testinfo_line("DUT Target Temp: " + str(cnfg.DUT_Target_Temperature) + "\n")
 infotxt.write("HW serial port: " + hw_port + "\n")
 db.save_testinfo_line("HW serial port: " + hw_port + "\n")
 infotxt.write("\n\n")
@@ -142,7 +144,7 @@ infotxt.write("LED Temperature at start of test: " + str(led_temp) + "C\n\n")
 db.save_testinfo_line("LED Temperature at start of test: " + str(led_temp) + "C\n\n")
 
 
-if(cnfg.target_dut_temp != "False"):
+if(cnfg.DUT_Target_Temperature != "False"):
     # todo: set DUT temperature and wait for it to stabilize
     print("Connecting to temperature controller...")
     tempctrl.connect_to_hw()
@@ -155,7 +157,7 @@ if(cnfg.target_dut_temp != "False"):
     tempctrl.enable_temp_ctrl()
 
     print("Setting DUT temperature target...")
-    tempctrl.set_dut_temp(cnfg.target_dut_temp)
+    tempctrl.set_dut_temp(cnfg.DUT_Target_Temperature)
     time.sleep(0.5)
     # enable temperature control
     print("Enabling temperature control...")
@@ -166,7 +168,7 @@ if(cnfg.target_dut_temp != "False"):
         print("Current temperature: ", str(tempctrl.get_dut_temp()), "C")
         time.sleep(2)
     print("Temperature ctrl loop stable! Waiting for additional settling time...")
-    time.sleep(cnfg.wait_temp_settle)
+    time.sleep(cnfg.DUT_Temp_Settle_Time)
 else:
     print("No DUT temperature control requested.")
 
@@ -222,7 +224,7 @@ try:
                 # get dut temperature and save to database
 
                 # add temperature to data dict
-                if(cnfg.target_dut_temp != "False"):
+                if(cnfg.DUT_Target_Temperature != "False"):
                     data_dict["DUT_temp"] = tempctrl.get_dut_temp()
                 # for testing purposes, add led temp to data dict
                 # data_dict["ledtemp"] = hw.get_led_temp()

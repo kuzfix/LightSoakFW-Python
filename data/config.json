@@ -1,12 +1,12 @@
 {
     "parameters": {
-        "Test_ID": "Dummy light soaking test",
-        "Test_notes": "A demo light soaking test",
-        "DUT_Serial_Number": "123we4sdfgqw56",
-        "DUT_target_temperature": 14.20,
-        "DUT_wait_temp_settle": 60.0,
-        "hw_port": "/dev/cu.usbserial-02B11B94",
-        "temp_ctrl_port": "/dev/tty.usbserial-DM01ZEIN"
+        "Test_Name": "Dummy light soaking test",
+        "Test_Notes": "A demo light soaking test",
+        "DUT_Name": "123we4sdfgqw56",
+        "DUT_Target_Temperature": "False",
+        "DUT_Temp_Settle_Time": 60.0,
+        "LS_Instrument_Port": "COM16",
+        "Temperature_Ctrl_Port": "COM17"
     },
     "sequence": [
         {
@@ -24,7 +24,7 @@
             "interval": 1
         },
         {
-            "cli_cmd": "flashmeasure -illum 1.0 -t 1000 -DUMP",
+            "cli_cmd": "flashmeasure -illum 1.0 -t 100 -DUMP",
             "time_type": "rel",
             "time": 1,
             "repeat": 0,
@@ -42,7 +42,7 @@
             "cli_cmd": "getvolt",
             "time_type": "rel",
             "time": 0.1,
-            "repeat": 600,
+            "repeat": 5,
             "interval": 1
         },
         {
@@ -54,10 +54,10 @@
         },
 
         {
-            "cli_cmd": "flashmeasure -illum 1.0 -t 1000 -DUMP",
+            "cli_cmd": "flashmeasure -illum 1.0 -t 100 -DUMP",
             "time_type": "rel",
             "time": 0.5,
-            "repeat": 120,
+            "repeat": 3,
             "interval": 5
         },
         {

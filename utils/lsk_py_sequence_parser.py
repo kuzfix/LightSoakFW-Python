@@ -21,13 +21,13 @@ class LightSoakerSequenceParser:
         with open(self.config_file) as f:
             config = json.load(f)
 
-        self.test_id = config['parameters']['Test_ID']
-        self.dut_serial = config['parameters']['DUT_Serial_Number']
-        self.target_dut_temp = config['parameters']['DUT_target_temperature']
-        self.wait_temp_settle = config['parameters']['DUT_wait_temp_settle']
-        self.test_notes = config['parameters']['Test_notes']
-        self.hw_port = config['parameters']['hw_port']
-        self.temp_ctrl_port = config['parameters']['temp_ctrl_port']
+        self.Test_Name = config['parameters']['Test_Name']
+        self.DUT_Name = config['parameters']['DUT_Name']
+        self.DUT_Target_Temperature = config['parameters']['DUT_Target_Temperature']
+        self.DUT_Temp_Settle_Time = config['parameters']['DUT_Temp_Settle_Time']
+        self.Test_Notes = config['parameters']['Test_Notes']
+        self.LS_Instrument_Port = config['parameters']['LS_Instrument_Port']
+        self.Temperature_Ctrl_Port = config['parameters']['Temperature_Ctrl_Port']
 
         for elem in config['sequence']:
             if 'repeat' in elem and elem['repeat'] > 0:

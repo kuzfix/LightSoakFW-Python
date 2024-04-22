@@ -1,4 +1,5 @@
 from peewee import *
+import datetime as dt
 
 database_proxy = Proxy() # Create a proxy for our db.
 
@@ -20,6 +21,7 @@ class LightSoakDatabase:
 
 
     def open_db(self):
+        self.test = -1
         if self.__MySQLconnectionData is not None:
             dbName = self.__MySQLconnectionData["dbName"]
             dbUser = self.__MySQLconnectionData["user"]
@@ -36,7 +38,7 @@ class LightSoakDatabase:
 
     def __create_tables(self):
         with self.db:
-            self.db.create_tables([Measurement, BufferDump, CharacteristicIV, TestInfo])
+            self.db.create_tables([Test, Measurement, BufferDump, CharacteristicIV, TestInfo])
 
     def save_to_db(self, data_dict):
         if(data_dict["type"] == "getvolt"):
@@ -85,6 +87,7 @@ class LightSoakDatabase:
 
     def __save_getvolt(self, data_dict):
         meas = Measurement(
+            test = self.test,
             timestamp = data_dict.get("timestamp", None),
             ch1 = data_dict.get("ch1", None),
             ch2 = data_dict.get("ch2", None),
@@ -99,6 +102,7 @@ class LightSoakDatabase:
 
     def __save_getcurr(self, data_dict):
         meas = Measurement(
+            test = self.test,
             timestamp = data_dict.get("timestamp", None),
             ch1_curr = data_dict.get("ch1_curr", None),
             ch2_curr = data_dict.get("ch2_curr", None),
@@ -113,6 +117,7 @@ class LightSoakDatabase:
 
     def __save_getivpoint(self, data_dict):
         meas = Measurement(
+            test = self.test,
             timestamp = data_dict.get("timestamp", None),
             ch1 = data_dict.get("ch1", None),
             ch2 = data_dict.get("ch2", None),
@@ -136,6 +141,7 @@ class LightSoakDatabase:
 
     def __save_dumpvolt(self, data_dict):
         meas = Measurement(
+            test = self.test,
             timestamp = data_dict.get("timestamp", None),
             # todo: implement getting voltage from bufferfump if needed
             ch1 = None,
@@ -154,6 +160,7 @@ class LightSoakDatabase:
 
     def __save_dumpiv(self, data_dict):
         meas = Measurement(
+            test = self.test,
             timestamp = data_dict.get("timestamp", None),
             # todo: implement getting voltage from bufferfump if needed
             ch1 = None,
@@ -178,6 +185,7 @@ class LightSoakDatabase:
 
     def __save_dumpcurr(self, data_dict):
         meas = Measurement(
+            test = self.test,
             timestamp = data_dict.get("timestamp", None),
             # todo: implement getting voltage from bufferfump if needed
             ch1_curr = None,
@@ -197,6 +205,7 @@ class LightSoakDatabase:
 
     def __save_flashmeasure_dumpvolt(self, data_dict):
         meas = Measurement(
+            test = self.test,
             timestamp = data_dict.get("timestamp", None),
             # todo: implement getting voltage from bufferfump if needed
             ch1 = data_dict.get("ch1", None),
@@ -215,6 +224,7 @@ class LightSoakDatabase:
 
     def __save_flashmeasure_dumpcurr(self, data_dict):
         meas = Measurement(
+            test = self.test,
             timestamp = data_dict.get("timestamp", None),
             # todo: implement getting voltage from bufferfump if needed
             ch1_curr = None,
@@ -394,6 +404,7 @@ class LightSoakDatabase:
 
     def __save_getivchar(self, data_dict):
         meas = Measurement(
+            test = self.test,
             timestamp = data_dict.get("timestamp", None),
             # todo: implement getting voltage from bufferfump if needed
             ch1 = None,
@@ -464,6 +475,7 @@ class LightSoakDatabase:
 
         
             chariv = CharacteristicIV(
+                measurement = measurement_id,
                 timestamp = t,
                 ch1 = s1,
                 ch2 = s2,
@@ -476,14 +488,14 @@ class LightSoakDatabase:
                 ch3_curr = i3,
                 ch4_curr = i4,
                 ch5_curr = i5,
-                ch6_curr = i6,
-                measurement = measurement_id
+                ch6_curr = i6
             )
             chariv.save()
         pass
 
     def __save_getledtemp(self, data_dict):
         meas = Measurement(
+            test = self.test,
             timestamp = data_dict.get("timestamp", None),
             DUT_temp = data_dict.get("DUT_temp", None),
             meas_type = data_dict.get("type"),
@@ -493,6 +505,7 @@ class LightSoakDatabase:
 
     def __save_getnoisevoltrms(self, data_dict):
         meas = Measurement(
+            test = self.test,
             timestamp = data_dict.get("timestamp", None),
             ch1 = data_dict.get("ch1", None),
             ch2 = data_dict.get("ch2", None),
@@ -508,6 +521,7 @@ class LightSoakDatabase:
 
     def __save_getnoisecurrms(self, data_dict):
         meas = Measurement(
+            test = self.test,
             timestamp = data_dict.get("timestamp", None),
             ch1_curr = data_dict.get("ch1_curr", None),
             ch2_curr = data_dict.get("ch2_curr", None),
@@ -522,6 +536,7 @@ class LightSoakDatabase:
 
     def __save_setledillum(self, data_dict):
         meas = Measurement(
+            test = self.test,
             timestamp = data_dict.get("timestamp", None),
             ledillum = data_dict.get("ledillum", None),
             meas_type = data_dict.get("type")
@@ -530,10 +545,33 @@ class LightSoakDatabase:
 
     def save_testinfo_line(self, line):
         testinfo = TestInfo(
+            test = self.test,
             line = line
         )
         testinfo.save()
 
+    def save_meas_sequence(self, cnfg):
+        if cnfg.DUT_Target_Temperature != "False":
+            test = Test(
+                Sequence_Name = cnfg.Test_Name,
+                DUT_Name = cnfg.DUT_Name,
+                DUT_Target_Temperature = cnfg.DUT_Target_Temperature,
+                DUT_Temp_Settle_Time = cnfg.DUT_Temp_Settle_Time,
+                Sequence_Notes = cnfg.Test_Notes,
+                HWport = cnfg.LS_Instrument_Port,
+                Tport = cnfg.Temperature_Ctrl_Port
+            )
+        else:
+            test = Test(
+                Sequence_Name = cnfg.Test_Name,
+                DUT_Name = cnfg.DUT_Name,
+                DUT_Temp_Settle_Time = cnfg.DUT_Temp_Settle_Time,
+                Sequence_Notes = cnfg.Test_Notes,
+                HWport = cnfg.LS_Instrument_Port,
+                Tport = cnfg.Temperature_Ctrl_Port
+            )
+        test.save()
+        self.test = test
 
 
 
@@ -544,8 +582,20 @@ class BaseModel(Model):
     class Meta:
         database = database_proxy
 
+class Test(BaseModel):
+    startTime = DateTimeField(default=dt.datetime.now)
+    Sequence_Name = TextField()
+    DUT_Name = TextField()
+    DUT_Target_Temperature = FloatField(null=True)
+    DUT_Temp_Settle_Time = FloatField(null=0.0)
+    Sequence_Notes = TextField()
+    HWport = TextField()
+    Tport = TextField()
 
 class Measurement(BaseModel):
+    #reference to row from Test table
+    test = ForeignKeyField(Test, backref='test')
+    #data
     timestamp = IntegerField()
     ch1 = FloatField(null=True)
     ch2 = FloatField(null=True)
@@ -566,23 +616,9 @@ class Measurement(BaseModel):
     sample_count = IntegerField(null=True)
 
 class BufferDump(BaseModel):
-    timestamp = IntegerField()
-    ch1 = FloatField(null=True)
-    ch2 = FloatField(null=True)
-    ch3 = FloatField(null=True)
-    ch4 = FloatField(null=True)
-    ch5 = FloatField(null=True)
-    ch6 = FloatField(null=True)
-    ch1_curr = FloatField(null=True)
-    ch2_curr = FloatField(null=True)
-    ch3_curr = FloatField(null=True)
-    ch4_curr = FloatField(null=True)
-    ch5_curr = FloatField(null=True)
-    ch6_curr = FloatField(null=True)
     #reference to row from Measurement table
     measurement = ForeignKeyField(Measurement, backref='buffer_dump')
-
-class CharacteristicIV(BaseModel):
+    #data
     timestamp = IntegerField()
     ch1 = FloatField(null=True)
     ch2 = FloatField(null=True)
@@ -596,11 +632,30 @@ class CharacteristicIV(BaseModel):
     ch4_curr = FloatField(null=True)
     ch5_curr = FloatField(null=True)
     ch6_curr = FloatField(null=True)
+
+class CharacteristicIV(BaseModel):
     #reference to row from Measurement table
     measurement = ForeignKeyField(Measurement, backref='characteristic_iv')
+    #data
+    timestamp = IntegerField()
+    ch1 = FloatField(null=True)
+    ch2 = FloatField(null=True)
+    ch3 = FloatField(null=True)
+    ch4 = FloatField(null=True)
+    ch5 = FloatField(null=True)
+    ch6 = FloatField(null=True)
+    ch1_curr = FloatField(null=True)
+    ch2_curr = FloatField(null=True)
+    ch3_curr = FloatField(null=True)
+    ch4_curr = FloatField(null=True)
+    ch5_curr = FloatField(null=True)
+    ch6_curr = FloatField(null=True)
     
 
 class TestInfo(BaseModel):
+    #reference to row from Test table
+    test = ForeignKeyField(Test, backref='test')
+    #data
     line = TextField()
 
 
