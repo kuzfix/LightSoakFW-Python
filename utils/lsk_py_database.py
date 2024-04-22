@@ -553,20 +553,20 @@ class LightSoakDatabase:
     def save_meas_sequence(self, cnfg):
         if cnfg.DUT_Target_Temperature != "False":
             test = Test(
-                Sequence_Name = cnfg.Test_Name,
+                Test_Name = cnfg.Test_Name,
                 DUT_Name = cnfg.DUT_Name,
                 DUT_Target_Temperature = cnfg.DUT_Target_Temperature,
                 DUT_Temp_Settle_Time = cnfg.DUT_Temp_Settle_Time,
-                Sequence_Notes = cnfg.Test_Notes,
+                Test_Notes = cnfg.Test_Notes,
                 HWport = cnfg.LS_Instrument_Port,
                 Tport = cnfg.Temperature_Ctrl_Port
             )
         else:
             test = Test(
-                Sequence_Name = cnfg.Test_Name,
+                Test_Name = cnfg.Test_Name,
                 DUT_Name = cnfg.DUT_Name,
                 DUT_Temp_Settle_Time = cnfg.DUT_Temp_Settle_Time,
-                Sequence_Notes = cnfg.Test_Notes,
+                Test_Notes = cnfg.Test_Notes,
                 HWport = cnfg.LS_Instrument_Port,
                 Tport = cnfg.Temperature_Ctrl_Port
             )
@@ -584,11 +584,11 @@ class BaseModel(Model):
 
 class Test(BaseModel):
     startTime = DateTimeField(default=dt.datetime.now)
-    Sequence_Name = TextField()
+    Test_Name = TextField()
     DUT_Name = TextField()
     DUT_Target_Temperature = FloatField(null=True)
     DUT_Temp_Settle_Time = FloatField(null=0.0)
-    Sequence_Notes = TextField()
+    Test_Notes = TextField()
     HWport = TextField()
     Tport = TextField()
 

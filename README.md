@@ -18,7 +18,7 @@ This code is a Python data logger to be used with the LightSoak Hardware: https:
         - *Other helper Python modules*
     - *data*
         - *config.json*
-		- *DBconfig.json
+		- *DBconfig.json*
         - *output*
             - *info.txt*
             - *LightSoakDB.db*
@@ -61,9 +61,25 @@ Temperature control is done by a TEC-1091 module mounted to the main board. To u
 
 ### Database structure
 
-Data is saved into a SQLite database. It consists of three tables:
+Data is saved into a MySQL database (or SQLite database if DBconfig.json does not exist or is obviously invalid). It consists of five tables:
+- ***Test***: Top level table. Basic information about the test is stored here:
+	- *id*: (integer) Unique id of each test sequence.
+	- *startTime*: (datetime) Date and time of the start of the test sequence.
+	- *Test_Name*: (text) Human readable ID of the test sequence - Test name. Not required to be unique, but should be unique.
+	- *DUT_Name*: (text) Name or ID of the device under test (DUT).
+	- *DUT_Target_Temperature*: (float) Target temperature of the DUT. Null if temperature control is not required.
+	- *Test_Notes*: (text) Notes and comments about the test sequence.
+	- *HWport*: (text) Com port of the LightSoaking measurement setup.
+	- *Tport*: (text) Com port of the temperature controller.
+	
+- ***TestInfo***: Parsed test sequence
+	- *id*: (integer) Unique line id. (Not realy needed, but I guess the peewee module creates it by default.)
+	- *test_id*: (integer) Id of the test sequence, linking the data to a particular entry of the "Test" table.
+	- *line*: (text) Content of the parsed line - individual measurements of the test sequence.
+	
 - ***measurement***: Top level table. All parsed measurements are saved here. All have a specified timestamp, in microseconds from sequence start. Measurement type is saved in *meas_type* field. Not all columnds are populated for each measurement, depending on measurement type. Columns:
     - *id*: Unique ID for each measurement
+	- *test_id*: (integer) Id of the test sequence, linking the data to a particular entry of the "Test" table.
     - *ch[x]*: voltage measurement (unit: V)
     - *ch[x]_curr*: current measurement (unit: mA)
     - *DUT_temp*: temperature of DUT as reported by TEC module
