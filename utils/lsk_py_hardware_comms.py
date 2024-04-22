@@ -13,7 +13,8 @@ class LightSoakHWComms:
 
         if(log_all_serial):
             #open file in out_dir names serial_log_<timestamp>.txt
-            self.__serial_log = open(out_dir + "serial_log.txt", "w")
+            dt_suffix=datetime.datetime.now().strftime("%Y_%m_%d-%H_%M_%S")
+            self.__serial_log = open(out_dir + "serial_log_"+dt_suffix+".txt", "w")
             self.__serial_log.write("Warning: log contains only data that is read by python using read_line. If read_line is not called, data will not be logged! \n")
             self.__serial_log.write(" ### Serial Log ### \n")
 

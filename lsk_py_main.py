@@ -26,12 +26,20 @@ def exit_handler():
 # signal.signal(signal.SIGINT, exit_handler)
 # signal.signal(signal.SIGTERM, exit_handler)
 
+def TestInfoLineSave(str, db, infotxt = None):
+    if infotxt is not None:
+        infotxt.write(str)
+    if db is not None:
+        db.save_testinfo_line(str)
+
 config_file = "data/config.json"
 DBconfig_file = "data/DBconfig.json"
 output_dir = "data/output/"
 
 # Check if the directory exists
 if os.path.exists(output_dir):
+    pass
+    """
     # Ask the user for their choice
     choice = input(f"'{output_dir}' already exists. Do you want to Continue (C), Erase (E) the folder contents or make a new folder (N)? ").upper()
     
@@ -59,6 +67,7 @@ if os.path.exists(output_dir):
     else:
         print("Invalid choice.")
         raise SystemExit
+    """
 else:
     # Create the directory if it doesn't exist
     os.makedirs(output_dir)
@@ -95,42 +104,30 @@ tempctrl = lsk_py_temp_control.LightSoakTempControl(cnfg.Temperature_Ctrl_Port)
 db.save_meas_sequence(cnfg)
 
 # open txt file for general test info
-infotxt = open(output_dir + "info.txt" , "w")
+#infotxt = open(output_dir + "info.txt" , "w")
+infotxt=None
 
 # write general test info to file
-infotxt.write(" ### General Test Info ### \n")
-db.save_testinfo_line(" ### General Test Info ### \n")
+TestInfoLineSave(" ### General Test Info ### \n",db,infotxt)
 now = datetime.datetime.now()
-infotxt.write("Time: " + now.strftime("%d-%m-%Y %H:%M:%S") + "\n")
-db.save_testinfo_line("Time: " + now.strftime("%d-%m-%Y %H:%M:%S") + "\n")
-infotxt.write("Test ID: " + cnfg.Test_Name + "\n")
-db.save_testinfo_line("Test ID: " + cnfg.Test_Name + "\n")
-infotxt.write("Test Notes: " + cnfg.Test_Notes + "\n")
-db.save_testinfo_line("Test Notes: " + cnfg.Test_Notes + "\n")
-infotxt.write("DUT Serial: " + cnfg.DUT_Name + "\n")
-db.save_testinfo_line("DUT Serial: " + cnfg.DUT_Name + "\n")
-infotxt.write("DUT Target Temp: " + str(cnfg.DUT_Target_Temperature) + "\n")
-db.save_testinfo_line("DUT Target Temp: " + str(cnfg.DUT_Target_Temperature) + "\n")
-infotxt.write("HW serial port: " + hw_port + "\n")
-db.save_testinfo_line("HW serial port: " + hw_port + "\n")
-infotxt.write("\n\n")
+TestInfoLineSave("Time: " + now.strftime("%d-%m-%Y %H:%M:%S") + "\n",db,infotxt)
+TestInfoLineSave("Test ID: " + cnfg.Test_Name + "\n",db,infotxt)
+TestInfoLineSave("Test Notes: " + cnfg.Test_Notes + "\n",db,infotxt)
+TestInfoLineSave("DUT Serial: " + cnfg.DUT_Name + "\n",db,infotxt)
+TestInfoLineSave("DUT Target Temp: " + str(cnfg.DUT_Target_Temperature) + "\n",db,infotxt)
+TestInfoLineSave("HW serial port: " + hw_port + "\n",db,infotxt)
+TestInfoLineSave("\n\n",None,infotxt)
 
 # write command list to file
-infotxt.write(" ### Command List ### \n")
-db.save_testinfo_line(" ### Command List ### \n")
-infotxt.write("Number of sequence commands: " + str(len(cnfg.cmdlist)) + "\n")
-db.save_testinfo_line("Number of sequence commands: " + str(len(cnfg.cmdlist)) + "\n")
-infotxt.write("########################\n")
-db.save_testinfo_line("########################\n")
+TestInfoLineSave(" ### Command List ### \n",db,infotxt)
+TestInfoLineSave("Number of sequence commands: " + str(len(cnfg.cmdlist)) + "\n",db,infotxt)
+TestInfoLineSave("########################\n",db,infotxt)
 for cmd in cnfg.cmdlist:
-    infotxt.write(cmd)
-    db.save_testinfo_line(cmd)
-infotxt.write("########################\n\n")
-db.save_testinfo_line("########################\n\n")
+    TestInfoLineSave(cmd,db,infotxt)
+TestInfoLineSave("########################\n\n",db,infotxt)
 
 # print test duration to file and console
-infotxt.write("Estimated total test Duration: " + str(cnfg.test_duration) + "s\n\n")
-db.save_testinfo_line("Estimated total test Duration: " + str(cnfg.test_duration) + "s\n\n")
+TestInfoLineSave("Estimated total test Duration: " + str(cnfg.test_duration) + "s\n\n",db,infotxt)
 print("Total test Duration: " + str(cnfg.test_duration) + "s")
 
 
@@ -140,8 +137,7 @@ hw.connect()
 
 # check and report LED temperature at start of test
 led_temp = hw.get_led_temp()
-infotxt.write("LED Temperature at start of test: " + str(led_temp) + "C\n\n")
-db.save_testinfo_line("LED Temperature at start of test: " + str(led_temp) + "C\n\n")
+TestInfoLineSave("LED Temperature at start of test: " + str(led_temp) + "C\n\n",db,infotxt)
 
 
 if(cnfg.DUT_Target_Temperature != "False"):
@@ -149,8 +145,7 @@ if(cnfg.DUT_Target_Temperature != "False"):
     print("Connecting to temperature controller...")
     tempctrl.connect_to_hw()
 
-    infotxt.write("DUT Temperature at start of test: " + str(tempctrl.get_dut_temp()) + "C\n\n")
-    db.save_testinfo_line("DUT Temperature at start of test: " + str(tempctrl.get_dut_temp()) + "C\n\n")
+    TestInfoLineSave("DUT Temperature at start of test: " + str(tempctrl.get_dut_temp()) + "C\n\n",db,infotxt)
 
     # enable temperature control
     print("Enabling temperature control...")
@@ -245,10 +240,11 @@ try:
 
     print("Sequence complete!")
 
+    
+    TestInfoLineSave(" ### End of Test ### \n",db,infotxt)
     #close txt file
-    infotxt.write(" ### End of Test ### \n")
-    db.save_testinfo_line(" ### End of Test ### \n")
-    infotxt.close()
+    if infotxt is not None:
+        infotxt.close()
 
     exit_handler()
 
