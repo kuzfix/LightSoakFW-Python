@@ -2,13 +2,35 @@ from peewee import *
 
 database_proxy = Proxy() # Create a proxy for our db.
 
+"""
+Example for MySQLconnectionData
+mySQLdb={
+    "dbName": "LightSoaking",
+    "user": "username",
+    "pass": "123",
+    "host": "127.0.0.1",
+    "port": 3306
+}
+"""
+
 class LightSoakDatabase:
-    def __init__(self, out_dir):
+    def __init__(self, out_dir, MySQLconnectionData = None):
         self.__out_dir = out_dir
+        self.__MySQLconnectionData = MySQLconnectionData
 
 
     def open_db(self):
-        self.db = SqliteDatabase(self.__out_dir + "lightSoakDB.db")
+        if self.__MySQLconnectionData is not None:
+            dbName = self.__MySQLconnectionData["dbName"]
+            dbUser = self.__MySQLconnectionData["user"]
+            dbPasswrd = self.__MySQLconnectionData["pass"]
+            dbHost = self.__MySQLconnectionData["host"]
+            dbPort = self.__MySQLconnectionData["port"]
+            self.db = MySQLDatabase(dbName, user=dbUser, password=dbPasswrd,
+                         host=dbHost, port=dbPort)
+        else:
+            self.db = SqliteDatabase(self.__out_dir + "lightSoakDB.db")
+
         database_proxy.initialize(self.db)
         self.__create_tables()
 

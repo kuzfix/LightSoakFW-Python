@@ -1,4 +1,5 @@
 import json
+import ipaddress
 
 
 # How to use:
@@ -73,6 +74,37 @@ class LightSoakerSequenceParser:
             print(cmd, end='')
         print("###################################")
 
+# How to use:
+# pass the config file path to the function
+# return value: dictionary with database connection parameters
+#   or None if parameters are obviously invalid
+def ParseDBparams(DBconfig_file):
+    try:
+        with open(DBconfig_file) as f:
+            DBconfig = json.load(f)
+    except:
+        return None
+
+    if not isinstance(DBconfig.get('dbName'),str):
+        return None
+    if len(DBconfig['dbName'])<1:
+        return None
+    if not isinstance(DBconfig.get('user'),str):
+        return None
+    if len(DBconfig['user'])<1:
+        return None
+    if not isinstance(DBconfig.get('pass'),str):
+        return None
+    if len(DBconfig['pass'])<1:
+        return None
+    if not isinstance(DBconfig.get('host'),str):
+        return None
+    if len(DBconfig['host']) < 7: 
+        return None
+    if not isinstance(DBconfig.get('port'),int):
+        return None
+    return DBconfig
+    
 
 # testing
 if __name__ == "__main__":

@@ -1,8 +1,8 @@
 # LightSoak Python Data Logger
-This code is a Python data logger to be used with the LightSoak Hardware: https://github.com/mrmp17/LightSoakFW-STM. It implements data logging to a database, specialized for light soaking measurements for perovskite solar cell samples. This was developed as a part of my Masters thesis.
+This code is a Python data logger to be used with the LightSoak Hardware: https://github.com/kuzfix/LightSoakFW-STM. It implements data logging to a database, specialized for light soaking measurements for perovskite solar cell samples. This was developed as a part of my Masters thesis.
 
 ## Quick start quide
-> First, get familiar with standalone use of the LighSoak hardware. Programming measurement sequences follows the same practices as standalone use. Follow https://github.com/mrmp17/LightSoakFW-STM for directions.
+> First, get familiar with standalone use of the LighSoak hardware. Programming measurement sequences follows the same practices as standalone use. Follow https://github.com/kuzfix/LightSoakFW-STM for directions.
 
 > Required libraries: pySerial, Peewee, PythonCRC
 - pip install pyserial
@@ -18,12 +18,13 @@ This code is a Python data logger to be used with the LightSoak Hardware: https:
         - *Other helper Python modules*
     - *data*
         - *config.json*
+		- *DBconfig.json
         - *output*
             - *info.txt*
             - *LightSoakDB.db*
             - *serial_log.txt*
 
-*data* folder is where all the configuration and output files are. *info.txt* contains various test parameters and conditions and the generated command list. This data is also saved to database in *testinfo* table. *LightSoakDB.db* is the SQLite database. *serial_log.txt* logs all sent and received data to and from hardware.
+*data* folder is where all the configuration and output files are. *info.txt* contains various test parameters and conditions and the generated command list. This data is also saved to database in *testinfo* table. *LightSoakDB.db* is the SQLite database, which is used if *DBconfig.json* doesn't contain connection data for a MySQL database. *serial_log.txt* logs all sent and received data to and from hardware.
 
 If *output* folder is not present when the code is run, it will be created. If It does exist, user will be prompted to select on of three actions:
 - keep the folder, but overwrite *info.txt* and *serial_log.txt* and append data to the database

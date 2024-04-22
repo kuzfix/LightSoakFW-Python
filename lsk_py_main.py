@@ -27,6 +27,7 @@ def exit_handler():
 # signal.signal(signal.SIGTERM, exit_handler)
 
 config_file = "data/config.json"
+DBconfig_file = "data/DBconfig.json"
 output_dir = "data/output/"
 
 # Check if the directory exists
@@ -71,8 +72,9 @@ else:
 
 
 cnfg = lsk_py_sequence_parser.LightSoakerSequenceParser(config_file)
+MySQLconnParams = lsk_py_sequence_parser.ParseDBparams(DBconfig_file)
 
-db = lsk_py_database.LightSoakDatabase(output_dir)
+db = lsk_py_database.LightSoakDatabase(output_dir,MySQLconnParams)
 
 
 db.open_db()
