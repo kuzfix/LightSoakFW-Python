@@ -15,8 +15,10 @@ def exit_handler():
     print("END!")
     # disable temperature control 
     if(cnfg.DUT_Target_Temperature != "False"):
-        print("Disabling temperature control...")
-        tempctrl.disable_temp_ctrl()
+        #Do not disable temperature control at the end of the measurement. If a light source is still on, we do not want the temperture to run away while idle...
+        #print("Disabling temperature control...")
+        #tempctrl.disable_temp_ctrl()
+        print("Leaving temperature control enabled...")
         time.sleep(1)
     #reboot HW
     hw.reboot()
