@@ -596,7 +596,7 @@ class Measurement(BaseModel):
     #reference to row from Test table
     test = ForeignKeyField(Test, backref='test')
     #data
-    timestamp = IntegerField()
+    timestamp = BigIntegerField()
     ch1 = FloatField(null=True)
     ch2 = FloatField(null=True)
     ch3 = FloatField(null=True)
@@ -619,7 +619,7 @@ class BufferDump(BaseModel):
     #reference to row from Measurement table
     measurement = ForeignKeyField(Measurement, backref='buffer_dump')
     #data
-    timestamp = IntegerField()
+    timestamp = BigIntegerField()
     ch1 = FloatField(null=True)
     ch2 = FloatField(null=True)
     ch3 = FloatField(null=True)
@@ -637,7 +637,7 @@ class CharacteristicIV(BaseModel):
     #reference to row from Measurement table
     measurement = ForeignKeyField(Measurement, backref='characteristic_iv')
     #data
-    timestamp = IntegerField()
+    timestamp = BigIntegerField()
     ch1 = FloatField(null=True)
     ch2 = FloatField(null=True)
     ch3 = FloatField(null=True)
