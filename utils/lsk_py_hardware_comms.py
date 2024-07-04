@@ -19,6 +19,12 @@ class LightSoakHWComms:
             self.__serial_log.write(" ### Serial Log ### \n")
 
     # INIT END ----------------------------------------------------------
+    # DESTRUCTOR --------------------------------------------------------
+    def __del__(self):
+        try:
+            self.ser.close()
+        except:
+            pass
 
     # MAIN CONNECT FUNCTION ----------------------------------------------------------
     def connect(self):
@@ -32,10 +38,12 @@ class LightSoakHWComms:
         if(not self.__wait_for_ready()):
             # try with fastafboi baud
             print("Could not connect, trying fast baud...")
-            self.ser = serial.Serial(self.__SERIAL_PORT, self.__FASTAFBOI_BAUD, timeout=1)
+            #self.ser = serial.Serial(self.__SERIAL_PORT, self.__FASTAFBOI_BAUD, timeout=1)
+            self.ser.baudrate = self.__FASTAFBOI_BAUD
             self.reboot()
             # baud is now default
-            self.ser = serial.Serial(self.__SERIAL_PORT, self.__DEFAULT_BAUD, timeout=1)
+            # self.ser = serial.Serial(self.__SERIAL_PORT, self.__DEFAULT_BAUD, timeout=1)
+            self.ser.baudrate = self.__DEFAULT_BAUD
             if(not self.__wait_for_ready()):
                 raise Exception("LightSoakControl: Unable to connect to lightsoak")
 
@@ -363,7 +371,11 @@ class LightSoakHWComms:
             if self.ser.in_waiting > 0:
                 message = self.read_line()
                 if message.startswith('TEMP'):
-                    return float(message.split(":")[1])
+                    try:
+                        Temperature = float(message.split(":")[1])
+                    except:
+                        Temperature = float("NaN")
+                    return Temperature
             time.sleep(0.01)
 
     # SEND COMMAND FUNCTIONS END ----------------------------------------------------------
