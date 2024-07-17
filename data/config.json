@@ -5,8 +5,8 @@
         "DUT_Name": "123we4sdfgqw56",
         "DUT_Target_Temperature": "False",
         "DUT_Temp_Settle_Time": 60.0,
-        "LS_Instrument_Port": "COM16",
-        "Temperature_Ctrl_Port": "COM17"
+        "LS_Instrument_Port": "COM4",
+        "Temperature_Ctrl_Port": "COM3"
     },
     "sequence": [
         {

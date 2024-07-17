@@ -503,16 +503,20 @@ class LightSoakDataInParser:
         result_dict["timestamp"] = base_timestamp
 
         # Get channels from the 2nd line
-        channels = data_list[1].split(':')
-        num_channels = len(channels)
+        channels = [ch for ch in data_list[1].split(':') if ch.startswith("CH")]
+        sample_time = False
+        if data_list[1].split(':')[-1] == 't':
+            sample_time = True
+        num_channels = len(channels) + sample_time
 
         # Initialize sample lists for channels for both current and voltage
         for ch in channels:
             result_dict[f"{ch}_curr_samples"] = []
             result_dict[f"{ch}_samples"] = []
-
+        
         # Iterate over the sample data lines
         samplecnt = 0
+        smpl_t = 0
         for line_num, line in enumerate(data_list[2:], start=0):
             if "NOCONVERGE" in line:
                 continue
@@ -520,10 +524,14 @@ class LightSoakDataInParser:
                 break
 
             # Split the line to get sample data
-            sample_data = line.split(']')[1].split(':')
+            if sample_time:
+                sample_data = line.split(']')[1].split(':')[:-1]
+                smpl_t = int(line.split(']')[1].split(':')[-1])
+            else:
+                sample_data = line.split(']')[1].split(':')
 
             # Ensure correct number of samples for channels
-            if len(sample_data) != num_channels:
+            if len(sample_data) != (num_channels-sample_time):
                 raise ValueError("Unexpected number of samples for channels.")
 
             # samples will still be touples with timestamp and value for consistency and code reuse
@@ -532,8 +540,10 @@ class LightSoakDataInParser:
             # Append samples to respective channel sample lists
             for ch, sample in zip(channels, sample_data):
                 curr, volt = map(float, sample.split('_'))
-                result_dict[f"{ch}_curr_samples"].append((0, curr))
-                result_dict[f"{ch}_samples"].append((0, volt))
+                # result_dict[f"{ch}_curr_samples"].append((0, curr))
+                # result_dict[f"{ch}_samples"].append((0, volt))
+                result_dict[f"{ch}_curr_samples"].append((smpl_t, curr))
+                result_dict[f"{ch}_samples"].append((smpl_t, volt))
             
             samplecnt += 1
 

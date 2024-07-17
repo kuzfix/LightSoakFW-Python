@@ -34,7 +34,15 @@ def TestInfoLineSave(str, db, infotxt = None):
     if db is not None:
         db.save_testinfo_line(str)
 
-config_file = "data/config.json"
+#config_file = "data/config.json"
+#config_file = "data/MeasureIllumination(distance).json"
+#config_file = "data/CalibratePhotodiodesUnderSunSimulator.json"
+#config_file = "data/Measure_Isc.json"
+#config_file = "data/evaluateLEDresolutionAndStability.json"
+#config_file = "data/BasicProtocol.json"
+config_file = "data/GetIVcurves.json"
+#config_file = "data/ConfigBug01.json"
+#config_file = "data/Bug02UnintentionalPause.json"
 DBconfig_file = "data/DBconfig.json"
 output_dir = "data/output/"
 
