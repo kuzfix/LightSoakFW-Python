@@ -428,6 +428,7 @@ class LightSoakDatabase:
         self.__save_getivchar_to_bufferdump(data_dict, meas)
 
     def __save_getivchar_to_bufferdump(self, data_dict, measurement_id):
+        charivList=[]
          # todo: implementation not very elegant, but works
         for _ in range(data_dict.get("sample_count")):
             if "CH1_samples" in data_dict:
@@ -490,7 +491,9 @@ class LightSoakDatabase:
                 ch5_curr = i5,
                 ch6_curr = i6
             )
-            chariv.save()
+            #chariv.save()
+            charivList.append(chariv)
+        CharacteristicIV.bulk_create(charivList)
         pass
 
     def __save_getledtemp(self, data_dict):
