@@ -13,7 +13,7 @@ class LightSoakerSequenceParser:
         self.config_file = config_file
         self.cmdlist = []
         self.test_duration = 0
-        self.__seq_begin_deadtime_us = 10000000
+        self.__seq_begin_deadtime_us = 1000
 
 
     def parse(self):
