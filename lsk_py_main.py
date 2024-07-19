@@ -10,6 +10,7 @@ from utils import lsk_py_temp_control
 from utils import lsk_py_database
 import os
 import shutil
+import winsound
 
 def exit_handler():
     print("END!")
@@ -28,21 +29,18 @@ def exit_handler():
 # signal.signal(signal.SIGINT, exit_handler)
 # signal.signal(signal.SIGTERM, exit_handler)
 
-def TestInfoLineSave(str, db, infotxt = None):
+def TestInfoLineAdd(str, db, infotxt = None):
     if infotxt is not None:
         infotxt.write(str)
     if db is not None:
-        db.save_testinfo_line(str)
+        db.add_testinfo_line(str)
 
-#config_file = "data/config.json"
-#config_file = "data/MeasureIllumination(distance).json"
-#config_file = "data/CalibratePhotodiodesUnderSunSimulator.json"
-#config_file = "data/Measure_Isc.json"
-#config_file = "data/evaluateLEDresolutionAndStability.json"
-#config_file = "data/BasicProtocol.json"
-config_file = "data/GetIVcurves.json"
-#config_file = "data/ConfigBug01.json"
-#config_file = "data/Bug02UnintentionalPause.json"
+def SaveTestInfoToDb(db):
+    if db is not None:
+        db.save_testinfo()
+
+
+config_file = "data/config.json"
 DBconfig_file = "data/DBconfig.json"
 output_dir = "data/output/"
 
@@ -118,26 +116,26 @@ db.save_meas_sequence(cnfg)
 infotxt=None
 
 # write general test info to file
-TestInfoLineSave(" ### General Test Info ### \n",db,infotxt)
+TestInfoLineAdd(" ### General Test Info ### \n",db,infotxt)
 now = datetime.datetime.now()
-TestInfoLineSave("Time: " + now.strftime("%d-%m-%Y %H:%M:%S") + "\n",db,infotxt)
-TestInfoLineSave("Test ID: " + cnfg.Test_Name + "\n",db,infotxt)
-TestInfoLineSave("Test Notes: " + cnfg.Test_Notes + "\n",db,infotxt)
-TestInfoLineSave("DUT Serial: " + cnfg.DUT_Name + "\n",db,infotxt)
-TestInfoLineSave("DUT Target Temp: " + str(cnfg.DUT_Target_Temperature) + "\n",db,infotxt)
-TestInfoLineSave("HW serial port: " + hw_port + "\n",db,infotxt)
-TestInfoLineSave("\n\n",None,infotxt)
+TestInfoLineAdd("Time: " + now.strftime("%d-%m-%Y %H:%M:%S") + "\n",db,infotxt)
+TestInfoLineAdd("Test ID: " + cnfg.Test_Name + "\n",db,infotxt)
+TestInfoLineAdd("Test Notes: " + cnfg.Test_Notes + "\n",db,infotxt)
+TestInfoLineAdd("DUT Serial: " + cnfg.DUT_Name + "\n",db,infotxt)
+TestInfoLineAdd("DUT Target Temp: " + str(cnfg.DUT_Target_Temperature) + "\n",db,infotxt)
+TestInfoLineAdd("HW serial port: " + hw_port + "\n",db,infotxt)
+TestInfoLineAdd("\n\n",None,infotxt)
 
 # write command list to file
-TestInfoLineSave(" ### Command List ### \n",db,infotxt)
-TestInfoLineSave("Number of sequence commands: " + str(len(cnfg.cmdlist)) + "\n",db,infotxt)
-TestInfoLineSave("########################\n",db,infotxt)
+TestInfoLineAdd(" ### Command List ### \n",db,infotxt)
+TestInfoLineAdd("Number of sequence commands: " + str(len(cnfg.cmdlist)) + "\n",db,infotxt)
+TestInfoLineAdd("########################\n",db,infotxt)
 for cmd in cnfg.cmdlist:
-    TestInfoLineSave(cmd,db,infotxt)
-TestInfoLineSave("########################\n\n",db,infotxt)
+    TestInfoLineAdd(cmd,db,infotxt)
+TestInfoLineAdd("########################\n\n",db,infotxt)
 
 # print test duration to file and console
-TestInfoLineSave("Estimated total test Duration: " + str(cnfg.test_duration) + "s\n\n",db,infotxt)
+TestInfoLineAdd("Estimated total test Duration: " + str(cnfg.test_duration) + "s\n\n",db,infotxt)
 print("Total test Duration: " + str(cnfg.test_duration) + "s")
 
 
@@ -147,7 +145,7 @@ hw.connect()
 
 # check and report LED temperature at start of test
 led_temp = hw.get_led_temp()
-TestInfoLineSave("LED Temperature at start of test: " + str(led_temp) + "C\n\n",db,infotxt)
+TestInfoLineAdd("LED Temperature at start of test: " + str(led_temp) + "C\n\n",db,infotxt)
 
 
 if(cnfg.DUT_Target_Temperature != "False"):
@@ -155,7 +153,7 @@ if(cnfg.DUT_Target_Temperature != "False"):
     print("Connecting to temperature controller...")
     tempctrl.connect_to_hw()
 
-    TestInfoLineSave("DUT Temperature at start of test: " + str(tempctrl.get_dut_temp()) + "C\n\n",db,infotxt)
+    TestInfoLineAdd("DUT Temperature at start of test: " + str(tempctrl.get_dut_temp()) + "C\n\n",db,infotxt)
 
     # enable temperature control
     print("Enabling temperature control...")
@@ -176,6 +174,8 @@ if(cnfg.DUT_Target_Temperature != "False"):
     time.sleep(cnfg.DUT_Temp_Settle_Time)
 else:
     print("No DUT temperature control requested.")
+
+SaveTestInfoToDb(db)
 
 try:
     #begin sequence
@@ -249,9 +249,11 @@ try:
         
 
     print("Sequence complete!")
+    winsound.PlaySound("SystemAsterisk",winsound.SND_ALIAS)
 
     
-    TestInfoLineSave(" ### End of Test ### \n",db,infotxt)
+    TestInfoLineAdd(" ### End of Test ### \n",db,infotxt)
+    SaveTestInfoToDb(db)
     #close txt file
     if infotxt is not None:
         infotxt.close()

@@ -18,6 +18,7 @@ class LightSoakDatabase:
     def __init__(self, out_dir, MySQLconnectionData = None):
         self.__out_dir = out_dir
         self.__MySQLconnectionData = MySQLconnectionData
+        self.testinfoList = []
 
 
     def open_db(self):
@@ -243,6 +244,7 @@ class LightSoakDatabase:
 
 
     def __save_dumpvolt_to_bufferdump(self, data_dict, measurement_id):
+        bufdumpList = []
         for _ in range(data_dict.get("sample_count")):
             if "CH1_samples" in data_dict:
                 (t1, s1) = data_dict["CH1_samples"].pop(0)
@@ -287,9 +289,12 @@ class LightSoakDatabase:
                 measurement = measurement_id
             )
             bufdump.save()
+            bufdumpList.append(bufdump)
+        BufferDump.bulk_create(bufdumpList)
         pass
 
     def __save_dumpcurr_to_bufferdump(self, data_dict, measurement_id):
+        bufdumpList = []
         for _ in range(data_dict.get("sample_count")):
             if "CH1_curr_samples" in data_dict:
                 (t1, s1) = data_dict["CH1_curr_samples"].pop(0)
@@ -334,10 +339,13 @@ class LightSoakDatabase:
                 measurement = measurement_id
             )
             bufdump.save()
+            bufdumpList.append(bufdump)
+        BufferDump.bulk_create(bufdumpList)
         pass
 
     def __save_dumpiv_to_bufferdump(self, data_dict, measurement_id):
         # todo: implementation not very elegant, but works
+        bufdumpList = []
         for _ in range(data_dict.get("sample_count")):
             if "CH1_samples" in data_dict:
                 (t1, s1) = data_dict["CH1_samples"].pop(0)
@@ -399,7 +407,9 @@ class LightSoakDatabase:
                 ch6_curr = i6,
                 measurement = measurement_id
             )
-            bufdump.save()
+            #bufdump.save()
+            bufdumpList.append(bufdump)
+        BufferDump.bulk_create(bufdumpList)
         pass
 
     def __save_getivchar(self, data_dict):
@@ -546,12 +556,17 @@ class LightSoakDatabase:
         )
         meas.save()
 
-    def save_testinfo_line(self, line):
+    def add_testinfo_line(self, line):
         testinfo = TestInfo(
             test = self.test,
             line = line
         )
-        testinfo.save()
+        #testinfo.save()
+        self.testinfoList.append(testinfo)
+
+    def save_testinfo(self):
+        TestInfo.bulk_create(self.testinfoList)
+        self.testinfoList = []
 
     def save_meas_sequence(self, cnfg):
         if cnfg.DUT_Target_Temperature != "False":
