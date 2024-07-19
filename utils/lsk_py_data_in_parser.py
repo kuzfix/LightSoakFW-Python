@@ -12,6 +12,7 @@
 
 import time
 import statistics
+from math import isnan
 
 class LightSoakDataInParser:
     def __init__(self, read_line_funct, print_funct, out_dir):
@@ -540,6 +541,8 @@ class LightSoakDataInParser:
             # Append samples to respective channel sample lists
             for ch, sample in zip(channels, sample_data):
                 curr, volt = map(float, sample.split('_'))
+                curr = None if isnan(curr) else curr
+                volt = None if isnan(volt) else volt
                 # result_dict[f"{ch}_curr_samples"].append((0, curr))
                 # result_dict[f"{ch}_samples"].append((0, volt))
                 result_dict[f"{ch}_curr_samples"].append((smpl_t, curr))
