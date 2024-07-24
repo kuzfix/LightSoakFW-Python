@@ -64,6 +64,17 @@ class LightSoakDataInParser:
                 is_req_new_cmd = False
                 return (data_dict, is_end_sequence, is_req_new_cmd)
             
+            elif(line == "MPPT[uA__V]:"):
+                print("Got data: MPPT[uA__V]:")
+                data = []
+                for i in range(0, 3):
+                    data.append(self.__read_line())
+                # parse
+                data_dict = self.parse_getMPpoint(data)
+                is_end_sequence = False
+                is_req_new_cmd = False
+                return (data_dict, is_end_sequence, is_req_new_cmd)
+            
             elif(line == "IV[uA__V]:"):
                 print("Got data: IV[uA__V]:")
                 data = []
@@ -305,6 +316,46 @@ class LightSoakDataInParser:
 
         return result_dict
 
+
+ 
+    def parse_getMPpoint(self, data_list):
+        # Ensure there are three elements in the data list
+        if len(data_list) != 3:
+            raise ValueError("Expected data list to have three elements.")
+
+        # Create dictionary to return
+        result_dict = {}
+        result_dict["type"] = "mppt"
+
+        # Parse the timestamp
+        base_timestamp = int(data_list[0].split(':')[1])
+        result_dict["timestamp"] = base_timestamp
+
+        # Get channels from the 2nd line
+        channels = [ch.replace('CH','ch') for ch in data_list[1].split(':') if ch.startswith("CH")]
+
+        # Iterate over the sample data lines
+        sample_data = data_list[2].split(':')
+
+        # Ensure correct number of samples for channels
+        if len(sample_data) != len(channels):
+            raise ValueError("Unexpected number of samples for channels.")
+
+        # samples will still be touples with timestamp and value for consistency and code reuse
+
+        # Append samples to respective channel sample lists
+        for ch, sample in zip(channels, sample_data):
+            curr, volt = map(float, sample.split('_'))
+            curr = None if isnan(curr) else curr
+            volt = None if isnan(volt) else volt
+            result_dict[f"{ch}_curr"] = curr
+            result_dict[f"{ch}"] = volt
+
+        return result_dict
+
+
+
+    
     def parse_getivpoint(self, data_list):
         # Ensure there are three elements in the data list
         if len(data_list) != 3:

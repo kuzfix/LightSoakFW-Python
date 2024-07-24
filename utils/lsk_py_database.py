@@ -51,6 +51,9 @@ class LightSoakDatabase:
         elif(data_dict["type"] == "getivpoint"):
             self.__save_getivpoint(data_dict)
 
+        elif(data_dict["type"] == "mppt"):
+            self.__save_mppt(data_dict)
+
         elif(data_dict["type"] == "flashmeasure_dumpvolt"):
             self.__save_flashmeasure_dumpvolt(data_dict)
 
@@ -117,6 +120,29 @@ class LightSoakDatabase:
         meas.save()
 
     def __save_getivpoint(self, data_dict):
+        meas = Measurement(
+            test = self.test,
+            timestamp = data_dict.get("timestamp", None),
+            ch1 = data_dict.get("ch1", None),
+            ch2 = data_dict.get("ch2", None),
+            ch3 = data_dict.get("ch3", None),
+            ch4 = data_dict.get("ch4", None),
+            ch5 = data_dict.get("ch5", None),
+            ch6 = data_dict.get("ch6", None),
+            ch1_curr = data_dict.get("ch1_curr", None),
+            ch2_curr = data_dict.get("ch2_curr", None),
+            ch3_curr = data_dict.get("ch3_curr", None),
+            ch4_curr = data_dict.get("ch4_curr", None),
+            ch5_curr = data_dict.get("ch5_curr", None),
+            ch6_curr = data_dict.get("ch6_curr", None),
+            DUT_temp = data_dict.get("DUT_temp", None),
+            meas_type = data_dict.get("type"),
+            # for testing
+            ledtemp = data_dict.get("ledtemp", None)
+        )
+        meas.save()
+
+    def __save_mppt(self, data_dict):
         meas = Measurement(
             test = self.test,
             timestamp = data_dict.get("timestamp", None),
