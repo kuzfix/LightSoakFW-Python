@@ -1,6 +1,5 @@
 from peewee import *
 import datetime as dt
-from timeit import default_timer as timer
 
 database_proxy = Proxy() # Create a proxy for our db.
 

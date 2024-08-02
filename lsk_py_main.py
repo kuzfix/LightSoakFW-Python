@@ -40,7 +40,18 @@ def SaveTestInfoToDb(db):
         db.save_testinfo()
 
 
-config_file = "data/config.json"
+#config_file = "data/config.json"
+#config_file = "data/MeasureIllumination(distance).json"
+#config_file = "data/Measure_Isc.json"
+#config_file = "data/evaluateLEDresolutionAndStability.json"
+#config_file = "data/BasicProtocol.json"
+#config_file = "data/ConfigBug01.json"
+#config_file = "data/Bug02UnintentionalPause.json"
+#  config_file = "data/CalibratePhotodiodesUnderSunSimulator.json"
+#  config_file = "data/GetIVcurves.json"
+#  config_file = "data/MPPT.json"
+#config_file = "data/TestProtocol.json"
+config_file = "data/Flashmeasure.json"
 DBconfig_file = "data/DBconfig.json"
 output_dir = "data/output/"
 
