@@ -1,5 +1,6 @@
 from peewee import *
 import datetime as dt
+from timeit import default_timer as timer
 
 database_proxy = Proxy() # Create a proxy for our db.
 
@@ -314,7 +315,7 @@ class LightSoakDatabase:
                 ch6 = s6,
                 measurement = measurement_id
             )
-            bufdump.save()
+            # bufdump.save()
             bufdumpList.append(bufdump)
         BufferDump.bulk_create(bufdumpList)
         pass
@@ -364,7 +365,7 @@ class LightSoakDatabase:
                 ch6_curr = s6,
                 measurement = measurement_id
             )
-            bufdump.save()
+            #bufdump.save()
             bufdumpList.append(bufdump)
         BufferDump.bulk_create(bufdumpList)
         pass
