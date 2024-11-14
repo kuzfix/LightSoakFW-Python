@@ -355,30 +355,54 @@ class LightSoakDataInParser:
 
 
 
-    
+
     def parse_getivpoint(self, data_list):
         # Ensure there are three elements in the data list
         if len(data_list) != 3:
             raise ValueError("Expected data list to have three elements.")
 
-        # Extract the channel number from CHx format
-        channel_num = int(data_list[0][2:])
+        # Split the channel data string
+        channel_data = data_list[0].split(':')
+
+        # Check the number of channels based on the channel data length
+        if len(channel_data) == 1:
+            num_channels = 1
+            channel_num = int(channel_data[0][2:])  # Extract the channel number from CHx
+        elif len(channel_data) == 6:
+            num_channels = 6
+        else:
+            raise ValueError("Unexpected number of channels.")
 
         # Parse the timestamp into an integer
         timestamp = int(data_list[1].split(':')[1])
 
-        # Split current and voltage data using the underscore separator
-        curr_data, volt_data = data_list[2].split('_')
-        current = float(curr_data)
-        voltage = float(volt_data)
+        # split iv points into measured number of channels
+        iv_data = data_list[2].split(':')
+        # Validate voltage data
+        if num_channels == 1 and len(iv_data) != 1:
+            raise ValueError("Expected only one iv point for one channel.")
+        elif num_channels == 6 and len(iv_data) != 6:
+            raise ValueError("Expected six iv points for six channels.")
 
         # Create dictionary to return
         result_dict = {}
-
         result_dict["type"] = "getivpoint"
         result_dict["timestamp"] = timestamp
-        result_dict[f"ch{channel_num}_curr"] = current
-        result_dict[f"ch{channel_num}"] = voltage
+
+        # Split current and voltage data using the underscore separator
+        if num_channels == 1:
+            curr_data, volt_data = iv_data[0].split('_')
+            current = float(curr_data)
+            voltage = float(volt_data)
+            result_dict[f"ch{channel_num}_curr"] = current
+            result_dict[f"ch{channel_num}"] = voltage
+        elif num_channels == 6:
+            for i, iv_point in enumerate(iv_data,1):
+                curr_data, volt_data = iv_point.split('_')
+                current = float(curr_data)
+                voltage = float(volt_data)
+                result_dict[f"ch{i}_curr"] = current
+                result_dict[f"ch{i}"] = voltage
 
         return result_dict
 
