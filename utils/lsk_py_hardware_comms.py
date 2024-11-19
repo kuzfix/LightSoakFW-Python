@@ -85,7 +85,7 @@ class LightSoakHWComms:
             time.sleep(0.01)
 
     def reboot(self):
-        self.print_hw("reboot\n")
+        self.print_hw("\nreboot\n")
 
     # sends scheduled CMD and waits for SCHED_OK. returns true if scheduling ok, false if not
     def send_sched_cmd(self, cmd):
