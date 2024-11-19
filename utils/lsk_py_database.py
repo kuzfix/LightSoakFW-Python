@@ -617,6 +617,28 @@ class LightSoakDatabase:
         test.save()
         self.test = test
 
+    def delete_test(self,test_id):
+        if isinstance(test_id, int):
+            try:
+                with self.db.atomic():
+                    tst = Test.get(Test.id == test_id)
+                    tst.delete_instance(recursive=True) # THIS WORKS! but slow#
+
+                    # SelectedTests = Test.select().where(Test.id == test_id)
+                    # print('To delete:', SelectedTests[0].id)
+
+                    # SelectedMeasurementsWDumps = Measurement.select().where((Measurement.test_id == SelectedTests[0].id) &
+                    #                                                         Measurement.meas_type.contains('dump'))
+                    # SelectedMeasurementsWIVchars = Measurement.select().where((Measurement.test_id == SelectedTests[0].id) &
+                    #                                                         Measurement.meas_type.startswith('getivchar'))
+                    # selBufDump = BufferDump.select().where(BufferDump.measurement_id.in_(SelectedMeasurementsWDumps.id))
+                    # for sel in selBufDump:
+                    #     print("BD del: ",sel.id)
+            except Exception as e:
+                print("Delete failed:", e)
+        else:
+            print(f"Error: ID of the test should be an integer, not {type(test_id)}.")
+
 
 
 
