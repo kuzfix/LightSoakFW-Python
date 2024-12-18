@@ -40,20 +40,21 @@ def SaveTestInfoToDb(db):
         db.save_testinfo()
 
 
+DBconfig_file = "data/DBconfig.json"
+output_dir = "data/output/"
+#config_file = "data/CalibratePhotodiodesUnderSunSimulator.json"
+#config_file = "data/MeasureIllumination(distance).json"
 #config_file = "data/config.json"
-config_file = "data/MeasureIllumination(distance).json"
 #config_file = "data/Measure_Isc.json"
 #config_file = "data/evaluateLEDresolutionAndStability.json"
 #config_file = "data/BasicProtocol.json"
 #config_file = "data/ConfigBug01.json"
 #config_file = "data/Bug02UnintentionalPause.json"
-#config_file = "data/CalibratePhotodiodesUnderSunSimulator.json"
-#  config_file = "data/GetIVcurves.json"
-#  config_file = "data/MPPT.json"
-#config_file = "data/TestProtocol.json"
+#config_file = "data/GetIVcurves.json"
+#config_file = "data/MPPT.json"
 #config_file = "data/Flashmeasure.json"
-DBconfig_file = "data/DBconfig.json"
-output_dir = "data/output/"
+#config_file = "data/TestProtocol.json"
+config_file = "data/Test.json"
 
 # Check if the directory exists
 if os.path.exists(output_dir):
@@ -113,7 +114,7 @@ cnfg.parse()
 # parse port from config
 hw_port = cnfg.LS_Instrument_Port
 
-hw = lsk_py_hardware_comms.LightSoakHWComms(hw_port, output_dir, log_all_serial=True)
+hw = lsk_py_hardware_comms.LightSoakHWComms(hw_port, output_dir, log_all_serial=True, buff_size=10e6)
 
 data = lsk_py_data_in_parser.LightSoakDataInParser(lambda: hw.read_line(), lambda msg: hw.print_hw(msg), output_dir)
 

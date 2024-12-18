@@ -3,13 +3,15 @@ import datetime
 import time
 
 class LightSoakHWComms:
-    def __init__(self, ser_port, out_dir, log_all_serial=False):
+    def __init__(self, ser_port, out_dir, log_all_serial=False, buff_size=None):
         self.__SERIAL_PORT = ser_port
         self.__out_dir = out_dir
         self.__log_all_serial = log_all_serial
         self.__DEFAULT_BAUD = 230400
         self.__FASTAFBOI_BAUD = 2000000
         self.__CONNECT_TIMEOUT = 2
+        self.__buff_size=int(buff_size)
+        self.__max_buf_utilization = 0
 
         if(log_all_serial):
             #open file in out_dir names serial_log_<timestamp>.txt
@@ -23,6 +25,7 @@ class LightSoakHWComms:
     def __del__(self):
         try:
             self.ser.close()
+            print(f"Max recorded RX buffer usage: {self.__max_buf_utilization}/{self.__buff_size}")
         except:
             pass
 
@@ -50,12 +53,20 @@ class LightSoakHWComms:
         print("LightSoak HW: Ready")
         print("Changing baud to 2M...")
         self.__set_fastaf_baud()
+        if self.__buff_size is not None:
+            self.ser.set_buffer_size(rx_size=self.__buff_size)
+        self.__max_buf_utilization = 0
         print("LightSoak HW: Configured and ready")
     # MAIN CONNECT FUNCTION END ----------------------------------------------------------
 
     # READ LINE and PRINT FUNCTION ----------------------------------------------------------
     def read_line(self):
+        buf_usage = 0
         try:
+            buf_usage = self.ser.in_waiting
+            if buf_usage > self.__max_buf_utilization:
+                self.__max_buf_utilization = buf_usage
+            #debugging...............................
             message = self.ser.readline().decode().strip()
         except UnicodeDecodeError:
             # ignore invalid bytes
@@ -63,6 +74,8 @@ class LightSoakHWComms:
         if(message != ""):
             if(self.__log_all_serial):
                 self.__serial_log.write("[" + str(datetime.datetime.now()) + "] " + "IN: " + message + "\n")
+        if (buf_usage > self.__buff_size * 0.8):
+            print(f"Warning: RX Buffer running low ({buf_usage}/{self.__buff_size})")
         return message
 
         
