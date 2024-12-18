@@ -21,6 +21,7 @@ class LightSoakerSequenceParser:
         with open(self.config_file) as f:
             config = json.load(f)
 
+        self.User = config['parameters']['User']
         self.Test_Name = config['parameters']['Test_Name']
         self.DUT_Name = config['parameters']['DUT_Name']
         self.DUT_Target_Temperature = config['parameters']['DUT_Target_Temperature']

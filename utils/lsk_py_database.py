@@ -39,7 +39,7 @@ class LightSoakDatabase:
 
     def __create_tables(self):
         with self.db:
-            self.db.create_tables([Test, Measurement, BufferDump, CharacteristicIV, TestInfo])
+            self.db.create_tables([User, Test, Measurement, BufferDump, CharacteristicIV, TestInfo])
 
     def save_to_db(self, data_dict):
         if(data_dict["type"] == "getvolt"):
@@ -595,8 +595,10 @@ class LightSoakDatabase:
         self.testinfoList = []
 
     def save_meas_sequence(self, cnfg):
+        user, created = User.get_or_create(User_name=cnfg.User)
         if cnfg.DUT_Target_Temperature != "False":
             test = Test(
+                user_id = user,
                 Test_Name = cnfg.Test_Name,
                 DUT_Name = cnfg.DUT_Name,
                 DUT_Target_Temperature = cnfg.DUT_Target_Temperature,
@@ -607,6 +609,7 @@ class LightSoakDatabase:
             )
         else:
             test = Test(
+                user_id = user,
                 Test_Name = cnfg.Test_Name,
                 DUT_Name = cnfg.DUT_Name,
                 DUT_Temp_Settle_Time = cnfg.DUT_Temp_Settle_Time,
@@ -648,8 +651,12 @@ class BaseModel(Model):
     class Meta:
         database = database_proxy
 
+class User(BaseModel):
+    User_name = TextField()
+
 class Test(BaseModel):
     startTime = DateTimeField(default=dt.datetime.now)
+    user_id = ForeignKeyField(User, backref='tests')
     Test_Name = TextField()
     DUT_Name = TextField()
     DUT_Target_Temperature = FloatField(null=True)
@@ -660,7 +667,7 @@ class Test(BaseModel):
 
 class Measurement(BaseModel):
     #reference to row from Test table
-    test = ForeignKeyField(Test, backref='test')
+    test = ForeignKeyField(Test, backref='measurements', on_delete='RESTRICT')
     #data
     timestamp = BigIntegerField()
     ch1 = FloatField(null=True)
