@@ -656,7 +656,7 @@ class User(BaseModel):
 
 class Test(BaseModel):
     startTime = DateTimeField(default=dt.datetime.now)
-    user_id = ForeignKeyField(User, backref='tests')
+    user_id = ForeignKeyField(User, backref='tests', on_delete='RESTRICT', on_update='CASCADE')
     Test_Name = TextField()
     DUT_Name = TextField()
     DUT_Target_Temperature = FloatField(null=True)
@@ -664,10 +664,11 @@ class Test(BaseModel):
     Test_Notes = TextField()
     HWport = TextField()
     Tport = TextField()
+    Hidden = BooleanField(default=False)
 
 class Measurement(BaseModel):
     #reference to row from Test table
-    test = ForeignKeyField(Test, backref='measurements', on_delete='RESTRICT')
+    test = ForeignKeyField(Test, backref='measurements', on_delete='CASCADE', on_update='CASCADE')
     #data
     timestamp = BigIntegerField()
     ch1 = FloatField(null=True)
@@ -690,7 +691,7 @@ class Measurement(BaseModel):
 
 class BufferDump(BaseModel):
     #reference to row from Measurement table
-    measurement = ForeignKeyField(Measurement, backref='buffer_dump')
+    measurement = ForeignKeyField(Measurement, backref='buffer_dumps', on_delete='CASCADE', on_update='CASCADE')
     #data
     timestamp = BigIntegerField()
     ch1 = FloatField(null=True)
@@ -708,7 +709,7 @@ class BufferDump(BaseModel):
 
 class CharacteristicIV(BaseModel):
     #reference to row from Measurement table
-    measurement = ForeignKeyField(Measurement, backref='characteristic_iv')
+    measurement = ForeignKeyField(Measurement, backref='IVs', on_delete='CASCADE', on_update='CASCADE')
     #data
     timestamp = BigIntegerField()
     ch1 = FloatField(null=True)
@@ -727,7 +728,7 @@ class CharacteristicIV(BaseModel):
 
 class TestInfo(BaseModel):
     #reference to row from Test table
-    test = ForeignKeyField(Test, backref='test')
+    test = ForeignKeyField(Test, backref='testInfo', on_delete='CASCADE', on_update='CASCADE')
     #data
     line = TextField()
 
