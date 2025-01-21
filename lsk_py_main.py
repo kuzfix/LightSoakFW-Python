@@ -41,6 +41,7 @@ def SaveTestInfoToDb(db):
 
 
 DBconfig_file = "data/DBconfig.json"
+HWconfig_file = "data/HWconfig.json"
 output_dir = "data/output/"
 #config_file = "data/CalibratePhotodiodesUnderSunSimulator.json"
 #config_file = "data/MeasureIllumination(distance).json"
@@ -55,6 +56,7 @@ output_dir = "data/output/"
 #config_file = "data/Flashmeasure.json"
 #config_file = "data/TestProtocol.json"
 config_file = "data/Test.json"
+#config_file = "data/CyclingVSirradiance.json"
 
 # Check if the directory exists
 if os.path.exists(output_dir):
@@ -102,6 +104,7 @@ else:
 
 cnfg = lsk_py_sequence_parser.LightSoakerSequenceParser(config_file)
 MySQLconnParams = lsk_py_sequence_parser.ParseDBparams(DBconfig_file)
+HWcnfg = lsk_py_sequence_parser.ParseHWparams(HWconfig_file)
 
 db = lsk_py_database.LightSoakDatabase(output_dir,MySQLconnParams)
 
@@ -111,17 +114,14 @@ db.open_db()
 # parse config
 cnfg.parse()
 
-# parse port from config
-hw_port = cnfg.LS_Instrument_Port
-
-hw = lsk_py_hardware_comms.LightSoakHWComms(hw_port, output_dir, log_all_serial=True, buff_size=10e6)
+hw = lsk_py_hardware_comms.LightSoakHWComms(HWcnfg['LS_Instrument_Port'], output_dir, log_all_serial=True, buff_size=10e6)
 
 data = lsk_py_data_in_parser.LightSoakDataInParser(lambda: hw.read_line(), lambda msg: hw.print_hw(msg), output_dir)
 
-tempctrl = lsk_py_temp_control.LightSoakTempControl(cnfg.Temperature_Ctrl_Port)
+tempctrl = lsk_py_temp_control.LightSoakTempControl(HWcnfg['Temperature_Ctrl_Port'])
 
 #Create new measurement sequence in the database
-db.save_meas_sequence(cnfg)
+db.save_meas_sequence(cnfg,HWcnfg)
 
 # open txt file for general test info
 #infotxt = open(output_dir + "info.txt" , "w")
@@ -135,7 +135,7 @@ TestInfoLineAdd("Test ID: " + cnfg.Test_Name + "\n",db,infotxt)
 TestInfoLineAdd("Test Notes: " + cnfg.Test_Notes + "\n",db,infotxt)
 TestInfoLineAdd("DUT Serial: " + cnfg.DUT_Name + "\n",db,infotxt)
 TestInfoLineAdd("DUT Target Temp: " + str(cnfg.DUT_Target_Temperature) + "\n",db,infotxt)
-TestInfoLineAdd("HW serial port: " + hw_port + "\n",db,infotxt)
+TestInfoLineAdd("HW serial port: " + HWcnfg['LS_Instrument_Port'] + "\n",db,infotxt)
 TestInfoLineAdd("\n\n",None,infotxt)
 
 # write command list to file

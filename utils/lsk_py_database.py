@@ -594,7 +594,7 @@ class LightSoakDatabase:
         TestInfo.bulk_create(self.testinfoList)
         self.testinfoList = []
 
-    def save_meas_sequence(self, cnfg):
+    def save_meas_sequence(self, cnfg, HWcnfg):
         user, created = User.get_or_create(User_name=cnfg.User)
         if cnfg.DUT_Target_Temperature != "False":
             test = Test(
@@ -604,8 +604,8 @@ class LightSoakDatabase:
                 DUT_Target_Temperature = cnfg.DUT_Target_Temperature,
                 DUT_Temp_Settle_Time = cnfg.DUT_Temp_Settle_Time,
                 Test_Notes = cnfg.Test_Notes,
-                HWport = cnfg.LS_Instrument_Port,
-                Tport = cnfg.Temperature_Ctrl_Port
+                HWport = HWcnfg['LS_Instrument_Port'],
+                Tport = HWcnfg['Temperature_Ctrl_Port']
             )
         else:
             test = Test(

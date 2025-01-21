@@ -1,6 +1,6 @@
 import json
 import ipaddress
-
+from jinja2 import Template
 
 # How to use:
 # pass the config file path to the constructor
@@ -19,20 +19,46 @@ class LightSoakerSequenceParser:
     def parse(self):
         self.__last_sched_time = 0
         with open(self.config_file) as f:
-            config = json.load(f)
+            template = Template(f.read())
+            json_configurations = json.loads(template.render())
 
-        self.User = config['parameters']['User']
-        self.Test_Name = config['parameters']['Test_Name']
-        self.DUT_Name = config['parameters']['DUT_Name']
-        self.DUT_Target_Temperature = config['parameters']['DUT_Target_Temperature']
-        self.DUT_Temp_Settle_Time = config['parameters']['DUT_Temp_Settle_Time']
-        self.Test_Notes = config['parameters']['Test_Notes']
-        self.LS_Instrument_Port = config['parameters']['LS_Instrument_Port']
-        self.Temperature_Ctrl_Port = config['parameters']['Temperature_Ctrl_Port']
+        #unify structure regardless if there is only one config or a batch of configs
+        if 'configs' in json_configurations:
+            configurations = json_configurations
+        else:
+            configurations['configs'] = [json_configurations]
 
-        for elem in config['sequence']:
-            if 'repeat' in elem and elem['repeat'] > 0:
-                for i in range(elem['repeat']):
+        #not finished. At the moment only the last config is used
+        for cfg_idx in range(len(configurations['configs'])):
+            config = configurations['configs'][cfg_idx]
+
+            self.User = config['parameters']['User']
+            self.Test_Name = config['parameters']['Test_Name']
+            self.DUT_Name = config['parameters']['DUT_Name']
+            self.DUT_Target_Temperature = config['parameters']['DUT_Target_Temperature']
+            self.DUT_Temp_Settle_Time = config['parameters']['DUT_Temp_Settle_Time']
+            self.Test_Notes = config['parameters']['Test_Notes']
+
+            for elem in config['sequence']:
+                if 'repeat' in elem and elem['repeat'] > 0:
+                    for i in range(elem['repeat']):
+                        if elem['time_type'] == 'abs':
+                            sched_time = elem['time'] * 1000000
+                            sched_time = int(sched_time) # convert to integer
+                        elif elem['time_type'] == 'rel':
+                            sched_time = self.__last_sched_time + elem['time'] * 1000000
+                            sched_time = int(sched_time) # convert to integer
+                        else:
+                            raise Exception('time_type Error')
+                        sched_time += i * elem['interval'] * 1000000
+                        sched_time = int(sched_time) # convert to integer
+                        cmd = f"{elem['cli_cmd']} -sched {sched_time}"
+                        cmd += "\n"
+                        if(sched_time < self.__seq_begin_deadtime_us):
+                            raise Exception('Commands scheduled earlier than 10s after sequence begin are not allowed!')
+                        self.cmdlist.append(cmd)
+                    self.__last_sched_time = sched_time
+                else:
                     if elem['time_type'] == 'abs':
                         sched_time = elem['time'] * 1000000
                         sched_time = int(sched_time) # convert to integer
@@ -41,31 +67,15 @@ class LightSoakerSequenceParser:
                         sched_time = int(sched_time) # convert to integer
                     else:
                         raise Exception('time_type Error')
-                    sched_time += i * elem['interval'] * 1000000
-                    sched_time = int(sched_time) # convert to integer
+                    self.__last_sched_time = sched_time
                     cmd = f"{elem['cli_cmd']} -sched {sched_time}"
                     cmd += "\n"
                     if(sched_time < self.__seq_begin_deadtime_us):
-                        raise Exception('Commands scheduled earlier than 10s after sequence begin are not allowed!')
+                            raise Exception('Commands scheduled earlier than 1s after sequence begin are not allowed!')
                     self.cmdlist.append(cmd)
-                self.__last_sched_time = sched_time
-            else:
-                if elem['time_type'] == 'abs':
-                    sched_time = elem['time'] * 1000000
-                    sched_time = int(sched_time) # convert to integer
-                elif elem['time_type'] == 'rel':
-                    sched_time = self.__last_sched_time + elem['time'] * 1000000
-                    sched_time = int(sched_time) # convert to integer
-                else:
-                    raise Exception('time_type Error')
-                self.__last_sched_time = sched_time
-                cmd = f"{elem['cli_cmd']} -sched {sched_time}"
-                cmd += "\n"
-                if(sched_time < self.__seq_begin_deadtime_us):
-                        raise Exception('Commands scheduled earlier than 1s after sequence begin are not allowed!')
-                self.cmdlist.append(cmd)
-        self.test_duration = sched_time / 1000000
-        print("JSON config loaded successfully!")
+            self.test_duration = sched_time / 1000000
+            print("JSON config loaded successfully!")
+
     # print command list to console (for debugging)
     def print_cmdlist(self):
         print(" ## DEBUG: print cmdlist:")
@@ -105,7 +115,18 @@ def ParseDBparams(DBconfig_file):
     if not isinstance(DBconfig.get('port'),int):
         return None
     return DBconfig
-    
+
+def ParseHWparams(HWconfig_file):
+    try:
+        with open(HWconfig_file) as f:
+            HWconfig = json.load(f)
+    except:
+        return None
+
+    if not isinstance(HWconfig.get('LS_Instrument_Port'),str):
+        return None
+    return HWconfig
+
 
 # testing
 if __name__ == "__main__":
