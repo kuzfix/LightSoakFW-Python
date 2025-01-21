@@ -33,6 +33,11 @@ class LightSoakHWComms:
     def connect(self):
         print("LightSoak HW: Initializing...")
         print("Trying default baud...")
+        # if serial port already open, close it first
+        try:
+            self.ser.close()
+        except:
+            pass
         self.ser = serial.Serial(self.__SERIAL_PORT, self.__DEFAULT_BAUD, timeout=1)
         #reboot so we are in a known state
         print("Rebooting LightSoak...")

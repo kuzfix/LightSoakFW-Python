@@ -7,7 +7,8 @@ class LightSoakTempControl:
         pass
 
     def connect_to_hw(self):
-        self._mc = MeCom(self._usb_port)
+        if not hasattr(self, '_mc'):
+            self._mc = MeCom(self._usb_port)
         self._hw_address = self._mc.identify()
         self._status = self._mc.status()
         print("TEMPCTRL: connected to device: {}, status: {}".format(self._hw_address, self._status))

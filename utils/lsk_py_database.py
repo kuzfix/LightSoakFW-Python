@@ -594,28 +594,28 @@ class LightSoakDatabase:
         TestInfo.bulk_create(self.testinfoList)
         self.testinfoList = []
 
-    def save_meas_sequence(self, cnfg, HWcnfg):
-        user, created = User.get_or_create(User_name=cnfg.User)
+    def save_meas_sequence(self, cnfg, cfg_idx, HWcnfg):
+        user, created = User.get_or_create(User_name=cnfg.User[cfg_idx])
         if cnfg.DUT_Target_Temperature != "False":
             test = Test(
                 user_id = user,
-                Test_Name = cnfg.Test_Name,
-                DUT_Name = cnfg.DUT_Name,
-                DUT_Target_Temperature = cnfg.DUT_Target_Temperature,
-                DUT_Temp_Settle_Time = cnfg.DUT_Temp_Settle_Time,
-                Test_Notes = cnfg.Test_Notes,
+                Test_Name = cnfg.Test_Name[cfg_idx],
+                DUT_Name = cnfg.DUT_Name[cfg_idx],
+                DUT_Target_Temperature = cnfg.DUT_Target_Temperature[cfg_idx],
+                DUT_Temp_Settle_Time = cnfg.DUT_Temp_Settle_Time[cfg_idx],
+                Test_Notes = cnfg.Test_Notes[cfg_idx],
                 HWport = HWcnfg['LS_Instrument_Port'],
                 Tport = HWcnfg['Temperature_Ctrl_Port']
             )
         else:
             test = Test(
                 user_id = user,
-                Test_Name = cnfg.Test_Name,
-                DUT_Name = cnfg.DUT_Name,
-                DUT_Temp_Settle_Time = cnfg.DUT_Temp_Settle_Time,
-                Test_Notes = cnfg.Test_Notes,
-                HWport = cnfg.LS_Instrument_Port,
-                Tport = cnfg.Temperature_Ctrl_Port
+                Test_Name = cnfg.Test_Name[cfg_idx],
+                DUT_Name = cnfg.DUT_Name[cfg_idx],
+                DUT_Temp_Settle_Time = cnfg.DUT_Temp_Settle_Time[cfg_idx],
+                Test_Notes = cnfg.Test_Notes[cfg_idx],
+                HWport = HWcnfg['LS_Instrument_Port'],
+                Tport = HWcnfg['Temperature_Ctrl_Port']
             )
         test.save()
         self.test = test

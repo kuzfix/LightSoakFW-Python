@@ -11,16 +11,26 @@ class LightSoakerSequenceParser:
 
     def __init__(self, config_file):
         self.config_file = config_file
-        self.cmdlist = []
-        self.test_duration = 0
+        self.User = []
+        self.Test_Name = []
+        self.DUT_Name = []
+        self.DUT_Target_Temperature = []
+        self.DUT_Temp_Settle_Time = []
+        self.Test_Notes = []
+        self.cmdlist = [[]]
+        self.test_duration = []
+        self.NumConfigs=0
         self.__seq_begin_deadtime_us = 1000
 
 
-    def parse(self):
+    def parse(self,show_jinja2_expansion=False):
         self.__last_sched_time = 0
         with open(self.config_file) as f:
             template = Template(f.read())
-            json_configurations = json.loads(template.render())
+            rendered_json = template.render()
+            if show_jinja2_expansion:
+                print(rendered_json)
+            json_configurations = json.loads(rendered_json)
 
         #unify structure regardless if there is only one config or a batch of configs
         if 'configs' in json_configurations:
@@ -28,16 +38,21 @@ class LightSoakerSequenceParser:
         else:
             configurations['configs'] = [json_configurations]
 
-        #not finished. At the moment only the last config is used
+        self.cmdlist = []
+        self.test_duration = []
+        self.NumConfigs=0
         for cfg_idx in range(len(configurations['configs'])):
             config = configurations['configs'][cfg_idx]
+            self.cmdlist += [[]]
+            self.test_duration += [0]
+            self.NumConfigs = cfg_idx+1
 
-            self.User = config['parameters']['User']
-            self.Test_Name = config['parameters']['Test_Name']
-            self.DUT_Name = config['parameters']['DUT_Name']
-            self.DUT_Target_Temperature = config['parameters']['DUT_Target_Temperature']
-            self.DUT_Temp_Settle_Time = config['parameters']['DUT_Temp_Settle_Time']
-            self.Test_Notes = config['parameters']['Test_Notes']
+            self.User += [config['parameters']['User']]
+            self.Test_Name += [config['parameters']['Test_Name']]
+            self.DUT_Name += [config['parameters']['DUT_Name']]
+            self.DUT_Target_Temperature += [config['parameters']['DUT_Target_Temperature']]
+            self.DUT_Temp_Settle_Time += [config['parameters']['DUT_Temp_Settle_Time']]
+            self.Test_Notes += [config['parameters']['Test_Notes']]
 
             for elem in config['sequence']:
                 if 'repeat' in elem and elem['repeat'] > 0:
@@ -55,8 +70,8 @@ class LightSoakerSequenceParser:
                         cmd = f"{elem['cli_cmd']} -sched {sched_time}"
                         cmd += "\n"
                         if(sched_time < self.__seq_begin_deadtime_us):
-                            raise Exception('Commands scheduled earlier than 10s after sequence begin are not allowed!')
-                        self.cmdlist.append(cmd)
+                            raise Exception('Commands scheduled earlier than 1ms after sequence begin are not allowed!')
+                        self.cmdlist[cfg_idx].append(cmd)
                     self.__last_sched_time = sched_time
                 else:
                     if elem['time_type'] == 'abs':
@@ -71,19 +86,22 @@ class LightSoakerSequenceParser:
                     cmd = f"{elem['cli_cmd']} -sched {sched_time}"
                     cmd += "\n"
                     if(sched_time < self.__seq_begin_deadtime_us):
-                            raise Exception('Commands scheduled earlier than 1s after sequence begin are not allowed!')
-                    self.cmdlist.append(cmd)
-            self.test_duration = sched_time / 1000000
-            print("JSON config loaded successfully!")
+                            raise Exception('Commands scheduled earlier than 1ms after sequence begin are not allowed!')
+                    self.cmdlist[cfg_idx].append(cmd)
+            self.test_duration[cfg_idx] = sched_time / 1000000
+        
+        
+        print("JSON config loaded successfully!")
 
     # print command list to console (for debugging)
     def print_cmdlist(self):
-        print(" ## DEBUG: print cmdlist:")
-        print("Number of cmds:" , len(self.cmdlist))
-        print("###################################")
-        for cmd in self.cmdlist:
-            print(cmd, end='')
-        print("###################################")
+        for cfg_idx in range(len(self.cmdlist)):
+            print(" ## DEBUG: print cmdlist:")
+            print("Number of cmds:" , len(self.cmdlist[cfg_idx]))
+            print("###################################")
+            for cmd in self.cmdlist[cfg_idx]:
+                print(cmd, end='')
+            print("###################################")
 
 # How to use:
 # pass the config file path to the function
@@ -130,5 +148,6 @@ def ParseHWparams(HWconfig_file):
 
 # testing
 if __name__ == "__main__":
-    parser = LightSoakerSequenceParser('test_config.json')
+    parser = LightSoakerSequenceParser("data/Test.json")
+    parser.parse(True)
     parser.print_cmdlist()
