@@ -13,6 +13,7 @@ import shutil
 import winsound
 
 def exit_handler():
+    print("End time:",datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S"))
     print("END!")
     #reboot HW (necesary if end of sequence was not reached, otherwise the device resets automatically)
     hw.reboot()
@@ -265,7 +266,6 @@ for cfg_idx in range(cnfg.NumConfigs):
             print("Leaving temperature control enabled...")
 
         print("Sequence complete!")
-        winsound.PlaySound("SystemAsterisk",winsound.SND_ALIAS)
         
         TestInfoLineAdd(" ### End of Test ### \n",db,infotxt)
         SaveTestInfoToDb(db)
@@ -281,6 +281,7 @@ if infotxt is not None:
 
 exit_handler()
 
+winsound.PlaySound("SystemAsterisk",winsound.SND_ALIAS)
 raise SystemExit
 
 

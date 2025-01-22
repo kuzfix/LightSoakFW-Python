@@ -1,0 +1,38 @@
+{
+    "configs": [
+    {% for Temperature in [20, 25, 30] %}
+{
+    "parameters": {
+        "User": "UserName",
+        "Test_Name": "Config test with Jinja2, T={{Temperature}}",
+        "Test_Notes": "Demo for config with Jinja2. This one will do the same measurement at a few different temperatures",
+        "DUT_Name": "Unknown sample",
+        "DUT_Target_Temperature": "{{Temperature}}",
+        "DUT_Temp_Settle_Time": 10.0
+    },
+    "sequence": [
+        {"time_type": "abs", "time": 1.000, "repeat": 0 , "interval": 0, "cli_cmd": "calibillum -illum 1000.0 -i 1.1 -pa 3.2665388e-04 -pb 9.0339494e-01 -pc 3.6339411e+00"},
+        {"time_type": "rel", "time": 0.001, "repeat": 0 , "interval": 0, "cli_cmd": "calibillumLow -pa 4.1985083e-03 -pb 9.6271122e-01 -pc 1.8859486e+00"},
+        {"time_type": "rel", "time": 0.001, "repeat":  0, "interval": 0, "cli_cmd": "setnumavg -n 2000"},
+
+        {% for Irradiance in [10, 100, 1000] %}
+        {"time_type": "rel", "time": 0.001, "repeat":  0, "interval":  0, "cli_cmd": "setledillum -illum {{Irradiance}}"},
+        {"time_type": "rel", "time": 0.001, "repeat":  0, "interval":  0, "cli_cmd": "mpptstart -c 0 -t 100000 -r 1"},
+        {"time_type": "rel", "time": 10.00, "repeat":  0, "interval":  0, "cli_cmd": "getivchar -c 0 -vs 0.0 -ve 1.0 -s 0.01 -st 100 -sn 5"},
+        {"time_type": "rel", "time": 0.001, "repeat":  0, "interval":  0, "cli_cmd": "mpptresume -c 0 -t 100000 -r 100"},
+        {"time_type": "rel", "time": 10.00, "repeat":  0, "interval":  0, "cli_cmd": "getivchar -c 0 -vs 0.0 -ve 1.0 -s 0.01 -st 100 -sn 5"},
+        {"time_type": "rel", "time": 0.001, "repeat":  0, "interval":  0, "cli_cmd": "mpptstop"},
+        {"time_type": "rel", "time": 0.001, "repeat":  0, "interval":  0, "cli_cmd": "disablecurrent -c 0"},
+        {"time_type": "rel", "time": 1.000, "repeat": 10, "interval":  1, "cli_cmd": "getvolt -c 0"},
+        {"time_type": "rel", "time": 0.001, "repeat":  0, "interval":  0, "cli_cmd": "setledillum -illum 0"},
+
+        {"time_type": "rel", "time": 1.000, "repeat":  3, "interval":  5, "cli_cmd": "flashmeasure -illum {{Irradiance}} -t 5000 -DUMP"},
+        {% endfor %}
+
+        {"time_type": "rel", "time": 0.001, "repeat":  0, "interval":  0, "cli_cmd": "ENDSEQUENCE"}
+    ]
+}
+{% if not loop.last %},{% endif %}
+{% endfor %}
+]
+}
