@@ -14,6 +14,14 @@ import time
 import statistics
 from math import isnan
 
+from enum import Enum
+
+class Response(Enum):
+    NONE = 0,
+    OK = 1,
+    FAIL = -1,
+    FAIL_CHRONO = -2
+
 class LightSoakDataInParser:
     def __init__(self, read_line_funct, print_funct, out_dir):
         self.__out_dir = out_dir
@@ -23,191 +31,154 @@ class LightSoakDataInParser:
     # returns True if end of sequence is reached - END_OF_SEQUENCE received from hw
     def parser(self):
         self.__last_not_empty_time = time.time()
+
+        data_dict = None
         is_end_sequence = False
         is_req_new_cmd = False
-        data_dict = {}
+        response = Response.NONE
+        line = self.__read_line()   #timeout with default lib is 1 s
+        if(line == ""):
+            # no data received, return
+            pass
+        
+        # we got data bois
+        self.__last_not_empty_time = time.time()
+        if(line == "END_OF_SEQUENCE"):
+            print("Got data: END_OF_SEQUENCE")
+            is_end_sequence = True
 
-        while(True):
-            line = self.__read_line()
-            if(line == ""):
-                # no data received, return
-                is_end_sequence = False
-                is_req_new_cmd = False
-                return (None, is_end_sequence, is_req_new_cmd)
-            
-            # we got data bois
-            self.__last_not_empty_time = time.time()
-            if(line == "END_OF_SEQUENCE"):
-                print("Got data: END_OF_SEQUENCE")
-                is_end_sequence = True
-                is_req_new_cmd = False
-                return (None, is_end_sequence, is_req_new_cmd)
-            elif(line == "VOLT[V]:"):
-                print("Got data: VOLT[V]:")
-                data = []
-                for i in range(0, 3):
-                    data.append(self.__read_line())
-                # parse
-                data_dict = self.parse_getvolt(data)
-                is_end_sequence = False
-                is_req_new_cmd = False
-                return (data_dict, is_end_sequence, is_req_new_cmd)
-            
-            elif(line == "CURR[uA]:"):
-                print("Got data: CURR[uA]:")
-                data = []
-                for i in range(0, 3):
-                    data.append(self.__read_line())
-                # parse
-                data_dict = self.parse_getcurr(data)
-                is_end_sequence = False
-                is_req_new_cmd = False
-                return (data_dict, is_end_sequence, is_req_new_cmd)
-            
-            elif(line == "MPPT[uA__V]:"):
-                print("Got data: MPPT[uA__V]:")
-                data = []
-                for i in range(0, 3):
-                    data.append(self.__read_line())
-                # parse
-                data_dict = self.parse_getMPpoint(data)
-                is_end_sequence = False
-                is_req_new_cmd = False
-                return (data_dict, is_end_sequence, is_req_new_cmd)
-            
-            elif(line == "IV[uA__V]:"):
-                print("Got data: IV[uA__V]:")
-                data = []
-                for i in range(0, 3):
-                    data.append(self.__read_line())
-                # parse
-                data_dict = self.parse_getivpoint(data)
-                is_end_sequence = False
-                is_req_new_cmd = False
-                return (data_dict, is_end_sequence, is_req_new_cmd)
-            
-            elif(line == "FLASHMEAS_DUMP:"):
-                print("Got data: FLASHMEAS_DUMP:")
-                data = []
-                while(True):
-                    data.append(self.__read_line())
-                    if(data[-1] == "END_DUMP"):
-                        break
-                # parse
-                data_dict = self.parse_flashmeasure_dump(data)
-                #todo: calculate voltages from dump to have a single voltage reading per channel
-                data_dict = self.volt_from_flashdump(data_dict)
-                is_end_sequence = False
-                is_req_new_cmd = False
-                return (data_dict, is_end_sequence, is_req_new_cmd)
-            
-            elif(line == "DUMPVOLT[V]:"):
-                print("Got data: DUMPVOLT[V]:")
-                data = []
-                while(True):
-                    data.append(self.__read_line())
-                    if(data[-1] == "END_DUMP"):
-                        break
-                # parse
-                data_dict = self.parse_dumpvolt(data)
-                is_end_sequence = False
-                is_req_new_cmd = False
-                return (data_dict, is_end_sequence, is_req_new_cmd)
-            
-            elif(line == "DUMPCURR[uA]:"):
-                print("Got data: DUMPCURR[uA]:")
-                data = []
-                while(True):
-                    data.append(self.__read_line())
-                    if(data[-1] == "END_DUMP"):
-                        break
-                # parse
-                data_dict = self.parse_dumpcurr(data)
-                is_end_sequence = False
-                is_req_new_cmd = False
-                return (data_dict, is_end_sequence, is_req_new_cmd)
+        elif(line == "VOLT[V]:"):
+            print("Got data: VOLT[V]:")
+            data = []
+            for i in range(0, 3):
+                data.append(self.__read_line())
+            # parse
+            data_dict = self.parse_getvolt(data)
+        
+        elif(line == "CURR[uA]:"):
+            print("Got data: CURR[uA]:")
+            data = []
+            for i in range(0, 3):
+                data.append(self.__read_line())
+            # parse
+            data_dict = self.parse_getcurr(data)
+        
+        elif(line == "MPPT[uA__V]:"):
+            print("Got data: MPPT[uA__V]:")
+            data = []
+            for i in range(0, 3):
+                data.append(self.__read_line())
+            # parse
+            data_dict = self.parse_getMPpoint(data)
+        
+        elif(line == "IV[uA__V]:"):
+            print("Got data: IV[uA__V]:")
+            data = []
+            for i in range(0, 3):
+                data.append(self.__read_line())
+            # parse
+            data_dict = self.parse_getivpoint(data)
+        
+        elif(line == "FLASHMEAS_DUMP:"):
+            print("Got data: FLASHMEAS_DUMP:")
+            data = []
+            while(True):
+                data.append(self.__read_line())
+                if(data[-1] == "END_DUMP"):
+                    break
+            # parse
+            data_dict = self.parse_flashmeasure_dump(data)
+            #todo: calculate voltages from dump to have a single voltage reading per channel
+            data_dict = self.volt_from_flashdump(data_dict)
+        
+        elif(line == "DUMPVOLT[V]:"):
+            print("Got data: DUMPVOLT[V]:")
+            data = []
+            while(True):
+                data.append(self.__read_line())
+                if(data[-1] == "END_DUMP"):
+                    break
+            # parse
+            data_dict = self.parse_dumpvolt(data)
+        
+        elif(line == "DUMPCURR[uA]:"):
+            print("Got data: DUMPCURR[uA]:")
+            data = []
+            while(True):
+                data.append(self.__read_line())
+                if(data[-1] == "END_DUMP"):
+                    break
+            # parse
+            data_dict = self.parse_dumpcurr(data)
 
-            elif(line == "DUMPIVPT[uA__V]:"):
-                print("Got data: DUMPIVPT[uA__V]:")
-                data = []
-                while(True):
-                    data.append(self.__read_line())
-                    if(data[-1] == "END_DUMP"):
-                        break
-                # parse
-                data_dict = self.parse_dumpiv(data)
-                is_end_sequence = False
-                is_req_new_cmd = False
-                return (data_dict, is_end_sequence, is_req_new_cmd)
-            
-            elif(line == "IVCHAR[uA__V]:"):
-                print("Got data: IVCHAR[uA__V]:")
-                data = []
-                while(True):
-                    data.append(self.__read_line())
-                    if(data[-1] == "END_IVCHAR"):
-                        break
-                # parse
-                data_dict = self.parse_getivchar(data)
-                is_end_sequence = False
-                is_req_new_cmd = False
-                return (data_dict, is_end_sequence, is_req_new_cmd)
+        elif(line == "DUMPIVPT[uA__V]:"):
+            print("Got data: DUMPIVPT[uA__V]:")
+            data = []
+            while(True):
+                data.append(self.__read_line())
+                if(data[-1] == "END_DUMP"):
+                    break
+            # parse
+            data_dict = self.parse_dumpiv(data)
+        
+        elif(line == "IVCHAR[uA__V]:"):
+            print("Got data: IVCHAR[uA__V]:")
+            data = []
+            while(True):
+                data.append(self.__read_line())
+                if(data[-1] == "END_IVCHAR"):
+                    break
+            # parse
+            data_dict = self.parse_getivchar(data)
 
-            elif(line == "LEDTEMP:"):
-                print("Got data: LEDTEMP:")
-                data = []
-                for i in range(0, 2):
-                    data.append(self.__read_line())
-                # parse
-                data_dict = self.parse_getledtemp(data)
-                is_end_sequence = False
-                is_req_new_cmd = False
-                return (data_dict, is_end_sequence, is_req_new_cmd)
-            
-            elif(line == "RMS_VOLTNOISE[mV]:"):
-                print("Got data: RMS_VOLTNOISE[mV]:")
-                data = []
-                for i in range(0, 3):
-                    data.append(self.__read_line())
-                # parse
-                data_dict = self.parse_getnoisevoltrms(data)
-                is_end_sequence = False
-                is_req_new_cmd = False
-                return (data_dict, is_end_sequence, is_req_new_cmd)
-            
-            elif(line == "RMS_CURRNOISE[uA]:"):
-                print("Got data: RMS_CURRNOISE[uA]:")
-                data = []
-                for i in range(0, 3):
-                    data.append(self.__read_line())
-                # parse
-                data_dict = self.parse_getnoisecurrrms(data)
-                is_end_sequence = False
-                is_req_new_cmd = False
-                return (data_dict, is_end_sequence, is_req_new_cmd)
-            
-            elif(line == "SETLEDILLUM:"):
-                print("Got data: SETLEDILLUM:")
-                data = []
-                for i in range(0, 2):
-                    data.append(self.__read_line())
-                # parse
-                data_dict = self.parse_setledillum(data)
-                is_end_sequence = False
-                is_req_new_cmd = False
-                return (data_dict, is_end_sequence, is_req_new_cmd)
-            
+        elif(line == "LEDTEMP:"):
+            print("Got data: LEDTEMP:")
+            data = []
+            for i in range(0, 2):
+                data.append(self.__read_line())
+            # parse
+            data_dict = self.parse_getledtemp(data)
+        
+        elif(line == "RMS_VOLTNOISE[mV]:"):
+            print("Got data: RMS_VOLTNOISE[mV]:")
+            data = []
+            for i in range(0, 3):
+                data.append(self.__read_line())
+            # parse
+            data_dict = self.parse_getnoisevoltrms(data)
+        
+        elif(line == "RMS_CURRNOISE[uA]:"):
+            print("Got data: RMS_CURRNOISE[uA]:")
+            data = []
+            for i in range(0, 3):
+                data.append(self.__read_line())
+            # parse
+            data_dict = self.parse_getnoisecurrrms(data)
+        
+        elif(line == "SETLEDILLUM:"):
+            print("Got data: SETLEDILLUM:")
+            data = []
+            for i in range(0, 2):
+                data.append(self.__read_line())
+            # parse
+            data_dict = self.parse_setledillum(data)
 
 
-            elif(line == "REQ_SCHED_CMD"):
-                print("Got data: REQ_SCHED_CMD")
-                # HW requested new cmds. return to run loop
-                is_end_sequence = False
-                is_req_new_cmd = True
-                return (None, is_end_sequence, is_req_new_cmd)
-            else:
-                # got some data, but nothing we want to parse. run parser loop again
-                pass
+        elif(line == "REQ_SCHED_CMD"):
+            print("Got data: REQ_SCHED_CMD")
+            # HW requested new cmds. return to run loop
+            is_req_new_cmd = True
+
+        elif(line == "SCHED_OK"):
+            response = Response.OK
+        elif(line == "SCHED_FAIL:NOT_CHRONOLOGICAL"):
+            response = Response.FAIL_CHRONO
+        elif(line == "SCHED_FAIL"):
+            response = Response.FAIL
+        else:
+            # got some data, but nothing we want to parse.
+            pass
+        return (data_dict, is_end_sequence, is_req_new_cmd, response)
 
 
     

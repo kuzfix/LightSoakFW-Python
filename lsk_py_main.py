@@ -8,6 +8,7 @@ from utils import lsk_py_sequence_parser
 from utils import lsk_py_data_in_parser
 from utils import lsk_py_temp_control
 from utils import lsk_py_database
+from utils.lsk_py_data_in_parser import Response
 import os
 import shutil
 import winsound
@@ -50,8 +51,12 @@ output_dir = "data/output/"
 #config_file = "data/MPPT.json"
 #config_file = "data/Flashmeasure.json"
 #config_file = "data/TestProtocol.json"
-#config_file = "data/Test.json"
-config_file = "data/CyclingVSirradiance.json"
+config_file = "data/Test.json"
+#config_file = "data/TestingProbingFrequencyInfluence.json"
+#config_file = "data/CyclingVSirradiance.json"
+
+SCHED_OK_TIMEOUT = 0.2
+MAX_SCHED_RETRIES = 5
 
 # Check if the directory exists
 if os.path.exists(output_dir):
@@ -197,42 +202,85 @@ for cfg_idx in range(cnfg.NumConfigs):
         print("Sequence in progress...")
 
         # send cmds to buffer
+        CountChronologicalOrderFails = 0
+        CountFails = 0
+        waitingForSchedulerReply = False
+        new_cmd_needed = False
+        bufferFull=False
+        retryCounter=0
         while(True):
             # pop first cmd from list (works like fifo) and try to schedule it
             if(len(cnfg.cmdlist[cfg_idx]) == 0):
                     break
             cmd = cnfg.cmdlist[cfg_idx].pop(0)
-            schedok = hw.send_sched_cmd(cmd)
-            # if sched fails, we have run out of cmd buffer on HW
-            if(schedok == False):
-                # if scheduling fails, put cmd back into list and try again later
-                cnfg.cmdlist[cfg_idx].insert(0, cmd)
+            hw.send_sched_cmd(cmd)
+            ScheduleTimeoutMark = time.time() + SCHED_OK_TIMEOUT
+            while(True):
+                (data_dict, is_end_sequence, is_new_cmd_requested, response) = data.parser()
+                if (response == Response.OK):
+                    retryCounter = 0
+                    break
+                elif (response == Response.FAIL_CHRONO):
+                    # if scheduling fails, due to chronological order this command will not be able to be scheduled - ignore it
+                    CountChronologicalOrderFails += 1
+                    retryCounter = 0
+                    break
+                elif (response == Response.FAIL) or (time.time() > ScheduleTimeoutMark):
+                    # if scheduling fails, put cmd back into list and try again later, unless max number of retries has been reached
+                    if retryCounter > MAX_SCHED_RETRIES:
+                        retryCounter = 0
+                        CountFails += 1
+                        continue
+                    cnfg.cmdlist[cfg_idx].insert(0, cmd)
+                    retryCounter += 1
+                    bufferFull = True
+                    break
+            if bufferFull:
                 break
 
         # run incoming data parser
         while(True):
             try:
                 # run parser            
-                (data_dict, is_end_sequence, is_new_cmd_requested) = data.parser()
-
+                (data_dict, is_end_sequence, is_new_cmd_requested, response) = data.parser()
                 if(is_end_sequence == True):
                     #end of sequence, end loop
                     break
-                if(is_new_cmd_requested == True):
-                    # cmd loading has priority over saving data, because is time critical
-                    #  try to load some cmds into buffer
-                    while(True):
-                        # pop first cmd from list (works like fifo) and try to schedule it
-                        if(len(cnfg.cmdlist[cfg_idx]) == 0):
-                            break
+
+                if (response == Response.OK):
+                    retryCounter = 0
+                    waitingForSchedulerReply = False
+                    new_cmd_needed = False
+                elif (response == Response.FAIL_CHRONO):
+                    # if scheduling fails, due to chronological order this command will not be able to be scheduled - ignore it
+                    CountChronologicalOrderFails += 1
+                    retryCounter = 0
+                    waitingForSchedulerReply = False
+                    new_cmd_needed = True
+                elif (response == Response.FAIL) or (waitingForSchedulerReply and (time.time() > ScheduleTimeoutMark) ):
+                    # if scheduling fails, put cmd back into list and try again later, unless max number of retries has been reached
+                    waitingForSchedulerReply = False
+                    new_cmd_needed = False
+                    if retryCounter > MAX_SCHED_RETRIES:
+                        retryCounter = 0
+                        CountFails += 1
+                        continue
+                    cnfg.cmdlist[cfg_idx].insert(0, cmd)
+                    retryCounter += 1
+
+                if(is_new_cmd_requested == True):   
+                    #is_new_cmd_requested is overwritten every time parser is run regardles if a command has already been sent or not
+                    new_cmd_needed = True
+
+                if new_cmd_needed and not waitingForSchedulerReply:
+                    # cmd loading has priority over saving data, because it is time critical
+                    # try to load some cmds into buffer
+                    # pop first cmd from list (works like fifo) and try to schedule it
+                    if(len(cnfg.cmdlist[cfg_idx]) != 0):
                         cmd = cnfg.cmdlist[cfg_idx].pop(0)
-                        schedok = hw.send_sched_cmd(cmd)
-                        # if sched fails, we have run out of cmd buffer on HW
-                        if(schedok == False):
-                            # if scheduling fails, put cmd back into list and try again later
-                            cnfg.cmdlist[cfg_idx].insert(0, cmd)
-                            break
-                        break #load only one and wait for new request
+                        hw.send_sched_cmd(cmd)
+                        ScheduleTimeoutMark = time.time() + SCHED_OK_TIMEOUT
+                        waitingForSchedulerReply = True
                 
                 if(data_dict != None):
                     # we got some data bois
@@ -266,6 +314,10 @@ for cfg_idx in range(cnfg.NumConfigs):
             print("Leaving temperature control enabled...")
 
         print("Sequence complete!")
+        if CountChronologicalOrderFails > 0:
+            print("WARNING: There were"+CountChronologicalOrderFails+"chronological order scheduling fails!")
+        if CountFails > 0:
+            print("WARNING: There were"+CountFails+"other scheduling fails!")
         
         TestInfoLineAdd(" ### End of Test ### \n",db,infotxt)
         SaveTestInfoToDb(db)

@@ -108,7 +108,7 @@ class LightSoakHWComms:
     # sends scheduled CMD and waits for SCHED_OK. returns true if scheduling ok, false if not
     def send_sched_cmd(self, cmd):
         self.print_hw(cmd)
-        return self.__wait_for_sched_ok()
+        #return self.__wait_for_sched_ok()
 
 
     # CONTROL FUNCTIONS FUNCTIONS END ----------------------------------------------------------
@@ -145,18 +145,18 @@ class LightSoakHWComms:
         self.__wait_for_ready()
         print("Baud changed, ready OK")
 
-    def __wait_for_sched_ok(self):
-        start_time = time.time()
-        while True:
-            if self.ser.in_waiting > 0:
-                message = self.read_line()
-                if message == 'SCHED_OK':
-                    return True
-                elif message == 'SCHED_FAIL':
-                    return False
-            if time.time() - start_time > 0.1:
-                return False
-            time.sleep(0.01)
+    # def __wait_for_sched_ok(self):
+    #     start_time = time.time()
+    #     while True:
+    #         if self.ser.in_waiting > 0:
+    #             message = self.read_line()
+    #             if message == 'SCHED_OK':
+    #                 return True
+    #             elif message == 'SCHED_FAIL':
+    #                 return False
+    #         if time.time() - start_time > 0.1:
+    #             return False
+    #         time.sleep(0.01)
 
     # PRIVATE FUNCTIONS END ----------------------------------------------------------
 
@@ -193,12 +193,12 @@ class LightSoakHWComms:
         # send cmd
         self.print_hw(cmd)
 
-        if(sched!=False):
-            #return true if scheduling ok, false if not
-            return self.__wait_for_sched_ok()
-        else:
-            #return true if cmd is not scheduled
-            return True
+        # if(sched!=False):
+        #     #return true if scheduling ok, false if not
+        #     return self.__wait_for_sched_ok()
+        # else:
+        #     #return true if cmd is not scheduled
+        #     return True
         
 
     def sendcmd_getcurr(self, channel, sched=False):
@@ -214,12 +214,12 @@ class LightSoakHWComms:
         # send cmd
         self.print_hw(cmd)
 
-        if(sched!=False):
-            #return true if scheduling ok, false if not
-            return self.__wait_for_sched_ok()
-        else:
-            #return true if cmd is not scheduled
-            return True
+        # if(sched!=False):
+        #     #return true if scheduling ok, false if not
+        #     return self.__wait_for_sched_ok()
+        # else:
+        #     #return true if cmd is not scheduled
+        #     return True
 
 
     def sendcmd_getiv_point(self, channel, voltage, sched=False):
@@ -235,12 +235,12 @@ class LightSoakHWComms:
         # send cmd
         self.print_hw(cmd)
 
-        if(sched!=False):
-            #return true if scheduling ok, false if not
-            return self.__wait_for_sched_ok()
-        else:
-            #return true if cmd is not scheduled
-            return True
+        # if(sched!=False):
+        #     #return true if scheduling ok, false if not
+        #     return self.__wait_for_sched_ok()
+        # else:
+        #     #return true if cmd is not scheduled
+        #     return True
 
 
     def sendcmd_getiv_char(self, channel, v_start, v_stop, v_step, sched=False):
@@ -256,12 +256,12 @@ class LightSoakHWComms:
         # send cmd
         self.print_hw(cmd)
 
-        if(sched!=False):
-            #return true if scheduling ok, false if not
-            return self.__wait_for_sched_ok()
-        else:
-            #return true if cmd is not scheduled
-            return True
+        # if(sched!=False):
+        #     #return true if scheduling ok, false if not
+        #     return self.__wait_for_sched_ok()
+        # else:
+        #     #return true if cmd is not scheduled
+        #     return True
         
 
     def sendcmd_dump_voltage(self, channel, num_samples, sched=False):
@@ -278,12 +278,12 @@ class LightSoakHWComms:
         # send cmd
         self.print_hw(cmd)
 
-        if(sched!=False):
-            #return true if scheduling ok, false if not
-            return self.__wait_for_sched_ok()
-        else:
-            #return true if cmd is not scheduled
-            return True
+        # if(sched!=False):
+        #     #return true if scheduling ok, false if not
+        #     return self.__wait_for_sched_ok()
+        # else:
+        #     #return true if cmd is not scheduled
+        #     return True
         
 
     def sendcmd_dump_current(self, channel, num_samples, sched=False):
@@ -300,12 +300,12 @@ class LightSoakHWComms:
         # send cmd
         self.print_hw(cmd)
 
-        if(sched!=False):
-            #return true if scheduling ok, false if not
-            return self.__wait_for_sched_ok()
-        else:
-            #return true if cmd is not scheduled
-            return True
+        # if(sched!=False):
+        #     #return true if scheduling ok, false if not
+        #     return self.__wait_for_sched_ok()
+        # else:
+        #     #return true if cmd is not scheduled
+        #     return True
         
 
     def sendcmd_dump_iv(self, channel, num_samples, sched=False):
@@ -322,12 +322,12 @@ class LightSoakHWComms:
         # send cmd
         self.print_hw(cmd)
 
-        if(sched!=False):
-            #return true if scheduling ok, false if not
-            return self.__wait_for_sched_ok()
-        else:
-            #return true if cmd is not scheduled
-            return True
+        # if(sched!=False):
+        #     #return true if scheduling ok, false if not
+        #     return self.__wait_for_sched_ok()
+        # else:
+        #     #return true if cmd is not scheduled
+        #     return True
 
 
     def sendcmd_flashmeasure_singlesample(self, channel, illum, flash_dur, smpl_at, num_avg, sched=False):
@@ -344,12 +344,12 @@ class LightSoakHWComms:
         # send cmd
         self.print_hw(cmd)
 
-        if(sched!=False):
-            #return true if scheduling ok, false if not
-            return self.__wait_for_sched_ok()
-        else:
-            #return true if cmd is not scheduled
-            return True
+        # if(sched!=False):
+        #     #return true if scheduling ok, false if not
+        #     return self.__wait_for_sched_ok()
+        # else:
+        #     #return true if cmd is not scheduled
+        #     return True
         
 
     def sendcmd_flashmeasure_dump(self, channel, illum, flash_dur, sched=False):
@@ -366,12 +366,12 @@ class LightSoakHWComms:
         # send cmd
         self.print_hw(cmd)
 
-        if(sched!=False):
-            #return true if scheduling ok, false if not
-            return self.__wait_for_sched_ok()
-        else:
-            #return true if cmd is not scheduled
-            return True
+        # if(sched!=False):
+        #     #return true if scheduling ok, false if not
+        #     return self.__wait_for_sched_ok()
+        # else:
+        #     #return true if cmd is not scheduled
+        #     return True
 
 
     def sendcmd_set_led(self, illum_sun):

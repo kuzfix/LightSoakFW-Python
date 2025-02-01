@@ -148,6 +148,6 @@ def ParseHWparams(HWconfig_file):
 
 # testing
 if __name__ == "__main__":
-    parser = LightSoakerSequenceParser("data/Test.json")
+    parser = LightSoakerSequenceParser("data/TestingProbingFrequencyInfluence.json")
     parser.parse(True)
-    parser.print_cmdlist()
+    #parser.print_cmdlist()
