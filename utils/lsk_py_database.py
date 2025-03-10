@@ -1,5 +1,6 @@
 from peewee import *
 import datetime as dt
+import os, sys
 
 database_proxy = Proxy() # Create a proxy for our db.
 
@@ -639,6 +640,10 @@ class LightSoakDatabase:
                     #     print("BD del: ",sel.id)
             except Exception as e:
                 print("Delete failed:", e)
+                now = dt.datetime.now()
+                exc_type, exc_obj, exc_tb = sys.exc_info()
+                exc_fname = os.path.split(exc_tb.tb_frame.f_code.co_filename)[1]
+                print("Database exception at ",now.strftime("%d-%m-%Y %H:%M:%S")," (",exc_type, "File:",exc_fname, "Line:",exc_tb.tb_lineno,"Arguments:",e.args,"): ", e, "Continuing...")
         else:
             print(f"Error: ID of the test should be an integer, not {type(test_id)}.")
 

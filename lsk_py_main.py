@@ -51,8 +51,10 @@ output_dir = "data/output/"
 #config_file = "data/MPPT.json"
 #config_file = "data/Flashmeasure.json"
 #config_file = "data/TestProtocol.json"
-config_file = "data/Test.json"
+#config_file = "data/Test.json"
+#config_file = "data/ChangeTemperature.json"
 #config_file = "data/TestingProbingFrequencyInfluence.json"
+config_file = "data/TestingProbePulseLengthInfluence.json"
 #config_file = "data/CyclingVSirradiance.json"
 
 SCHED_OK_TIMEOUT = 0.2
@@ -302,8 +304,9 @@ for cfg_idx in range(cnfg.NumConfigs):
                 print("Keyboard interrupt detected, shutting down and exiting...")
                 exit_handler()
             except Exception as e:
-                print("Parser exception at " + now.strftime("%d-%m-%Y %H:%M:%S") + "!!! Data may have been missed. Contiuining...")
-
+                exc_type, exc_obj, exc_tb = sys.exc_info()
+                exc_fname = os.path.split(exc_tb.tb_frame.f_code.co_filename)[1]
+                print("Parser exception at ",now.strftime("%d-%m-%Y %H:%M:%S")," (",exc_type, "File:",exc_fname, "Line:",exc_tb.tb_lineno,"Arguments:",e.args,"): ", e, "Continuing...")
             
 
         # disable temperature control 
@@ -315,16 +318,17 @@ for cfg_idx in range(cnfg.NumConfigs):
 
         print("Sequence complete!")
         if CountChronologicalOrderFails > 0:
-            print("WARNING: There were"+CountChronologicalOrderFails+"chronological order scheduling fails!")
+            print(f"WARNING: There were {CountChronologicalOrderFails} chronological order scheduling fails!")
         if CountFails > 0:
-            print("WARNING: There were"+CountFails+"other scheduling fails!")
+            print(f"WARNING: There were {CountFails} other scheduling fails!")
         
         TestInfoLineAdd(" ### End of Test ### \n",db,infotxt)
         SaveTestInfoToDb(db)
 
     except Exception as e:
-        print("Exception occured: ", e)
-        print("Shutting down and exiting...")
+        exc_type, exc_obj, exc_tb = sys.exc_info()
+        exc_fname = os.path.split(exc_tb.tb_frame.f_code.co_filename)[1]
+        print("Exception occured at ",now.strftime("%d-%m-%Y %H:%M:%S")," (",exc_type, "File:",exc_fname, "Line:",exc_tb.tb_lineno,"Arguments:",e.args,"): ", e)
         exit_handler()
 
 #close txt file
