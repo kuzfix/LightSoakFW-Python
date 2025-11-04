@@ -1,0 +1,25 @@
+{
+    "parameters": {
+        "User": "R&D",
+        "Test_Name": "Cal Photodiodes - 1000 W/m2 calibration",
+        "Test_Notes": "Calibration of photodiodes which is required for later tunning of LED output. This is supposed to be performed under a calibrated sun simulator.",
+        "DUT_Name": "6 Si photodiodes",
+        "DUT_Target_Temperature": "25.0",
+        "DUT_Temp_Settle_Time": 10.0,
+        "LS_Instrument_Port": "COM4",
+        "Temperature_Ctrl_Port": "COM3"
+    },
+    "sequence": [
+        {"time_type": "abs", "time": 1.000, "repeat": 0 , "interval": 0    , "cli_cmd": "enablecurrent"},
+        {"time_type": "rel", "time": 0.001, "repeat": 0 , "interval": 0    , "cli_cmd": "setnumavg -n 2000"},
+        {"time_type": "rel", "time": 0.001, "repeat": 0 , "interval": 0    , "cli_cmd": "setshunt -1x"},
+        {"time_type": "abs", "time": 2.000, "repeat": 500, "interval": 0.04, "cli_cmd": "getcurr"},
+        {"time_type": "abs", "time": 60.00, "repeat": 500, "interval": 0.04, "cli_cmd": "getcurr"},
+        {"time_type": "abs", "time":120.00, "repeat": 500, "interval": 0.04, "cli_cmd": "getcurr"},
+        {"time_type": "abs", "time":180.00, "repeat": 500, "interval": 0.04, "cli_cmd": "getcurr"},
+        {"time_type": "abs", "time":240.00, "repeat": 500, "interval": 0.04, "cli_cmd": "getcurr"},
+        {"time_type": "abs", "time":300.00, "repeat": 500, "interval": 0.04, "cli_cmd": "getcurr"},
+        {"time_type": "rel", "time": 0.001, "repeat": 0 , "interval": 0    , "cli_cmd": "disablecurrent"},
+        {"time_type": "rel", "time": 0.001, "repeat": 0 , "interval": 0    , "cli_cmd": "ENDSEQUENCE"}
+    ]
+}
