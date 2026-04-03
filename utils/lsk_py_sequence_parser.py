@@ -16,6 +16,7 @@ class LightSoakerSequenceParser:
         self.DUT_Name = []
         self.DUT_Target_Temperature = []
         self.DUT_Temp_Settle_Time = []
+        self.DUT_Temp2 = []
         self.Test_Notes = []
         self.cmdlist = [[]]
         self.test_duration = []
@@ -52,6 +53,10 @@ class LightSoakerSequenceParser:
             self.DUT_Name += [config['parameters']['DUT_Name']]
             self.DUT_Target_Temperature += [config['parameters']['DUT_Target_Temperature']]
             self.DUT_Temp_Settle_Time += [config['parameters']['DUT_Temp_Settle_Time']]
+            if isinstance(config['parameters'].get('DUT_Temp2'),str):   # optional parameter
+                self.DUT_Temp2 += [config['parameters']['DUT_Temp2']]
+            else:
+                self.DUT_Temp2 += [False]
             self.Test_Notes += [config['parameters']['Test_Notes']]
 
             for elem in config['sequence']:
@@ -148,6 +153,6 @@ def ParseHWparams(HWconfig_file):
 
 # testing
 if __name__ == "__main__":
-    parser = LightSoakerSequenceParser("data/TestingProbingFrequencyInfluence.json")
+    parser = LightSoakerSequenceParser("data/TestAditionalTemperatureMeasurment.json")
     parser.parse(True)
     #parser.print_cmdlist()

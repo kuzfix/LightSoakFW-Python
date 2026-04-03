@@ -1,5 +1,6 @@
 import datetime
 import time
+import threading
 import atexit
 import signal
 import sys
@@ -8,6 +9,7 @@ from utils import lsk_py_sequence_parser
 from utils import lsk_py_data_in_parser
 from utils import lsk_py_temp_control
 from utils import lsk_py_database
+from utils import HP344xxA_thread
 from utils.lsk_py_data_in_parser import Response
 import os
 import shutil
@@ -40,7 +42,7 @@ DBconfig_file = "data/DBconfig.json"
 HWconfig_file = "data/HWconfig.json"
 output_dir = "data/output/"
 #config_file = "data/CalibratePhotodiodesUnderSunSimulator.json"
-config_file = "data/TuneLEDs.json"
+#config_file = "data/TuneLEDs.json"
 #config_file = "data/MeasureIllumination(distance).json"
 #config_file = "data/config.json"
 #config_file = "data/Measure_Isc.json"
@@ -57,6 +59,9 @@ config_file = "data/TuneLEDs.json"
 #config_file = "data/TestingProbingFrequencyInfluence.json"
 #config_file = "data/TestingProbePulseLengthInfluence.json"
 #config_file = "data/CyclingVSirradiance.json"
+#config_file = "data/Measure5dayDynamics_12hON_12hOFF.json"
+#config_file = "data/MeasureLSStepResponse.json"
+config_file = "data/TestAditionalTemperatureMeasurment.json"
 
 SCHED_OK_TIMEOUT = 0.2
 MAX_SCHED_RETRIES = 5
@@ -160,6 +165,17 @@ for cfg_idx in range(cnfg.NumConfigs):
 
     #connect to hardware
     hw.connect()
+    if (cnfg.DUT_Temp2[cfg_idx] != False):
+        HP344xxA_worker = HP344xxA_thread.A34401AMeasurementWorker(cnfg.DUT_Temp2[cfg_idx],HWcnfg['HP_VISA_RESOURCE'])
+        #Run this to get a list of available visa resources:
+        # visa_resources = HP344xxA_worker.get_visa_resources()
+        HP_thread = threading.Thread( 
+            target=HP344xxA_worker.measurement_loop,
+            name="A34401A-Measurement",
+            daemon=True #(daemon=True means it stops with main program)
+        )
+        HP_thread.start()
+
 
     # check and report LED temperature at start of test
     led_temp = hw.get_led_temp()
@@ -186,7 +202,14 @@ for cfg_idx in range(cnfg.NumConfigs):
         time.sleep(0.5)
         print("Waiting for DUT temperature to stabilize...")
         while(tempctrl.is_stable() == False):
-            print("Current temperature: ", str(tempctrl.get_dut_temp()), "C")
+            TEC_Temp = tempctrl.get_dut_temp()
+            TEC_V = tempctrl.get_TEC_V()
+            TEC_I = tempctrl.get_TEC_I()
+            if (cnfg.DUT_Temp2[cfg_idx] != False):
+                value, is_new, timestamp = HP344xxA_worker.get_latest()
+                print(f"Current temperature: {TEC_Temp:.3f} C (TEC V={TEC_V:.2f} V, I={TEC_I:.2f} A), DUT Temperature 2: {value:.3f} C")
+            else:
+                print(f"Current temperature: {TEC_Temp:.3f} C (TEC V={TEC_V:.2f} V, I={TEC_I:.2f} A)")
             time.sleep(2)
         print("Temperature ctrl loop stable! Waiting for additional settling time...")
         time.sleep(cnfg.DUT_Temp_Settle_Time[cfg_idx])
@@ -292,6 +315,9 @@ for cfg_idx in range(cnfg.NumConfigs):
                     # add temperature to data dict
                     if(cnfg.DUT_Target_Temperature[cfg_idx] != "False"):
                         data_dict["DUT_temp"] = tempctrl.get_dut_temp()
+                    if (cnfg.DUT_Temp2[cfg_idx] != False):
+                        value, is_new, timestamp = HP344xxA_worker.get_latest()
+                        data_dict["DUT_temp2"] = value
                     # for testing purposes, add led temp to data dict
                     # data_dict["ledtemp"] = hw.get_led_temp()
 
@@ -316,6 +342,11 @@ for cfg_idx in range(cnfg.NumConfigs):
             #print("Disabling temperature control...")
             #tempctrl.disable_temp_ctrl()
             print("Leaving temperature control enabled...")
+
+        if (cnfg.DUT_Temp2[cfg_idx] == True):
+            HP344xxA_worker.stop()
+            HP_thread.join(timeout=2)
+
 
         print("Sequence complete!")
         if CountChronologicalOrderFails > 0:

@@ -101,6 +101,7 @@ class LightSoakDatabase:
             ch5 = data_dict.get("ch5", None),
             ch6 = data_dict.get("ch6", None),
             DUT_temp = data_dict.get("DUT_temp", None),
+            DUT_temp2 = data_dict.get("DUT_temp2", None),
             meas_type = data_dict.get("type")
         )
         meas.save()
@@ -116,6 +117,7 @@ class LightSoakDatabase:
             ch5_curr = data_dict.get("ch5_curr", None),
             ch6_curr = data_dict.get("ch6_curr", None),
             DUT_temp = data_dict.get("DUT_temp", None),
+            DUT_temp2 = data_dict.get("DUT_temp2", None),
             meas_type = data_dict.get("type")
         )
         meas.save()
@@ -137,6 +139,7 @@ class LightSoakDatabase:
             ch5_curr = data_dict.get("ch5_curr", None),
             ch6_curr = data_dict.get("ch6_curr", None),
             DUT_temp = data_dict.get("DUT_temp", None),
+            DUT_temp2 = data_dict.get("DUT_temp2", None),
             meas_type = data_dict.get("type"),
             # for testing
             ledtemp = data_dict.get("ledtemp", None)
@@ -160,6 +163,7 @@ class LightSoakDatabase:
             ch5_curr = data_dict.get("ch5_curr", None),
             ch6_curr = data_dict.get("ch6_curr", None),
             DUT_temp = data_dict.get("DUT_temp", None),
+            DUT_temp2 = data_dict.get("DUT_temp2", None),
             meas_type = data_dict.get("type"),
             # for testing
             ledtemp = data_dict.get("ledtemp", None)
@@ -179,6 +183,7 @@ class LightSoakDatabase:
             ch5 = None,
             ch6 = None,
             DUT_temp = data_dict.get("DUT_temp", None),
+            DUT_temp2 = data_dict.get("DUT_temp2", None),
             meas_type = data_dict.get("type"),
             sample_count = data_dict.get("sample_count")
         )
@@ -204,6 +209,7 @@ class LightSoakDatabase:
             ch5_curr = None,
             ch6_curr = None,
             DUT_temp = data_dict.get("DUT_temp", None),
+            DUT_temp2 = data_dict.get("DUT_temp2", None),
             meas_type = data_dict.get("type"),
             sample_count = data_dict.get("sample_count")
         )
@@ -223,6 +229,7 @@ class LightSoakDatabase:
             ch5_curr = None,
             ch6_curr = None,
             DUT_temp = data_dict.get("DUT_temp", None),
+            DUT_temp2 = data_dict.get("DUT_temp2", None),
             meas_type = data_dict.get("type"),
             sample_count = data_dict.get("sample_count")
         )
@@ -243,6 +250,7 @@ class LightSoakDatabase:
             ch5 = data_dict.get("ch5", None),
             ch6 = data_dict.get("ch6", None),
             DUT_temp = data_dict.get("DUT_temp", None),
+            DUT_temp2 = data_dict.get("DUT_temp2", None),
             meas_type = data_dict.get("type"),
             sample_count = data_dict.get("sample_count")
         )
@@ -262,6 +270,7 @@ class LightSoakDatabase:
             ch5_curr = None,
             ch6_curr = None,
             DUT_temp = data_dict.get("DUT_temp", None),
+            DUT_temp2 = data_dict.get("DUT_temp2", None),
             meas_type = data_dict.get("type"),
             sample_count = data_dict.get("sample_count")
         )
@@ -457,6 +466,7 @@ class LightSoakDatabase:
             ch5_curr = None,
             ch6_curr = None,
             DUT_temp = data_dict.get("DUT_temp", None),
+            DUT_temp2 = data_dict.get("DUT_temp2", None),
             meas_type = data_dict.get("type"),
             sample_count = data_dict.get("sample_count")
         )
@@ -538,6 +548,7 @@ class LightSoakDatabase:
             test = self.test,
             timestamp = data_dict.get("timestamp", None),
             DUT_temp = data_dict.get("DUT_temp", None),
+            DUT_temp2 = data_dict.get("DUT_temp2", None),
             meas_type = data_dict.get("type"),
             ledtemp = data_dict.get("ledtemp", None),
         )
@@ -554,6 +565,7 @@ class LightSoakDatabase:
             ch5 = data_dict.get("ch5", None),
             ch6 = data_dict.get("ch6", None),
             DUT_temp = data_dict.get("DUT_temp", None),
+            DUT_temp2 = data_dict.get("DUT_temp2", None),
             meas_type = data_dict.get("type")
         )
         meas.save()
@@ -570,6 +582,7 @@ class LightSoakDatabase:
             ch5_curr = data_dict.get("ch5_curr", None),
             ch6_curr = data_dict.get("ch6_curr", None),
             DUT_temp = data_dict.get("DUT_temp", None),
+            DUT_temp2 = data_dict.get("DUT_temp2", None),
             meas_type = data_dict.get("type")
         )
         meas.save()
@@ -604,6 +617,7 @@ class LightSoakDatabase:
                 DUT_Name = cnfg.DUT_Name[cfg_idx],
                 DUT_Target_Temperature = cnfg.DUT_Target_Temperature[cfg_idx],
                 DUT_Temp_Settle_Time = cnfg.DUT_Temp_Settle_Time[cfg_idx],
+                DUT_Temp2 = cnfg.DUT_Temp2[cfg_idx],
                 Test_Notes = cnfg.Test_Notes[cfg_idx],
                 HWport = HWcnfg['LS_Instrument_Port'],
                 Tport = HWcnfg['Temperature_Ctrl_Port']
@@ -614,6 +628,7 @@ class LightSoakDatabase:
                 Test_Name = cnfg.Test_Name[cfg_idx],
                 DUT_Name = cnfg.DUT_Name[cfg_idx],
                 DUT_Temp_Settle_Time = cnfg.DUT_Temp_Settle_Time[cfg_idx],
+                DUT_Temp2 = cnfg.DUT_Temp2[cfg_idx],
                 Test_Notes = cnfg.Test_Notes[cfg_idx],
                 HWport = HWcnfg['LS_Instrument_Port'],
                 Tport = HWcnfg['Temperature_Ctrl_Port']
@@ -666,6 +681,7 @@ class Test(BaseModel):
     DUT_Name = TextField()
     DUT_Target_Temperature = FloatField(null=True)
     DUT_Temp_Settle_Time = FloatField(null=0.0)
+    DUT_Temp2 = TextField()
     Test_Notes = TextField()
     HWport = TextField()
     Tport = TextField()
@@ -689,6 +705,7 @@ class Measurement(BaseModel):
     ch5_curr = FloatField(null=True)
     ch6_curr = FloatField(null=True)
     DUT_temp = FloatField(null=True)
+    DUT_temp2 = FloatField(null=True)
     ledtemp = FloatField(null=True)
     ledillum = FloatField(null=True)
     meas_type = TextField()

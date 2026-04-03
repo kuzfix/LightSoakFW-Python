@@ -47,4 +47,11 @@ class LightSoakTempControl:
         if stable_id == 2:
             return True
         return False
-        
+
+    def get_TEC_V(self):
+        V = self._mc.get_parameter(parameter_name="Actual Output Voltage", address=self._hw_address)
+        return V
+
+    def get_TEC_I(self):
+        I = self._mc.get_parameter(parameter_name="Actual Output Current", address=self._hw_address)
+        return I

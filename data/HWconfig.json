@@ -1,4 +1,5 @@
 {
     "LS_Instrument_Port": "COM4",
-    "Temperature_Ctrl_Port": "COM3"
+    "Temperature_Ctrl_Port": "COM3",
+    "HP_VISA_RESOURCE":"USB0::2391::1543::MY47016751::0::INSTR"
 }
