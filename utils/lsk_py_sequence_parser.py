@@ -54,7 +54,10 @@ class LightSoakerSequenceParser:
             self.DUT_Target_Temperature += [config['parameters']['DUT_Target_Temperature']]
             self.DUT_Temp_Settle_Time += [config['parameters']['DUT_Temp_Settle_Time']]
             if isinstance(config['parameters'].get('DUT_Temp2'),str):   # optional parameter
-                self.DUT_Temp2 += [config['parameters']['DUT_Temp2']]
+                if (config['parameters']['DUT_Temp2'] in [False, "","False", "false", "none", "None", "off", "Off"]):
+                    self.DUT_Temp2 += [False]
+                else:    
+                    self.DUT_Temp2 += [config['parameters']['DUT_Temp2']]
             else:
                 self.DUT_Temp2 += [False]
             self.Test_Notes += [config['parameters']['Test_Notes']]
