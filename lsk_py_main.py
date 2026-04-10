@@ -343,11 +343,6 @@ for cfg_idx in range(cnfg.NumConfigs):
             #tempctrl.disable_temp_ctrl()
             print("Leaving temperature control enabled...")
 
-        if (cnfg.DUT_Temp2[cfg_idx] == True):
-            HP344xxA_worker.stop()
-            HP_thread.join(timeout=2)
-
-
         print("Sequence complete!")
         if CountChronologicalOrderFails > 0:
             print(f"WARNING: There were {CountChronologicalOrderFails} chronological order scheduling fails!")
@@ -362,6 +357,12 @@ for cfg_idx in range(cnfg.NumConfigs):
         exc_fname = os.path.split(exc_tb.tb_frame.f_code.co_filename)[1]
         print("Exception occured at ",now.strftime("%d-%m-%Y %H:%M:%S")," (",exc_type, "File:",exc_fname, "Line:",exc_tb.tb_lineno,"Arguments:",e.args,"): ", e)
         exit_handler()
+
+    if (cnfg.DUT_Temp2[cfg_idx] != False):
+        HP344xxA_worker.stop()
+        HP_thread.join(timeout=7)
+        del HP344xxA_worker
+        print("DUT_temp2 worker stopped.")
 
 #close txt file
 if infotxt is not None:

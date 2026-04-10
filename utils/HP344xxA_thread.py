@@ -15,7 +15,7 @@ class A34401AMeasurementWorker:
         self.timestamp: Optional[datetime] = None
         self.is_new = False
         self.should_be_running = False
-        self.has_stopped = False
+        self.has_stopped = True
         self.lock = threading.Lock()
         # For error handling
         self.last_error: Optional[str] = None
@@ -102,6 +102,7 @@ class A34401AMeasurementWorker:
                 if time.time() - now > 6:  # Timeout after 5 seconds
                     print("  Warning: Instrument close timeout. Forcing shutdown.")
                     break
+                time.sleep(0.1)  # to prevent processor spin-loop
             self.dmm.shutdown()  # Properly close the instrument
             self.dmm.adapter.manager.close()  # Ensure VISA connection is closed
             self.initOK = False
@@ -219,7 +220,7 @@ def main():
         return
     print()
     print("Initializing worker using the firt available VISA resource...")
-    worker.setVisaResource(visa_resources[0])
+    worker.setVisaResource(visa_resources[2])
     #worker.setVisaResource("USB0::2391::1543::MY47016751::0::INSTR")
     #worker.init_instrument("34410A")
     worker.init_instrument("34401A")
